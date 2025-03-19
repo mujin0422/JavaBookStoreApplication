@@ -2,21 +2,15 @@ package DTO;
 
 
 public class ChiTietChucNangDTO {
-    private int maCTCN;
     private int maCN;
     private int maQuyen;
 
     public ChiTietChucNangDTO() {
     }
 
-    public ChiTietChucNangDTO(int maCTCN, int maCN, int maQuyen) {
-        this.maCTCN = maCTCN;
+    public ChiTietChucNangDTO(int maCN, int maQuyen) {
         this.maCN = maCN;
         this.maQuyen = maQuyen;
-    }
-
-    public int getMaCTCN() {
-        return maCTCN;
     }
 
     public int getMaCN() {
@@ -25,10 +19,6 @@ public class ChiTietChucNangDTO {
 
     public int getMaQuyen() {
         return maQuyen;
-    }
-
-    public void setMaCTCN(int maCTCN) {
-        this.maCTCN = maCTCN;
     }
 
     public void setMaCN(int maCN) {
@@ -41,10 +31,9 @@ public class ChiTietChucNangDTO {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 17 * hash + this.maCTCN;
-        hash = 17 * hash + this.maCN;
-        hash = 17 * hash + this.maQuyen;
+        int hash = 5;
+        hash = 31 * hash + this.maCN;
+        hash = 31 * hash + this.maQuyen;
         return hash;
     }
 
@@ -60,14 +49,11 @@ public class ChiTietChucNangDTO {
             return false;
         }
         final ChiTietChucNangDTO other = (ChiTietChucNangDTO) obj;
-        if (this.maCTCN != other.maCTCN) {
-            return false;
-        }
         if (this.maCN != other.maCN) {
             return false;
         }
         return this.maQuyen == other.maQuyen;
     }
-    
+
     
 }

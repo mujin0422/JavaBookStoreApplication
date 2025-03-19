@@ -2,7 +2,6 @@ package DTO;
 
 
 public class ChiTietPhieuNhapDTO {
-    private int maCTPN;
     private int maPN;
     private int maSach;
     private int soLuong;
@@ -11,16 +10,11 @@ public class ChiTietPhieuNhapDTO {
     public ChiTietPhieuNhapDTO() {
     }
 
-    public ChiTietPhieuNhapDTO(int maCTPN, int maPN, int maSach, int soLuong, int giaNhap) {
-        this.maCTPN = maCTPN;
+    public ChiTietPhieuNhapDTO(int maPN, int maSach, int soLuong, int giaNhap) {
         this.maPN = maPN;
         this.maSach = maSach;
         this.soLuong = soLuong;
         this.giaNhap = giaNhap;
-    }
-
-    public int getMaCTPN() {
-        return maCTPN;
     }
 
     public int getMaPN() {
@@ -37,10 +31,6 @@ public class ChiTietPhieuNhapDTO {
 
     public int getGiaNhap() {
         return giaNhap;
-    }
-
-    public void setMaCTPN(int maCTPN) {
-        this.maCTPN = maCTPN;
     }
 
     public void setMaPN(int maPN) {
@@ -60,18 +50,12 @@ public class ChiTietPhieuNhapDTO {
     }
 
     @Override
-    public String toString() {
-        return "ChiTietPhieuNhapDTO{" + "maCTPN=" + maCTPN + ", maPN=" + maPN + ", maSach=" + maSach + ", soLuong=" + soLuong + ", giaNhap=" + giaNhap + '}';
-    }
-
-    @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 29 * hash + this.maCTPN;
-        hash = 29 * hash + this.maPN;
-        hash = 29 * hash + this.maSach;
-        hash = 29 * hash + this.soLuong;
-        hash = 29 * hash + this.giaNhap;
+        int hash = 7;
+        hash = 97 * hash + this.maPN;
+        hash = 97 * hash + this.maSach;
+        hash = 97 * hash + this.soLuong;
+        hash = 97 * hash + this.giaNhap;
         return hash;
     }
 
@@ -87,9 +71,6 @@ public class ChiTietPhieuNhapDTO {
             return false;
         }
         final ChiTietPhieuNhapDTO other = (ChiTietPhieuNhapDTO) obj;
-        if (this.maCTPN != other.maCTPN) {
-            return false;
-        }
         if (this.maPN != other.maPN) {
             return false;
         }
@@ -101,5 +82,5 @@ public class ChiTietPhieuNhapDTO {
         }
         return this.giaNhap == other.giaNhap;
     }
-    
+
 }
