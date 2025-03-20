@@ -4,11 +4,12 @@ import GUI.MainContent.*;
 import Utils.UIButton;
 import Utils.UIConstants;
 import java.awt.*;
+import java.util.ArrayList;
 import javax.swing.*;
 
 public final class MainLayoutGUI extends JFrame {
     private JPanel pnlTitle, pnlMenu, pnlContent; 
-    private UIButton[] buttons; 
+    private ArrayList<UIButton> buttons; 
 
     public MainLayoutGUI() {
         initComponent();
@@ -21,7 +22,7 @@ public final class MainLayoutGUI extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setUndecorated(true);
 
-        //==========================Panel Title=================================
+        //========================== Panel Title ================================
         pnlTitle = new JPanel(null);
         pnlTitle.setBackground(UIConstants.MAIN_BUTTON);
         pnlTitle.setPreferredSize(new Dimension(UIConstants.WIDTH_TITLE, UIConstants.HEIGHT_TITLE));
@@ -52,18 +53,20 @@ public final class MainLayoutGUI extends JFrame {
         pnlTitle.add(btnMinimize);
         pnlTitle.add(btnClose);
 
-        //==========================Panel Menu==================================
+        //========================== Panel Menu ================================
         pnlMenu = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         pnlMenu.setBackground(UIConstants.MAIN_BACKGROUND);
         pnlMenu.setPreferredSize(new Dimension(UIConstants.WIDTH_MENU, UIConstants.HEIGHT_MENU));
 
         // Danh sách button
-        String[] buttonLabels = {"TRANG CHỦ", "SÁCH","THÔNG TIN SÁCH", "KHÁCH HÀNG","XUẤT HÀNG", "NHÂN VIÊN","NHÀ CUNG CẤP","PHÂN QUYỀN","NHẬP HÀNG","THỐNG KÊ"};
-        buttons = new UIButton[buttonLabels.length];
+        String[] buttonLabels = {"TRANG CHỦ", "SÁCH", "THÔNG TIN SÁCH", "KHÁCH HÀNG", "XUẤT HÀNG",
+                                 "NHÂN VIÊN", "NHÀ CUNG CẤP", "PHÂN QUYỀN", "NHẬP HÀNG", "THỐNG KÊ"};
+        buttons = new ArrayList<>(); 
         
-        //=========================Panel Content================================
+        //========================= Panel Content ==============================
         pnlContent = new JPanel(new BorderLayout()); 
         pnlContent.setBackground(UIConstants.SUB_BACKGROUND);
+        
         // Tạo các màn hình
         JPanel emptyPanel = new JPanel(); // Trang chủ
         BookMainContentGUI bookPanel = new BookMainContentGUI();
@@ -74,49 +77,52 @@ public final class MainLayoutGUI extends JFrame {
         DecentralizationMainContentGUI decentralizationPanel = new DecentralizationMainContentGUI();
         ImportBookMainContentGUI importBookPanel = new ImportBookMainContentGUI();
         ExportBookMainContentGUI exportBookPanel = new ExportBookMainContentGUI();
+
         // Gán sự kiện cho các button
         for (int i = 0; i < buttonLabels.length; i++) {
-            buttons[i] = new UIButton("menuButton", buttonLabels[i], 180, 40);
-            pnlMenu.add(buttons[i]);
+            UIButton button = new UIButton("menuButton", buttonLabels[i], 180, 40);
+            pnlMenu.add(button);
+            buttons.add(button);
 
             JPanel targetPanel;
             switch (i) {
                 case 1:
-                    buttons[i].setButtonIcon("/Icon/Sach_icon.png");
+                    button.setButtonIcon("/Icon/Sach_icon.png");
                     targetPanel = bookPanel;
                     break;
                 case 2:
-                    buttons[i].setButtonIcon("/Icon/ThongTinSach_icon.png");
+                    button.setButtonIcon("/Icon/ThongTinSach_icon.png");
                     targetPanel = aboutBookPanel;
                     break;
                 case 3:
-                    buttons[i].setButtonIcon("/Icon/KhachHang_icon.png");
+                    button.setButtonIcon("/Icon/KhachHang_icon.png");
                     targetPanel = customerPanel;
                     break;
                 case 4:
-                    buttons[i].setButtonIcon("/Icon/XuatHang_icon.png");
+                    button.setButtonIcon("/Icon/XuatHang_icon.png");
                     targetPanel = exportBookPanel;
                     break;
                 case 5:
-                    buttons[i].setButtonIcon("/Icon/NhanVien_icon.png");
+                    button.setButtonIcon("/Icon/NhanVien_icon.png");
                     targetPanel = staffPanel;
                     break;
                 case 6:
-                    buttons[i].setButtonIcon("/Icon/NhaCungCap_icon.png");
+                    button.setButtonIcon("/Icon/NhaCungCap_icon.png");
                     targetPanel = supplierPanel;
                     break;
                 case 7:
-                    buttons[i].setButtonIcon("/Icon/PhanQuyen_icon.png");
+                    button.setButtonIcon("/Icon/PhanQuyen_icon.png");
                     targetPanel = decentralizationPanel;
                     break;
                 case 8:
-                    buttons[i].setButtonIcon("/Icon/XuatHang_icon.png");
+                    button.setButtonIcon("/Icon/XuatHang_icon.png");
                     targetPanel = importBookPanel;
                     break;
                 default:
                     targetPanel = emptyPanel;
             }
-            buttons[i].addActionListener(e -> switchPanel(targetPanel));
+
+            button.addActionListener(e -> switchPanel(targetPanel));
         }
 
         // Thêm panel vào JFrame
