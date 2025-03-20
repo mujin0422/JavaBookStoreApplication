@@ -4,8 +4,16 @@ import java.awt.Color;
 import java.awt.Font;
 
 public class UIConstants {
+    // Kích thước Frame
     public static final int WIDTH = 1300;
     public static final int HEIGHT = 700;
+    // Kích thước thành phần chính của Frame
+    public static final int WIDTH_TITLE = WIDTH;
+    public static final int HEIGHT_TITLE = 50;
+    public static final int WIDTH_MENU = 200;
+    public static final int HEIGHT_MENU = HEIGHT - HEIGHT_TITLE;
+    public static final int WIDTH_CONTENT = WIDTH - WIDTH_MENU;
+    public static final int HEIGHT_CONTENT = HEIGHT - HEIGHT_TITLE;
     
     
     // Màu chữ

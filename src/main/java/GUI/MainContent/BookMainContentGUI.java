@@ -7,7 +7,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
 public class BookMainContentGUI extends JPanel {
-    private UIButton btnAdd, btnDelete, btnEdit;
+    private UIButton btnAdd;
+    private UIButton btnDelete, btnEdit;
     private JTextField txtSearch;
     private JComboBox<String> cbFilter;
     private JTable tblContent;
@@ -15,7 +16,7 @@ public class BookMainContentGUI extends JPanel {
 
     public BookMainContentGUI() {
         this.setBackground(UIConstants.SUB_BACKGROUND);
-        this.setPreferredSize(new Dimension(UIConstants.WIDTH - 200 - 10, UIConstants.HEIGHT - 200 - 10));
+        this.setPreferredSize(new Dimension(UIConstants.WIDTH_CONTENT, UIConstants.HEIGHT_CONTENT));
         this.setLayout(new BorderLayout(5, 5));
 
         //=========================== Panel Header =============================
@@ -54,7 +55,7 @@ public class BookMainContentGUI extends JPanel {
         pnlContent.setBackground(UIConstants.MAIN_BACKGROUND);
 
         // Tạo bảng dữ liệu
-        String[] columnNames = {"MÃ", "TÊN SÁCH", "TÁC GIẢ", "NHÀ XUẤT BẢN", "TỒN KHO", "....."};
+        String[] columnNames = {"MÃ SÁCH", "TÊN SÁCH", "GIÁ", "NHÀ XUẤT BẢN", "TỒN KHO"};
         Object[][] data = {}; // Chưa có dữ liệu
         tblContent = new JTable(new DefaultTableModel(data, columnNames));
 

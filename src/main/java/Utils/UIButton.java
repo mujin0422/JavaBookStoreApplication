@@ -29,7 +29,7 @@ public final class UIButton extends JButton implements MouseListener {
             }
         }
 
-        this.defaultColor = bgColor; // Lưu màu gốc
+        this.defaultColor = bgColor;
         this.setText(text);
         this.setFont(UIConstants.FONT_BUTTON);
         this.setBackground(bgColor);
@@ -66,21 +66,20 @@ public final class UIButton extends JButton implements MouseListener {
             ImageIcon icon = new ImageIcon(getClass().getResource(urlImage));
             Image scaledImage = icon.getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH);
             this.setIcon(new ImageIcon(scaledImage));
-            this.setHorizontalTextPosition(SwingConstants.RIGHT);
-            this.setIconTextGap(10); // Khoảng cách giữa icon và text
+            this.setIconTextGap(3); 
         }
     }
     
     @Override
     public void mouseEntered(MouseEvent e) {
         if ("menuButton".equals(buttonType)) 
-            this.setBackground(UIConstants.HOVER_BUTTON); // Màu hover khác cho menuButton
+            this.setBackground(UIConstants.HOVER_BUTTON); 
     }
 
     @Override
     public void mouseExited(MouseEvent e) {
         if ("menuButton".equals(buttonType)) {
-            this.setBackground(defaultColor); // Trả về màu gốc
+            this.setBackground(defaultColor);
         }
     }
 

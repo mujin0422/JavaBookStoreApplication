@@ -24,7 +24,7 @@ public final class MainLayoutGUI extends JFrame {
         //==========================Panel Title=================================
         pnlTitle = new JPanel(null);
         pnlTitle.setBackground(UIConstants.MAIN_BUTTON);
-        pnlTitle.setPreferredSize(new Dimension(0, 50));
+        pnlTitle.setPreferredSize(new Dimension(UIConstants.WIDTH_TITLE, UIConstants.HEIGHT_TITLE));
 
         JLabel lblTitle = new JLabel("QUẢN LÝ CỬA HÀNG SÁCH");
         lblTitle.setFont(UIConstants.TITLE_FONT);
@@ -55,7 +55,7 @@ public final class MainLayoutGUI extends JFrame {
         //==========================Panel Menu==================================
         pnlMenu = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         pnlMenu.setBackground(UIConstants.MAIN_BACKGROUND);
-        pnlMenu.setPreferredSize(new Dimension(200, 0));
+        pnlMenu.setPreferredSize(new Dimension(UIConstants.WIDTH_MENU, UIConstants.HEIGHT_MENU));
 
         // Danh sách button
         String[] buttonLabels = {"TRANG CHỦ", "SÁCH","THÔNG TIN SÁCH", "KHÁCH HÀNG","XUẤT HÀNG", "NHÂN VIÊN","NHÀ CUNG CẤP","PHÂN QUYỀN","NHẬP HÀNG","THỐNG KÊ"};

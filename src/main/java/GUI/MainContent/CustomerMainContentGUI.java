@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package GUI.MainContent;
 
 import Utils.UIButton;
@@ -16,10 +12,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author Dell Vostro
- */
 public class CustomerMainContentGUI extends JPanel{
     private UIButton btnAdd, btnDelete, btnEdit;
     private JTextField txtSearch;
@@ -29,7 +21,7 @@ public class CustomerMainContentGUI extends JPanel{
 
     public CustomerMainContentGUI() {
         this.setBackground(UIConstants.SUB_BACKGROUND);
-        this.setPreferredSize(new Dimension(UIConstants.WIDTH - 200 - 10, UIConstants.HEIGHT - 200 - 10));
+        this.setPreferredSize(new Dimension(UIConstants.WIDTH_CONTENT, UIConstants.HEIGHT_CONTENT));
         this.setLayout(new BorderLayout(5, 5));
 
         //=========================== Panel Header =============================
@@ -68,7 +60,7 @@ public class CustomerMainContentGUI extends JPanel{
         pnlContent.setBackground(UIConstants.MAIN_BACKGROUND);
 
         // Tạo bảng dữ liệu
-        String[] columnNames = {"MÃ", "TÊN SÁCH", "TÁC GIẢ", "NHÀ XUẤT BẢN", "TỒN KHO", "....."};
+        String[] columnNames = {"MÃ", "TÊN KHÁCH HÀNG", "SỐ ĐIỆN THOẠI", "EMAIL"};
         Object[][] data = {}; // Chưa có dữ liệu
         tblContent = new JTable(new DefaultTableModel(data, columnNames));
 
