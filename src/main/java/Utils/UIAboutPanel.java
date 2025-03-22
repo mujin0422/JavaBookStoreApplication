@@ -19,11 +19,11 @@ public final class UIAboutPanel extends JPanel {
         this.setBackground(UIConstants.MAIN_BUTTON);
         this.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 10));
         
-        //======================= Panel Icon and Text ==========================
+        //==========================( PANEL ICON AND TEXT )=============================//
         pnlIcon_Text = new JPanel(new BorderLayout());
         pnlIcon_Text.setBackground(UIConstants.MAIN_BUTTON);
         pnlIcon_Text.setPreferredSize(new Dimension(width *15/100, height));
-        // Thêm Icon
+            // Icon
         int iconWidth = pnlIcon_Text.getPreferredSize().width;
         int iconHeight = iconWidth;
         JLabel lblIcon = new JLabel();
@@ -31,7 +31,7 @@ public final class UIAboutPanel extends JPanel {
         ImageIcon icon = new ImageIcon(getClass().getResource(iconUrl));
         Image scaleIcon = icon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
         lblIcon.setIcon(new ImageIcon(scaleIcon));
-        // Thêm Text
+            // Text
         JLabel lblText = new JLabel(text, JLabel.CENTER);
         lblText.setBackground(UIConstants.MAIN_BUTTON);
         lblText.setFont(UIConstants.TITLE_FONT);
@@ -39,20 +39,34 @@ public final class UIAboutPanel extends JPanel {
         
         pnlIcon_Text.add(lblIcon,BorderLayout.CENTER);
         pnlIcon_Text.add(lblText,BorderLayout.SOUTH);
+        //========================( End Panel Icon And Text )===========================//
         
-        //=========================== Panel Button =============================
+        
+        
+        //==============================( PANEL BUTTON )================================//
         pnlButton = new JPanel();
         pnlButton.setPreferredSize(new Dimension(width *10/100, height));
+        //============================( End Panel Button )==============================//
         
-        //=========================== Panel Content ============================
+        
+        
+        //==============================( PANEL CONTENT )===============================//
         pnlContent = new JPanel();
         pnlContent.setPreferredSize(new Dimension(width *75/100, height));
+        pnlContent.setLayout(new BorderLayout());
+        //============================( End Panel Content )=============================//
+        
         
         this.add(pnlIcon_Text);
         this.add(pnlButton);
         this.add(pnlContent);
     }
     
-   
-    
+    public void addButton(UIButton button) {
+        pnlButton.add(button);
+    }
+
+    public JPanel getPnlContent() {
+        return pnlContent;
+    }
 }

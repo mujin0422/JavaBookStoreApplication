@@ -2,12 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package GUI.MainContentComponent;
+package GUI.MainContentDiaLog;
 
-import javax.swing.JPanel;
-import javax.swing.JTextField;
+import javax.swing.JDialog;
 
-public class AddBookGUI extends JPanel {
-
+/**
+ *
+ * @author Dell Vostro
+ */
+public class AddAndEditStaffGUI extends JDialog{
     
 }

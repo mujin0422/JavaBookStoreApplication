@@ -10,6 +10,6 @@ import javax.swing.JPanel;
  *
  * @author Dell Vostro
  */
-public class DecentralizationMainContentGUI extends JPanel{
+public class StatisticsMainContentGUI extends JPanel{
     
 }

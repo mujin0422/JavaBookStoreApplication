@@ -2,14 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package GUI.MainContent;
+package GUI.MainContentDiaLog;
 
-import javax.swing.JPanel;
+import javax.swing.JDialog;
 
 /**
  *
  * @author Dell Vostro
  */
-public class DecentralizationMainContentGUI extends JPanel{
+public class AddAndEditCostumerGUI extends JDialog{
     
 }

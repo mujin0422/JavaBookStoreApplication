@@ -22,7 +22,7 @@ public final class MainLayoutGUI extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setUndecorated(true);
 
-        //========================== Panel Title ================================
+        //==============================( PANEL TITLE )=================================//
         pnlTitle = new JPanel(null);
         pnlTitle.setBackground(UIConstants.MAIN_BUTTON);
         pnlTitle.setPreferredSize(new Dimension(UIConstants.WIDTH_TITLE, UIConstants.HEIGHT_TITLE));
@@ -52,23 +52,25 @@ public final class MainLayoutGUI extends JFrame {
         pnlTitle.add(lblTitle);
         pnlTitle.add(btnMinimize);
         pnlTitle.add(btnClose);
+        //==============================( End Panel Title )=============================//
 
-        //========================== Panel Menu ================================
+        
+        //================================( PANEL MENU )================================//
         pnlMenu = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         pnlMenu.setBackground(UIConstants.MAIN_BACKGROUND);
         pnlMenu.setPreferredSize(new Dimension(UIConstants.WIDTH_MENU, UIConstants.HEIGHT_MENU));
 
-        // Danh sách button
-        String[] buttonLabels = {"TRANG CHỦ", "SÁCH", "THÔNG TIN SÁCH", "KHÁCH HÀNG", "XUẤT HÀNG",
-                                 "NHÂN VIÊN", "NHÀ CUNG CẤP", "PHÂN QUYỀN", "NHẬP HÀNG", "THỐNG KÊ"};
+        String[] buttonLabels = {"THỐNG KÊ", "SÁCH", "THÔNG TIN SÁCH", "KHÁCH HÀNG", "XUẤT HÀNG",
+                                 "NHÂN VIÊN", "NHÀ CUNG CẤP", "PHÂN QUYỀN", "NHẬP HÀNG"};
         buttons = new ArrayList<>(); 
+        //==============================( End Panel Menu )==============================//
         
-        //========================= Panel Content ==============================
+        
+        //===============================( PANEL CONTENT )==============================//
         pnlContent = new JPanel(new BorderLayout()); 
         pnlContent.setBackground(UIConstants.SUB_BACKGROUND);
         
-        // Tạo các màn hình
-        JPanel emptyPanel = new JPanel(); // Trang chủ
+        StatisticsMainContentGUI statisticsPanel = new StatisticsMainContentGUI();
         BookMainContentGUI bookPanel = new BookMainContentGUI();
         CustomerMainContentGUI customerPanel = new CustomerMainContentGUI();
         StaffMainContentGUI staffPanel = new StaffMainContentGUI();
@@ -78,7 +80,6 @@ public final class MainLayoutGUI extends JFrame {
         ImportBookMainContentGUI importBookPanel = new ImportBookMainContentGUI();
         ExportBookMainContentGUI exportBookPanel = new ExportBookMainContentGUI();
 
-        // Gán sự kiện cho các button
         for (int i = 0; i < buttonLabels.length; i++) {
             UIButton button = new UIButton("menuButton", buttonLabels[i], 180, 40);
             pnlMenu.add(button);
@@ -86,6 +87,10 @@ public final class MainLayoutGUI extends JFrame {
 
             JPanel targetPanel;
             switch (i) {
+                case 0:
+                    button.setButtonIcon("/Icon/ThongKe_icon.png");
+                    targetPanel = statisticsPanel;
+                    break;
                 case 1:
                     button.setButtonIcon("/Icon/Sach_icon.png");
                     targetPanel = bookPanel;
@@ -115,27 +120,26 @@ public final class MainLayoutGUI extends JFrame {
                     targetPanel = decentralizationPanel;
                     break;
                 case 8:
-                    button.setButtonIcon("/Icon/XuatHang_icon.png");
+                    button.setButtonIcon("/Icon/NhapHang_icon.png");
                     targetPanel = importBookPanel;
                     break;
                 default:
-                    targetPanel = emptyPanel;
+                    targetPanel = new JPanel();
             }
 
             button.addActionListener(e -> switchPanel(targetPanel));
         }
+        //==============================( End Panel Content )===========================//
 
-        // Thêm panel vào JFrame
+        
+        
         this.getContentPane().add(pnlMenu, BorderLayout.WEST);
         this.getContentPane().add(pnlContent, BorderLayout.CENTER);
         this.getContentPane().add(pnlTitle, BorderLayout.NORTH);
-
-        // Hiển thị cửa sổ giữa màn hình
         this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
 
-    // Phương thức thay đổi panel
     private void switchPanel(JPanel newPanel) {
         pnlContent.removeAll();
         pnlContent.add(newPanel, BorderLayout.CENTER);
