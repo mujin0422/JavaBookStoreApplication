@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class TacGiaDAO {
 
     public int add(TacGiaDTO obj) {
-        String sql = "INSERT INTO TacGia (maTG, tenTG) VALUES (?, ?)";
+        String sql = "INSERT INTO tacgia (maTG, tenTG) VALUES (?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, obj.getMaTG());
@@ -20,7 +20,7 @@ public class TacGiaDAO {
     }
 
     public int update(TacGiaDTO obj) {
-        String sql = "UPDATE TG SET tenTG=? WHERE maTG=?";
+        String sql = "UPDATE tacgia SET tenTG=? WHERE maTG=?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, obj.getMaTG());
@@ -80,9 +80,5 @@ public class TacGiaDAO {
             e.printStackTrace();
         }
         return null;
-    }
-
-    public boolean exists(int maTG) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

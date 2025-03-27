@@ -11,23 +11,19 @@ public class NhomTacGiaBUS {
         nhomTacGiaDAO = new NhomTacGiaDAO();
     }
 
-    // Retrieve all author groups
-    public ArrayList<NhomTacGiaDTO> getAllTG() {
+    public ArrayList<NhomTacGiaDTO> getAllNhomTacGia() {
         return nhomTacGiaDAO.getAll();
     }
 
-    // Add a new author group
-    public boolean addTG(NhomTacGiaDTO ntg) {
+    public boolean addNhomTacGia(NhomTacGiaDTO ntg) {
         return nhomTacGiaDAO.add(ntg) > 0;
     }
 
-    // Update an existing author group
-    public boolean updateNTG(NhomTacGiaDTO ntg) {
+    public boolean updateNhomTacGia(NhomTacGiaDTO ntg) {
         return nhomTacGiaDAO.update(ntg) > 0;
     }
 
-    // Delete an author group
-    public boolean deleteNTG(int maTG) {
-        return nhomTacGiaDAO.deleteTG(maTG) > 0;
+    public boolean deleteNhomTacGia(int maTG) {
+        return nhomTacGiaDAO.delete(maTG) > 0;
     }
 }

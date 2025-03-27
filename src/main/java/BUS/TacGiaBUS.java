@@ -11,46 +11,22 @@ public class TacGiaBUS {
         TacGiaDAO = new TacGiaDAO();
     }
 
-    public ArrayList<TacGiaDTO> getAllTG() {
+    public ArrayList<TacGiaDTO> getAllTacGia() {
         return TacGiaDAO.getAll();
     }
 
-    public boolean addTG(TacGiaDTO TG) {       
-        if (TacGiaDAO.exists(TG.getMaTG())) {
-            return false;
-        }
-        if (TG == null || TG.getTenTG().isEmpty() ) {
-            return false;
-        }
+    public boolean addTacGia(TacGiaDTO TG) {       
+        
         return TacGiaDAO.add(TG) > 0;
     }
 
-    public boolean updateTG(TacGiaDTO TG) {
-        if (TG == null || TG.getMaTG() <= 0 || TG.getTenTG().isEmpty() ) {
-            return false;
-        }
+    public boolean updateTacGia(TacGiaDTO TG) {
         return TacGiaDAO.update(TG) > 0; 
     }
 
-    public boolean deleteTG(int maTG) {
+    public boolean deleteTacGia(int maTG) {
         return TacGiaDAO.delete(maTG) > 0;  
     }
     
-    public ArrayList<TacGiaDTO> searchSach(String keyword) {
-        if (keyword == null || keyword.trim().isEmpty()) {
-            return TacGiaDAO.getAll();
-        }
-        ArrayList<TacGiaDTO> ketQua = new ArrayList<>();
-        keyword = keyword.toLowerCase(); 
-        ArrayList<TacGiaDTO> danhSach = TacGiaDAO.getAll();
-        if (danhSach != null) {
-            for (TacGiaDTO TG : danhSach) {
-                if (TG.getTenTG().toLowerCase().contains(keyword)) {
-                    ketQua.add(TG);
-                }
-            }
-        }
-        return ketQua;
-    }
-
+    
 }
