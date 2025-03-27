@@ -1,10 +1,9 @@
 package GUI.MainContent;
 
 import javax.swing.JPanel;
+import GUI.MainContentAboutBook.*;
 import Utils.*;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.*;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -12,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 public class AboutBookMainContentGUI extends JPanel{
     private UIAboutPanel pnlNhaXuatBan, pnlTacGia, pnlTheLoai;
     private JTable tblNhaXuatBan, tblTacGia, tblTheLoai;
+    private AddAndEditAuthorGUI pnlForTG;
     
     public AboutBookMainContentGUI(){
         this.setBackground(UIConstants.MAIN_BACKGROUND);
@@ -29,6 +29,8 @@ public class AboutBookMainContentGUI extends JPanel{
         pnlNhaXuatBan.addButton(addNXB);
         pnlNhaXuatBan.addButton(deleteNXB);
         pnlNhaXuatBan.addButton(editNXB);
+        
+       
         
         String[] columnNXBNames = {"MÃ NHÀ XUẤT BẢN", "TÊN NHÀ XUẤT BẢN"};
         Object[][] dataNXB = {};

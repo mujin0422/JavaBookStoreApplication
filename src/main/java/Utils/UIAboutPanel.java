@@ -9,7 +9,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 public final class UIAboutPanel extends JPanel {
-    private JPanel pnlIcon_Text, pnlButton ,pnlContent;
+    private JPanel pnlIcon_Text, pnlButton ,pnlInput_Button ,pnlContent;
     
     public UIAboutPanel(String iconUrl, String text, int width, int height) {
         initComponent(iconUrl, text, width, height);
@@ -50,16 +50,28 @@ public final class UIAboutPanel extends JPanel {
         
         
         
+        //=========================( PANEL INPUT AND BUTTON )===========================//
+        pnlInput_Button = new JPanel();
+        pnlInput_Button.setPreferredSize(new Dimension(width *30/100, height));
+        
+        //=======================( End Panel Input And Button )=========================//
+        
+        
         //==============================( PANEL CONTENT )===============================//
         pnlContent = new JPanel();
-        pnlContent.setPreferredSize(new Dimension(width *75/100, height));
+        pnlContent.setPreferredSize(new Dimension(width *45/100, height));
         pnlContent.setLayout(new BorderLayout());
         //============================( End Panel Content )=============================//
         
         
         this.add(pnlIcon_Text);
         this.add(pnlButton);
+        this.add(pnlInput_Button);
         this.add(pnlContent);
+    }
+    
+    public JPanel getPnlInutAndButton(){
+        return pnlInput_Button;
     }
     
     public void addButton(UIButton button) {

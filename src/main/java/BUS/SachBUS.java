@@ -12,30 +12,45 @@ public class SachBUS {
     }
 
     public ArrayList<SachDTO> getAllSach() {
-        return sachDAO.getALL();
+        return sachDAO.getAll();
     }
 
-    public boolean addSach(SachDTO sach) {
-        if (sach == null || sach.getTenSach().isEmpty() || sach.getGiaSach() <= 0 || sach.getSoLuongTon() < 0) {
-            System.err.println("Dữ liệu sách không hợp lệ!");
+    public boolean addSach(SachDTO sach) {       
+        if (sachDAO.exists(sach.getMaSach())) {
             return false;
         }
-        return sachDAO.add(sach) > 0; 
+        if (sach == null || sach.getTenSach().isEmpty() || sach.getGiaSach() <= 10000 || sach.getSoLuongTon() < 0) {
+            return false;
+        }
+        return sachDAO.add(sach) > 0;
     }
 
     public boolean updateSach(SachDTO sach) {
         if (sach == null || sach.getMaSach() <= 0 || sach.getTenSach().isEmpty() || sach.getGiaSach() <= 0 || sach.getSoLuongTon() < 0) {
-            System.err.println("Dữ liệu sách không hợp lệ!");
             return false;
         }
         return sachDAO.update(sach) > 0; 
     }
 
     public boolean deleteSach(int maSach) {
-        if (maSach <= 0) {
-            System.err.println("Mã sách không hợp lệ!");
-            return false;
-        }
         return sachDAO.delete(maSach) > 0;  
     }
+    
+    public ArrayList<SachDTO> searchSach(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return sachDAO.getAll();
+        }
+        ArrayList<SachDTO> ketQua = new ArrayList<>();
+        keyword = keyword.toLowerCase(); 
+        ArrayList<SachDTO> danhSach = sachDAO.getAll();
+        if (danhSach != null) {
+            for (SachDTO sach : danhSach) {
+                if (sach.getTenSach().toLowerCase().contains(keyword)) {
+                    ketQua.add(sach);
+                }
+            }
+        }
+        return ketQua;
+    }
+
 }
