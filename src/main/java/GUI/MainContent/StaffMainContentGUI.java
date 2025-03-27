@@ -23,6 +23,7 @@ public class StaffMainContentGUI extends JPanel{
     private NhanVienBUS nhanVienBUS;
 
     public StaffMainContentGUI() {
+        this.nhanVienBUS= new NhanVienBUS();
         this.setBackground(UIConstants.SUB_BACKGROUND);
         this.setPreferredSize(new Dimension(UIConstants.WIDTH_CONTENT, UIConstants.HEIGHT_CONTENT));
         this.setLayout(new BorderLayout(5, 5));
@@ -66,8 +67,10 @@ public class StaffMainContentGUI extends JPanel{
 
         // Tạo bảng dữ liệu
         String[] columnNames = {"MÃ NHÂN VIÊN", "TÊN NHÂN VIÊN", "EMAIL", "SỐ ĐIỆN THOẠI"};
-        Object[][] data = {}; // Chưa có dữ liệu
-        tblContent = new JTable(new DefaultTableModel(data, columnNames));
+        tableModel = new DefaultTableModel(columnNames, 0); // ####
+        tblContent = new JTable(tableModel);
+        tblContent.setDefaultEditor(Object.class, null);
+        
 
         // Thiết lập header của bảng
         tblContent.getTableHeader().setFont(UIConstants.SUBTITLE_FONT);
@@ -88,4 +91,20 @@ public class StaffMainContentGUI extends JPanel{
         this.add(pnlHeader, BorderLayout.NORTH);
         this.add(pnlContent, BorderLayout.CENTER);
     }
+    
+    private void loadTableData(){
+        // STEP 1: xóa dữ liệu cũ
+        tableModel.setRowCount(0); 
+        // STEP 2: tải từng dòng lên bảng  
+        ArrayList<NhanVienDTO> listNhanVien = NhanVienBUS.getAllNhanVien();
+        for (NhanVienDTO nhanvien : listNhanVien) {
+            tableModel.addRow(new Object[]{
+                nhanvien.getMaNV(),
+                nhanvien.getTenNV(),
+                nhanvien.getEmail(),
+                nhanvien.getSdt(),               
+            });
+        }
+    }
+
 }
