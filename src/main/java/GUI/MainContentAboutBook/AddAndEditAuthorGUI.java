@@ -36,11 +36,13 @@ public class AddAndEditAuthorGUI extends JPanel {
             txtTenTG.setText(tg.getTenTG());
             txtMaTG.setEnabled(false);
         }
+        this.setVisible(true);
     }
 
     public AddAndEditAuthorGUI(TacGiaBUS tgBus, String type) {
         this.tgBus = tgBus;
         initComponent(type);
+        this.setVisible(true);
     }
 
     public void initComponent(String type) {
@@ -63,11 +65,9 @@ public class AddAndEditAuthorGUI extends JPanel {
         //==============================( PANEL BUTTON )================================//
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         btnPanel.setBackground(UIConstants.MAIN_BACKGROUND);
-
         btnAdd = new UIButton("add", "THÊM", 90, 35);
         btnSave = new UIButton("confirm", "LƯU", 90, 35);
         btnCancel = new UIButton("cancel", "HỦY", 90, 35);
-
         switch (type) {
             case "add" -> btnPanel.add(btnAdd);
             case "save" -> btnPanel.add(btnSave);
@@ -78,7 +78,7 @@ public class AddAndEditAuthorGUI extends JPanel {
         this.add(inputPanel, BorderLayout.CENTER);
         this.add(btnPanel, BorderLayout.SOUTH);
         
-        this.setVisible(true);
+        
 
 //        btnCancel.addActionListener(e -> closePanel());
 //        btnAdd.addActionListener(e -> addAuthor());

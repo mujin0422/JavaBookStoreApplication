@@ -1,10 +1,12 @@
 package GUI.MainContent;
 
 import BUS.NhanVienBUS;
+import DTO.NhanVienDTO;
 import Utils.UIButton;
 import Utils.UIConstants;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.util.ArrayList;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -90,19 +92,20 @@ public class StaffMainContentGUI extends JPanel{
         
         this.add(pnlHeader, BorderLayout.NORTH);
         this.add(pnlContent, BorderLayout.CENTER);
+        loadTableData();
     }
     
     private void loadTableData(){
         // STEP 1: xóa dữ liệu cũ
         tableModel.setRowCount(0); 
         // STEP 2: tải từng dòng lên bảng  
-        ArrayList<NhanVienDTO> listNhanVien = NhanVienBUS.getAllNhanVien();
+        ArrayList<NhanVienDTO> listNhanVien = nhanVienBUS.getAllNhanVien();
         for (NhanVienDTO nhanvien : listNhanVien) {
             tableModel.addRow(new Object[]{
                 nhanvien.getMaNV(),
                 nhanvien.getTenNV(),
                 nhanvien.getEmail(),
-                nhanvien.getSdt(),               
+                nhanvien.getSdt()             
             });
         }
     }

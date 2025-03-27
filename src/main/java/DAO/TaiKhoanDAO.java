@@ -77,11 +77,11 @@ public class TaiKhoanDAO {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return new SachDTO(
+                    return new TaiKhoanDTO(
                         rs.getString("tenDangNhap"),
-                    rs.getString("matkhau"),
-                    rs.getInt("maNV"),
-                    rs.getInt("maQuyen")
+                        rs.getString("matkhau"),
+                        rs.getInt("maNV"),
+                        rs.getInt("maQuyen")
                     );
                 }
             }
@@ -90,5 +90,6 @@ public class TaiKhoanDAO {
         }
         return null;
     }
+}
 
    

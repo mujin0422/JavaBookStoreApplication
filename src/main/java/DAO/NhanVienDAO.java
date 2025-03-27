@@ -61,7 +61,7 @@ public class NhanVienDAO {
                     rs.getInt("maNV"),
                     rs.getString("tenNV"),
                     rs.getString("email"),
-                    rs.getString("sdt"),
+                    rs.getString("sdt")
                 ));
             }
         } catch (SQLException e) {
@@ -77,11 +77,11 @@ public class NhanVienDAO {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    return new SachDTO(
+                    return new NhanVienDTO(
                         rs.getInt("maNV"),
-                    rs.getString("tenNV"),
-                    rs.getString("email"),
-                    rs.getString("sdt"),
+                        rs.getString("tenNV"),
+                        rs.getString("email"),
+                        rs.getString("sdt")
                     );
                 }
             }
@@ -90,5 +90,6 @@ public class NhanVienDAO {
         }
         return null;
     }
+}
 
     

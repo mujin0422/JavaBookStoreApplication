@@ -50,7 +50,6 @@ public class AddAndEditBookGUI extends JDialog {
         JPanel inputPanel = new JPanel(new GridLayout(5, 2, 10, 10));
         inputPanel.setBackground(UIConstants.MAIN_BACKGROUND);
         inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
         inputPanel.add(new UILabel("Mã sách:"));
         inputPanel.add(txtMaSach = new JTextField());
         inputPanel.add(new UILabel("Tên sách:"));
@@ -68,11 +67,9 @@ public class AddAndEditBookGUI extends JDialog {
         //==============================( PANEL BUTTON )================================//
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 10));
         btnPanel.setBackground(UIConstants.MAIN_BACKGROUND);
-
         btnAdd = new UIButton("add", "THÊM", 90, 35);
         btnSave = new UIButton("confirm", "LƯU", 90, 35);
         btnCancel = new UIButton("cancel", "HỦY", 90, 35);
-        
         switch(type) {
             case("add") -> btnPanel.add(btnAdd);
             case("save") -> btnPanel.add(btnSave);          
