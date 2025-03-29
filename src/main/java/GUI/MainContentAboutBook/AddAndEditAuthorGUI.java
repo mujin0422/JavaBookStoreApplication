@@ -47,7 +47,7 @@ public class AddAndEditAuthorGUI extends JPanel {
 
     public void initComponent(String type) {
         this.setLayout(new BorderLayout());
-        this.setPreferredSize(new Dimension(400, 200));
+        this.setPreferredSize(new Dimension(300, 150));
 
         //===============================( PANEL INPUT )================================//
         JPanel inputPanel = new JPanel(new GridLayout(2, 2, 10, 10));
@@ -77,71 +77,69 @@ public class AddAndEditAuthorGUI extends JPanel {
 
         this.add(inputPanel, BorderLayout.CENTER);
         this.add(btnPanel, BorderLayout.SOUTH);
-        
-        
 
-//        btnCancel.addActionListener(e -> closePanel());
-//        btnAdd.addActionListener(e -> addAuthor());
-//        btnSave.addActionListener(e -> saveAuthor());
+        btnCancel.addActionListener(e -> closePanel());
+        btnAdd.addActionListener(e -> addAuthor());
+        btnSave.addActionListener(e -> saveAuthor());
         
     }
 
-//    private void saveAuthor() {
-//        if (!CheckFormInput()) return;
-//        try {
-//            int maTG = Integer.parseInt(txtMaTG.getText().trim());
-//            String tenTG = txtTenTG.getText().trim();
-//            TacGiaDTO tg = new TacGiaDTO(maTG, tenTG);
-//            if (tgBus.updateTacGia(tg)) {
-//                JOptionPane.showMessageDialog(this, "Cập nhật tác giả thành công!");
-//            } else {
-//                JOptionPane.showMessageDialog(this, "Cập nhật thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-//            }
-//        } catch (NumberFormatException ex) {
-//            JOptionPane.showMessageDialog(this, "Lỗi nhập dữ liệu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-//        }
-//    }
-//
-//    private void addAuthor() {
-//        if (!CheckFormInput()) return;
-//        try {
-//            int maTG = Integer.parseInt(txtMaTG.getText().trim());
-//            String tenTG = txtTenTG.getText().trim();
-//            TacGiaDTO tg = new TacGiaDTO(maTG, tenTG);
-//            if (tgBus.addTacGia(tg)) {
-//                JOptionPane.showMessageDialog(this, "Thêm tác giả thành công!");
-//            } else {
-//                JOptionPane.showMessageDialog(this, "Mã tác giả đã tồn tại hoặc dữ liệu không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-//            }
-//        } catch (NumberFormatException ex) {
-//            JOptionPane.showMessageDialog(this, "Lỗi nhập dữ liệu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-//        }
-//    }
-//
-//    private boolean CheckFormInput() {
-//        try {
-//            if (txtMaTG.getText().trim().isEmpty()) {
-//                JOptionPane.showMessageDialog(this, "Mã tác giả không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-//                return false;
-//            }
-//            int maTG = Integer.parseInt(txtMaTG.getText().trim());
-//            if (maTG < 0) {
-//                JOptionPane.showMessageDialog(this, "Mã tác giả phải là số nguyên dương!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-//                return false;
-//            }
-//            if (txtTenTG.getText().trim().isEmpty()) {
-//                JOptionPane.showMessageDialog(this, "Tên tác giả không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-//                return false;
-//            }
-//        } catch (NumberFormatException e) {
-//            JOptionPane.showMessageDialog(this, "Dữ liệu nhập vào không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-//            return false;
-//        }
-//        return true;
-//    }
-//
-//    private void closePanel() {
-//        SwingUtilities.getWindowAncestor(this).dispose();
-//    }
-//}
+    private void saveAuthor() {
+        if (!CheckFormInput()) return;
+        try {
+            int maTG = Integer.parseInt(txtMaTG.getText().trim());
+            String tenTG = txtTenTG.getText().trim();
+            TacGiaDTO tg = new TacGiaDTO(maTG, tenTG);
+            if (tgBus.updateTacGia(tg)) {
+                JOptionPane.showMessageDialog(this, "Cập nhật tác giả thành công!");
+            } else {
+                JOptionPane.showMessageDialog(this, "Cập nhật thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Lỗi nhập dữ liệu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void addAuthor() {
+        if (!CheckFormInput()) return;
+        try {
+            int maTG = Integer.parseInt(txtMaTG.getText().trim());
+            String tenTG = txtTenTG.getText().trim();
+            TacGiaDTO tg = new TacGiaDTO(maTG, tenTG);
+            if (tgBus.addTacGia(tg)) {
+                JOptionPane.showMessageDialog(this, "Thêm tác giả thành công!");
+            } else {
+                JOptionPane.showMessageDialog(this, "Mã tác giả đã tồn tại hoặc dữ liệu không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Lỗi nhập dữ liệu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private boolean CheckFormInput() {
+        try {
+            if (txtMaTG.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Mã tác giả không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+            int maTG = Integer.parseInt(txtMaTG.getText().trim());
+            if (maTG < 0) {
+                JOptionPane.showMessageDialog(this, "Mã tác giả phải là số nguyên dương!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+            if (txtTenTG.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Tên tác giả không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Dữ liệu nhập vào không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        return true;
+    }
+
+    private void closePanel() {
+        SwingUtilities.getWindowAncestor(this).dispose();
+    }
+
 }

@@ -14,23 +14,19 @@ public class NhomTheLoaiBUS {
         NhomTheLoaiDAO = new NhomTheLoaiDAO();
     }
 
-    // Retrieve all author groups
-    public ArrayList<NhomTheLoaiDTO> getAllTL() {
+    public ArrayList<NhomTheLoaiDTO> getAllNhomTheLoai() {
         return NhomTheLoaiDAO.getAll();
     }
 
-    // Add a new author group
-    public boolean addNTL(NhomTheLoaiDTO ntl) {
+    public boolean addNhomTheLoai(NhomTheLoaiDTO ntl) {
         return NhomTheLoaiDAO.add(ntl) > 0;
     }
 
-    // Update an existing author group
-    public boolean updateNTL(NhomTheLoaiDTO ntl) {
+    public boolean updateNhomTheLoai(NhomTheLoaiDTO ntl) {
         return NhomTheLoaiDAO.update(ntl) > 0;
     }
 
-    // Delete an author group
-    public boolean deleteNTL(int MaTL) {
+    public boolean deleteNhomTheLoai(int MaTL) {
         return NhomTheLoaiDAO.delete(MaTL) > 0;
     }
 }

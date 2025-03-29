@@ -1,25 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package DAO;
 
 import DTO.TheLoaiDTO;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import DAO.DatabaseConnection;
+import java.sql.*;
 import java.util.ArrayList;
 
-/**
- *
- * @author Thanh tam
- */
 public class TheLoaiDAO {
 
     public int add(TheLoaiDTO obj) {
-        String sql = "INSERT INTO TheLoai (maTL, tenTL) VALUES (?, ?)";
+        String sql = "INSERT INTO theloai (maTL, tenTL) VALUES (?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, obj.getMaTL());
@@ -32,11 +21,11 @@ public class TheLoaiDAO {
     }
 
     public int update(TheLoaiDTO obj) {
-        String sql = "UPDATE TG SET tenTL=? WHERE maTL=?";
+        String sql = "UPDATE theloai SET tenTL=? WHERE maTL=?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, obj.getMaTL());
-            ps.setString(2, obj.getTenTL());
+            ps.setString(1, obj.getTenTL());
+            ps.setInt(2, obj.getMaTL());
             return ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -44,11 +33,11 @@ public class TheLoaiDAO {
         return 0;
     }
 
-    public int delete(int MaTL) {
+    public int delete(int maTL) {
         String sql = "DELETE FROM theloai WHERE maTL=?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, MaTL);
+            ps.setInt(1, maTL);
             return ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -57,13 +46,13 @@ public class TheLoaiDAO {
     }
 
     public ArrayList<TheLoaiDTO> getAll() {
-        ArrayList<TheLoaiDTO> dsSach = new ArrayList<>();
+        ArrayList<TheLoaiDTO> dsTheLoai = new ArrayList<>();
         String sql = "SELECT * FROM theloai";
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stm = conn.createStatement();
              ResultSet rs = stm.executeQuery(sql)) {
             while (rs.next()) {
-                dsSach.add(new TheLoaiDTO(
+                dsTheLoai.add(new TheLoaiDTO(
                     rs.getInt("maTL"),
                     rs.getString("tenTL")
                 ));
@@ -71,11 +60,11 @@ public class TheLoaiDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return dsSach;
+        return dsTheLoai;
     }
 
     public TheLoaiDTO getById(int id) {
-        String sql = "SELECT * FROM tacgia WHERE maTG=?";
+        String sql = "SELECT * FROM theloai WHERE maTL=?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
@@ -84,7 +73,6 @@ public class TheLoaiDAO {
                     return new TheLoaiDTO(
                         rs.getInt("maTL"),
                         rs.getString("tenTL")
-
                     );
                 }
             }
@@ -94,7 +82,4 @@ public class TheLoaiDAO {
         return null;
     }
 
-    public boolean exists(int MaTL) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 }

@@ -14,47 +14,20 @@ public class TheLoaiBUS {
         TheLoaiDAO = new TheLoaiDAO();
     }
 
-    public ArrayList<TheLoaiDTO> getAllTG() {
+    public ArrayList<TheLoaiDTO> getAllTheLoai() {
         return TheLoaiDAO.getAll();
     }
 
-    public boolean addTL(TheLoaiDTO TL) {       
-        if (TheLoaiDAO.exists(TL.getMaTL())) {
-            return false;
-        }
-        if (TL == null || TL.getTenTL().isEmpty() ) {
-            return false;
-        }
+    public boolean addTheLoai(TheLoaiDTO TL) {      
         return TheLoaiDAO.add(TL) > 0;
     }
 
-    public boolean updateTL(TheLoaiDTO TL) {
-        if (TL == null || TL.getMaTL() <= 0 || TL.getTenTL().isEmpty() ) {
-            return false;
-        }
+    public boolean updateTheLoai(TheLoaiDTO TL) {
         return TheLoaiDAO.update(TL) > 0; 
     }
 
-    public boolean deleteTL(int MaTL) {
+    public boolean deleteTheLoai(int MaTL) {
         return TheLoaiDAO.delete(MaTL) > 0;  
     }
-    
-    public ArrayList<TheLoaiDTO> searchSach(String keyword) {
-        if (keyword == null || keyword.trim().isEmpty()) {
-            return TheLoaiDAO.getAll();
-        }
-        ArrayList<TheLoaiDTO> ketQua = new ArrayList<>();
-        keyword = keyword.toLowerCase(); 
-        ArrayList<TheLoaiDTO> danhSach = TheLoaiDAO.getAll();
-        if (danhSach != null) {
-            for (TheLoaiDTO TL : danhSach) {
-                if (TL.getTenTL().toLowerCase().contains(keyword)) {
-                    ketQua.add(TL);
-                }
-            }
-        }
-        return ketQua;
-    }
-
 }
 
