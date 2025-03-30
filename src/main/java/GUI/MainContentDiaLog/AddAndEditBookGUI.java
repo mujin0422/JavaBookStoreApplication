@@ -1,6 +1,8 @@
 package GUI.MainContentDiaLog;
 
+import BUS.NhaXuatBanBUS;
 import BUS.SachBUS;
+import DTO.NhaXuatBanDTO;
 import DTO.SachDTO;
 import Utils.UIButton;
 import Utils.UIConstants;
@@ -8,13 +10,16 @@ import Utils.UILabel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
 
 public class AddAndEditBookGUI extends JDialog {
     private JTextField txtMaSach, txtTenSach, txtGia, txtSoLuongTon;
     private JComboBox<String> cbMaNXB; 
     private UIButton btnAdd, btnSave, btnCancel;
-    private SachBUS sachBus;
+    private SachBUS sachBus;;
+
     private SachDTO sach;
+    private HashMap<String, Integer> nxbMap;
 
     public AddAndEditBookGUI(JFrame parent, SachBUS sachBus, String title, String type, SachDTO sach){
         super(parent, title, true);
@@ -52,12 +57,23 @@ public class AddAndEditBookGUI extends JDialog {
         inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         inputPanel.add(new UILabel("Mã sách:"));
         inputPanel.add(txtMaSach = new JTextField());
+        
         inputPanel.add(new UILabel("Tên sách:"));
         inputPanel.add(txtTenSach = new JTextField());
+        
         inputPanel.add(new UILabel("Giá sách:"));
         inputPanel.add(txtGia = new JTextField());
+        
         inputPanel.add(new UILabel("Nhà xuất bản:"));
-        inputPanel.add(cbMaNXB = new JComboBox<>(new String[]{"1", "2", "3"}));
+        cbMaNXB = new JComboBox<>();
+        nxbMap = new HashMap<>();  
+        NhaXuatBanBUS nhaXuatBanBus = new NhaXuatBanBUS();
+        for (NhaXuatBanDTO nxb : nhaXuatBanBus.getAllNhaXuatBan()) {
+            cbMaNXB.addItem(nxb.getTenNXB());  
+            nxbMap.put(nxb.getTenNXB(), nxb.getMaNXB());  
+        }
+        inputPanel.add(cbMaNXB);
+
         inputPanel.add(new UILabel("Số lượng:"));
         inputPanel.add(txtSoLuongTon = new JTextField());
         //=============================( End Panel Input )==============================//
@@ -92,7 +108,7 @@ public class AddAndEditBookGUI extends JDialog {
             int maSach = Integer.parseInt(txtMaSach.getText().trim());
             String tenSach = txtTenSach.getText().trim();
             int giaSach = Integer.parseInt(txtGia.getText().trim());
-            int maNXB = Integer.parseInt(cbMaNXB.getSelectedItem().toString().trim()); 
+            int maNXB = nxbMap.get(cbMaNXB.getSelectedItem().toString());
             int soLuongTon = Integer.parseInt(txtSoLuongTon.getText().trim());
             SachDTO sach = new SachDTO(maSach, tenSach, giaSach, soLuongTon, maNXB);
             if (sachBus.updateSach(sach)) {
@@ -112,7 +128,7 @@ public class AddAndEditBookGUI extends JDialog {
             int maSach = Integer.parseInt(txtMaSach.getText().trim());
             String tenSach = txtTenSach.getText().trim();
             int giaSach = Integer.parseInt(txtGia.getText().trim());
-            int maNXB = Integer.parseInt(cbMaNXB.getSelectedItem().toString().trim()); 
+            int maNXB = nxbMap.get(cbMaNXB.getSelectedItem().toString());
             int soLuongTon = Integer.parseInt(txtSoLuongTon.getText().trim());
             SachDTO sach = new SachDTO(maSach, tenSach, giaSach, soLuongTon, maNXB);
             if (sachBus.addSach(sach)) {
@@ -173,4 +189,5 @@ public class AddAndEditBookGUI extends JDialog {
         }
         return true;
     }
+    
 }

@@ -28,10 +28,10 @@ public class UIConstants {
     public static final Color BORDER = new Color(203, 45, 111);//lục sáng
 
     // Font chữ
-    public static final Font TITLE_FONT = new Font("Segoe UI", Font.BOLD, 18);
-    public static final Font SUBTITLE_FONT = new Font("Segoe UI", Font.PLAIN, 14);
-    public static final Font BODY_FONT = new Font("Segoe UI", Font.PLAIN, 12);
-    public static final Font FONT_BUTTON = new Font("Segoe UI", Font.BOLD, 14);
+    public static final Font TITLE_FONT = new Font("Roboto", Font.BOLD, 18);
+    public static final Font SUBTITLE_FONT = new Font("Roboto", Font.PLAIN, 14);
+    public static final Font BODY_FONT = new Font("Roboto", Font.PLAIN, 12);
+    public static final Font FONT_BUTTON = new Font("Roboto", Font.BOLD, 14);
     
     // Màu button
     public static final Color BUTTON_BLUE = new Color(0, 122, 255); 

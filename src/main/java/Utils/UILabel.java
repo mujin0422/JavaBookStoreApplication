@@ -17,7 +17,7 @@ public class UILabel extends JLabel {
     private void initComponent(String text, int width, int height) {
         this.setText(text); 
         this.setPreferredSize(new Dimension(width, height)); 
-        this.setFont(new Font("Arial", Font.BOLD, 14)); 
+        this.setFont(UIConstants.FONT_BUTTON); 
         this.setHorizontalAlignment(JLabel.LEFT); 
     }
 }

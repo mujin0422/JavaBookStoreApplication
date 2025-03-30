@@ -1,20 +1,27 @@
 package BUS;
 
 import DTO.SachDTO;
+import DTO.NhaXuatBanDTO;
 import DAO.SachDAO;
 import java.util.ArrayList;
 
 public class SachBUS {
     private SachDAO sachDAO;
+    private NhaXuatBanBUS nhaXuatBanBus;
 
     public SachBUS() {
         sachDAO = new SachDAO();
+        nhaXuatBanBus = new NhaXuatBanBUS();
     }
 
     public ArrayList<SachDTO> getAllSach() {
         return sachDAO.getAll();
     }
-
+    
+    public ArrayList<NhaXuatBanDTO> getAllNhaXuatBan(){
+        return nhaXuatBanBus.getAllNhaXuatBan();
+    }
+    
     public boolean addSach(SachDTO sach) {       
         if (sachDAO.exists(sach.getMaSach())) {
             return false;

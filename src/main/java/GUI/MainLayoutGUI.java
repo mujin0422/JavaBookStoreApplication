@@ -147,7 +147,4 @@ public final class MainLayoutGUI extends JFrame {
         pnlContent.repaint();
     }
 
-    public static void main(String args[]) {
-        new MainLayoutGUI();
-    }
 }

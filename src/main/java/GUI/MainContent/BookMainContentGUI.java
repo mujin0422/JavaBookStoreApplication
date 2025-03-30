@@ -1,12 +1,15 @@
 package GUI.MainContent;
 
+import BUS.NhaXuatBanBUS;
 import BUS.SachBUS;
+import DTO.NhaXuatBanDTO;
 import DTO.SachDTO;
 import GUI.MainContentDiaLog.*;
 import Utils.UIConstants;
 import Utils.UIButton;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -66,7 +69,7 @@ public class BookMainContentGUI extends JPanel {
         tableModel = new DefaultTableModel(columnNames, 0); // ####
         tblContent = new JTable(tableModel);
         tblContent.setDefaultEditor(Object.class, null);
-            // Chinh sua bangh 
+            // Chinh sua bang 
         tblContent.getTableHeader().setFont(UIConstants.SUBTITLE_FONT);
         tblContent.getTableHeader().setBackground(UIConstants.MAIN_BUTTON);
         tblContent.getTableHeader().setForeground(UIConstants.WHITE_FONT);
@@ -88,13 +91,22 @@ public class BookMainContentGUI extends JPanel {
         // STEP 1: xóa dữ liệu cũ
         tableModel.setRowCount(0); 
         // STEP 2: tải từng dòng lên bảng  
+         // Tạo HashMap để ánh xạ mã NXB -> tên NXB
+        NhaXuatBanBUS nhaXuatBanBUS = new NhaXuatBanBUS();
+        HashMap<Integer, String> nhaXuatBanMap = new HashMap<>();
+        for (NhaXuatBanDTO nxb : nhaXuatBanBUS.getAllNhaXuatBan()) {
+            nhaXuatBanMap.put(nxb.getMaNXB(), nxb.getTenNXB());
+        }
+
+        // Lấy danh sách sách và hiển thị tên NXB thay vì mã
         ArrayList<SachDTO> listSach = sachBUS.getAllSach();
         for (SachDTO sach : listSach) {
+            String tenNXB = nhaXuatBanMap.getOrDefault(sach.getMaNXB(), "Không xác định");
             tableModel.addRow(new Object[]{
                 sach.getMaSach(),
                 sach.getTenSach(),
                 sach.getGiaSach(),
-                sach.getMaNXB(),
+                tenNXB, 
                 sach.getSoLuongTon()
             });
         }
@@ -115,14 +127,25 @@ public class BookMainContentGUI extends JPanel {
         int maSach = Integer.parseInt(tableModel.getValueAt(selectedRow, 0).toString());
         String tenSach = tableModel.getValueAt(selectedRow, 1).toString();
         int giaSach = Integer.parseInt(tableModel.getValueAt(selectedRow, 2).toString());
-        int maNXB = Integer.parseInt(tableModel.getValueAt(selectedRow, 3).toString());
+        String tenNXB = tableModel.getValueAt(selectedRow, 3).toString(); // Tên NXB thay vì mã
         int soLuongTon = Integer.parseInt(tableModel.getValueAt(selectedRow, 4).toString());
-        SachDTO sach = new SachDTO(maSach, tenSach, giaSach, soLuongTon, maNXB);
 
+        // Tìm mã NXB theo tên NXB
+        int maNXB = 0;
+        NhaXuatBanBUS nhaXuatBanBUS = new NhaXuatBanBUS();
+        for (NhaXuatBanDTO nxb : nhaXuatBanBUS.getAllNhaXuatBan()) {
+            if (nxb.getTenNXB().equals(tenNXB)) {
+                maNXB = nxb.getMaNXB();
+                break;
+            }
+        }
+
+        SachDTO sach = new SachDTO(maSach, tenSach, giaSach, soLuongTon, maNXB);
         Window window = SwingUtilities.getWindowAncestor(this);
         new AddAndEditBookGUI((JFrame) window, sachBUS, "Chỉnh sửa sách", "save", sach);
         loadTableData();
     }
+
     
     private void deleteBook() {
         int selectedRow = tblContent.getSelectedRow();

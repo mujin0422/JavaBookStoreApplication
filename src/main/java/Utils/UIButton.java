@@ -36,7 +36,7 @@ public final class UIButton extends JButton implements MouseListener {
             switch (typeBtn) {
                 case "add", "confirm" -> bgColor = UIConstants.BUTTON_GREEN;
                 case "delete", "exit" -> bgColor = UIConstants.BUTTON_RED;
-                case "cancel", "edit", "login" -> bgColor = UIConstants.BUTTON_BLUE;
+                case "cancel", "edit" -> bgColor = UIConstants.BUTTON_BLUE;
                 case "menuButton" -> bgColor = UIConstants.MAIN_BUTTON;
             }
         }

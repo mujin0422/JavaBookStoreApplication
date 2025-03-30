@@ -16,7 +16,6 @@ public class TacGiaBUS {
     }
 
     public boolean addTacGia(TacGiaDTO TG) {       
-        
         return TacGiaDAO.add(TG) > 0;
     }
 

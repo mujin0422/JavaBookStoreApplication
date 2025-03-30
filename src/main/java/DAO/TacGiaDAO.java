@@ -23,8 +23,8 @@ public class TacGiaDAO {
         String sql = "UPDATE tacgia SET tenTG=? WHERE maTG=?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, obj.getMaTG());
-            ps.setString(2, obj.getTenTG());
+            ps.setString(1, obj.getTenTG());
+            ps.setInt(2, obj.getMaTG());
             return ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
