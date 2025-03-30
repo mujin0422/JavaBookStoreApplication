@@ -22,6 +22,10 @@ public class SachBUS {
         return nhaXuatBanBus.getAllNhaXuatBan();
     }
     
+    public SachDTO getSachById(int id){
+        return sachDAO.getById(id);
+    }
+    
     public boolean addSach(SachDTO sach) {       
         if (sachDAO.exists(sach.getMaSach())) {
             return false;
@@ -43,6 +47,15 @@ public class SachBUS {
         return sachDAO.delete(maSach) > 0;  
     }
     
+    public boolean informationSach(int maSach){
+        
+     
+        
+        
+        
+        return true;
+    }
+    
     public ArrayList<SachDTO> searchSach(String keyword) {
         if (keyword == null || keyword.trim().isEmpty()) {
             return sachDAO.getAll();
@@ -59,5 +72,16 @@ public class SachBUS {
         }
         return ketQua;
     }
+    
+    public ArrayList<SachDTO> filterSach(int maNXB) {
+        ArrayList<SachDTO> ketQua = new ArrayList<>();
+        for (SachDTO sach : sachDAO.getAll()) {
+            if (sach.getMaNXB() == maNXB) {
+                ketQua.add(sach);
+            }
+        }
+        return ketQua;
+}
+
 
 }

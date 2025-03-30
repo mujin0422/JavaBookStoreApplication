@@ -5,27 +5,38 @@ import DAO.TacGiaDAO;
 import java.util.ArrayList;
 
 public class TacGiaBUS {
-    private TacGiaDAO TacGiaDAO;
+    private TacGiaDAO tacGiaDAO;
 
     public TacGiaBUS() {
-        TacGiaDAO = new TacGiaDAO();
+        tacGiaDAO = new TacGiaDAO();
     }
 
     public ArrayList<TacGiaDTO> getAllTacGia() {
-        return TacGiaDAO.getAll();
+        return tacGiaDAO.getAll();
     }
 
     public boolean addTacGia(TacGiaDTO TG) {       
-        return TacGiaDAO.add(TG) > 0;
+        return tacGiaDAO.add(TG) > 0;
     }
 
     public boolean updateTacGia(TacGiaDTO TG) {
-        return TacGiaDAO.update(TG) > 0; 
+        return tacGiaDAO.update(TG) > 0; 
     }
 
     public boolean deleteTacGia(int maTG) {
-        return TacGiaDAO.delete(maTG) > 0;  
+        return tacGiaDAO.delete(maTG) > 0;  
     }
     
     
+    public ArrayList<String> getTacGiaByMaSach(int maSach) {
+        ArrayList<String> danhSachTenTG = new ArrayList<>();
+        TacGiaDAO tacGiaDAO = new TacGiaDAO();
+
+        ArrayList<Integer> danhSachMaTG = tacGiaDAO.getMaTacGiaBySach(maSach);
+        for (int maTG : danhSachMaTG) {
+            String tenTG = tacGiaDAO.getTenTacGiaById(maTG);
+            danhSachTenTG.add(tenTG);
+        }
+        return danhSachTenTG;
+    }
 }

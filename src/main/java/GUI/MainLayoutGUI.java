@@ -126,7 +126,6 @@ public final class MainLayoutGUI extends JFrame {
                 default:
                     targetPanel = new JPanel();
             }
-
             button.addActionListener(e -> switchPanel(targetPanel));
         }
         //==============================( End Panel Content )===========================//

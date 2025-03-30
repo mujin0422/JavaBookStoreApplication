@@ -68,12 +68,11 @@ public class StaffMainContentGUI extends JPanel{
         pnlContent.setBackground(UIConstants.MAIN_BACKGROUND);
 
         // Tạo bảng dữ liệu
-        String[] columnNames = {"MÃ NHÂN VIÊN", "TÊN NHÂN VIÊN", "EMAIL", "SỐ ĐIỆN THOẠI"};
+        String[] columnNames = {"MÃ NHÂN VIÊN", "TÊN NHÂN VIÊN", "EMAIL", "SỐ ĐIỆN THOẠI", ""};
         tableModel = new DefaultTableModel(columnNames, 0); // ####
         tblContent = new JTable(tableModel);
         tblContent.setDefaultEditor(Object.class, null);
         
-
         // Thiết lập header của bảng
         tblContent.getTableHeader().setFont(UIConstants.SUBTITLE_FONT);
         tblContent.getTableHeader().setBackground(UIConstants.MAIN_BUTTON);

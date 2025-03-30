@@ -81,4 +81,40 @@ public class TacGiaDAO {
         }
         return null;
     }
+    
+    
+    
+    
+    public ArrayList<Integer> getMaTacGiaBySach(int maSach) {
+        ArrayList<Integer> danhSachMaTG = new ArrayList<>();
+        String sql = "SELECT maTG FROM nhomtacgia WHERE maSach = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setInt(1, maSach);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                danhSachMaTG.add(rs.getInt("maTG"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return danhSachMaTG;
+    }
+    
+    public String getTenTacGiaById(int maTG) {
+        String tenTG = "Không xác định";
+        String sql = "SELECT tenTG FROM tacgia WHERE maTG = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setInt(1, maTG);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                tenTG = rs.getString("tenTG");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tenTG;
+    }
+
 }
