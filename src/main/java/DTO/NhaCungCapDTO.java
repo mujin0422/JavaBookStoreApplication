@@ -8,6 +8,7 @@ public class NhaCungCapDTO {
     private String tenNCC;
     private String diaChi;
     private String sdt;
+    private int trangThaiXoa;
 
     public NhaCungCapDTO() {
     }
@@ -17,6 +18,7 @@ public class NhaCungCapDTO {
         this.tenNCC = tenNCC;
         this.diaChi = diaChi;
         this.sdt = sdt;
+        this.trangThaiXoa = 0;
     }
 
     public int getMaNCC() {
@@ -51,43 +53,12 @@ public class NhaCungCapDTO {
         this.sdt = sdt;
     }
 
-    @Override
-    public String toString() {
-        return "NhaCungCapDTO{" + "maNCC=" + maNCC + ", tenNCC=" + tenNCC + ", diaChi=" + diaChi + ", sdt=" + sdt + '}';
+    public int getTrangThaiXoa() {
+        return trangThaiXoa;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 29 * hash + this.maNCC;
-        hash = 29 * hash + Objects.hashCode(this.tenNCC);
-        hash = 29 * hash + Objects.hashCode(this.diaChi);
-        hash = 29 * hash + Objects.hashCode(this.sdt);
-        return hash;
+    public void setTrangThaiXoa(int trangThaiXoa) {
+        this.trangThaiXoa = trangThaiXoa;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final NhaCungCapDTO other = (NhaCungCapDTO) obj;
-        if (this.maNCC != other.maNCC) {
-            return false;
-        }
-        if (!Objects.equals(this.tenNCC, other.tenNCC)) {
-            return false;
-        }
-        if (!Objects.equals(this.diaChi, other.diaChi)) {
-            return false;
-        }
-        return Objects.equals(this.sdt, other.sdt);
-    }
-    
 }

@@ -5,6 +5,7 @@ import java.util.Objects;
 public class TheLoaiDTO {
     private int maTL;
     private String tenTL;
+    private int trangThaiXoa;
 
     public TheLoaiDTO() {
     }
@@ -12,6 +13,15 @@ public class TheLoaiDTO {
     public TheLoaiDTO(int maTL, String tenTL) {
         this.maTL = maTL;
         this.tenTL = tenTL;
+        this.trangThaiXoa = 0;
+    }
+
+    public int getTrangThaiXoa() {
+        return trangThaiXoa;
+    }
+
+    public void setTrangThaiXoa(int trangThaiXoa) {
+        this.trangThaiXoa = trangThaiXoa;
     }
 
     public int getMaTL() {
@@ -29,36 +39,4 @@ public class TheLoaiDTO {
     public void setTenTL(String tenTL) {
         this.tenTL = tenTL;
     }
-
-    @Override
-    public String toString() {
-        return "TheLoaiDTO{" + "maTL=" + maTL + ", tenTL=" + tenTL + '}';
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 43 * hash + this.maTL;
-        hash = 43 * hash + Objects.hashCode(this.tenTL);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final TheLoaiDTO other = (TheLoaiDTO) obj;
-        if (this.maTL != other.maTL) {
-            return false;
-        }
-        return Objects.equals(this.tenTL, other.tenTL);
-    }
-    
 }

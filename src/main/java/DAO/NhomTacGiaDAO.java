@@ -82,4 +82,37 @@ public class NhomTacGiaDAO {
         }
         return null;
     }
+    
+    public ArrayList<Integer> getMaTacGiaBySach(int maSach) {
+        ArrayList<Integer> list = new ArrayList<>();
+        String sql = "SELECT maTG FROM nhomtacgia WHERE maSach = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, maSach);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                list.add(rs.getInt("maTG"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    public boolean deleteByMaSach(int maSach) {
+        String sql = "DELETE FROM nhomtacgia WHERE maSach = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, maSach);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
 }

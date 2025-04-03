@@ -33,7 +33,7 @@ public class TacGiaDAO {
     }
 
     public int delete(int maTG) {
-        String sql = "DELETE FROM tacgia WHERE maTG=?";
+        String sql = "UPDATE tacgia SET trangThaiXoa=1 WHERE maTG=?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, maTG);
@@ -46,7 +46,7 @@ public class TacGiaDAO {
 
     public ArrayList<TacGiaDTO> getAll() {
         ArrayList<TacGiaDTO> dsSach = new ArrayList<>();
-        String sql = "SELECT * FROM tacgia";
+        String sql = "SELECT * FROM tacgia WHERE trangThaiXoa=0";
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stm = conn.createStatement();
              ResultSet rs = stm.executeQuery(sql)) {

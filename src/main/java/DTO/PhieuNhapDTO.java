@@ -9,6 +9,7 @@ public class PhieuNhapDTO {
     private int maNCC;
     private int tongTien;
     private Date ngayNhap;
+    private int trangThaiXoa;
 
     public PhieuNhapDTO(int maPN, int maNV, int maNCC, int tongTien, Date ngayNhap) {
         this.maPN = maPN;
@@ -16,6 +17,7 @@ public class PhieuNhapDTO {
         this.maNCC = maNCC;
         this.tongTien = tongTien;
         this.ngayNhap = ngayNhap;
+        this.trangThaiXoa = 0;
     }
 
     public PhieuNhapDTO() {
@@ -61,43 +63,12 @@ public class PhieuNhapDTO {
         this.ngayNhap = ngayNhap;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 83 * hash + this.maPN;
-        hash = 83 * hash + this.maNV;
-        hash = 83 * hash + this.maNCC;
-        hash = 83 * hash + this.tongTien;
-        hash = 83 * hash + Objects.hashCode(this.ngayNhap);
-        return hash;
+    public int getTrangThaiXoa() {
+        return trangThaiXoa;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final PhieuNhapDTO other = (PhieuNhapDTO) obj;
-        if (this.maPN != other.maPN) {
-            return false;
-        }
-        if (this.maNV != other.maNV) {
-            return false;
-        }
-        if (this.maNCC != other.maNCC) {
-            return false;
-        }
-        if (this.tongTien != other.tongTien) {
-            return false;
-        }
-        return Objects.equals(this.ngayNhap, other.ngayNhap);
+    public void setTrangThaiXoa(int trangThaiXoa) {
+        this.trangThaiXoa = trangThaiXoa;
     }
-    
     
 }

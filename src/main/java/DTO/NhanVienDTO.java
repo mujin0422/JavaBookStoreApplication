@@ -8,6 +8,7 @@ public class NhanVienDTO {
     private String tenNV;
     private String email;
     private String sdt;
+    private int trangThaiXoa;
 
     public NhanVienDTO() {
     }
@@ -17,6 +18,7 @@ public class NhanVienDTO {
         this.tenNV = tenNV;
         this.email = email;
         this.sdt = sdt;
+        this.trangThaiXoa = 0;
     }
 
     public int getMaNV() {
@@ -49,5 +51,13 @@ public class NhanVienDTO {
 
     public void setSdt(String sdt) {
         this.sdt = sdt;
+    }
+
+    public int getTrangThaiXoa() {
+        return trangThaiXoa;
+    }
+
+    public void setTrangThaiXoa(int trangThaiXoa) {
+        this.trangThaiXoa = trangThaiXoa;
     }
 }

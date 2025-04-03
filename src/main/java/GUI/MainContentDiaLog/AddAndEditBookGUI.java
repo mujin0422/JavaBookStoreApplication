@@ -1,25 +1,38 @@
 package GUI.MainContentDiaLog;
 
 import BUS.NhaXuatBanBUS;
+import BUS.NhomTacGiaBUS;
+import BUS.NhomTheLoaiBUS;
 import BUS.SachBUS;
+import BUS.TacGiaBUS;
+import BUS.TheLoaiBUS;
 import DTO.NhaXuatBanDTO;
+import DTO.NhomTacGiaDTO;
+import DTO.NhomTheLoaiDTO;
 import DTO.SachDTO;
+import DTO.TacGiaDTO;
+import DTO.TheLoaiDTO;
 import Utils.UIButton;
 import Utils.UIConstants;
 import Utils.UILabel;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.util.ArrayList;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.HashMap;
 
 public class AddAndEditBookGUI extends JDialog {
     private JTextField txtMaSach, txtTenSach, txtGia, txtSoLuongTon;
-    private JComboBox<String> cbMaNXB; 
+    private JComboBox<String> cbMaNXB, cbMaTG, cbMaTL; 
+    private JTextArea areaTacGia, areaTheLoai;
     private UIButton btnAdd, btnSave, btnCancel;
     private SachBUS sachBus;;
 
     private SachDTO sach;
-    private HashMap<String, Integer> nxbMap;
+    private HashMap<String, Integer> nxbMap, tgMap, tlMap;
 
     public AddAndEditBookGUI(JFrame parent, SachBUS sachBus, String title, String type, SachDTO sach){
         super(parent, title, true);
@@ -34,6 +47,31 @@ public class AddAndEditBookGUI extends JDialog {
             cbMaNXB.setSelectedItem(String.valueOf(sach.getMaNXB()));
             txtSoLuongTon.setText(String.valueOf(sach.getSoLuongTon()));
             txtMaSach.setEnabled(false);
+            
+            areaTheLoai.setText("");
+            areaTacGia.setText("");
+
+            NhomTheLoaiBUS nhomTheLoaiBUS = new NhomTheLoaiBUS();
+            ArrayList<Integer> dsTheLoai = nhomTheLoaiBUS.getMaTheLoaiBySach(sach.getMaSach());
+            for (Integer maTL : dsTheLoai) {
+                for (String tenTL : tlMap.keySet()) {
+                    if (tlMap.get(tenTL).equals(maTL)) {
+                        areaTheLoai.append(tenTL + "\n");
+                        break;
+                    }
+                }
+            }
+
+            NhomTacGiaBUS nhomTacGiaBUS = new NhomTacGiaBUS();
+            ArrayList<Integer> dsTacGia = nhomTacGiaBUS.getMaTacGiaBySach(sach.getMaSach());
+            for (Integer maTG : dsTacGia) {
+                for (String tenTG : tgMap.keySet()) {
+                    if (tgMap.get(tenTG).equals(maTG)) {
+                        areaTacGia.append(tenTG + "\n");
+                        break;
+                    }
+                }
+            }
         }
 
         this.setLocationRelativeTo(parent);
@@ -49,12 +87,13 @@ public class AddAndEditBookGUI extends JDialog {
     }
     
     public void initComponent(String type) {
-        this.setSize(550, 300);
+        this.setSize(550, 400);
         this.setLayout(new BorderLayout());
         //===============================( PANEL INPUT )================================//
-        JPanel inputPanel = new JPanel(new GridLayout(5, 2, 10, 10));
+        JPanel inputPanel = new JPanel(new GridLayout(9, 2, 2, 4));
         inputPanel.setBackground(UIConstants.MAIN_BACKGROUND);
         inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        
         inputPanel.add(new UILabel("Mã sách:"));
         inputPanel.add(txtMaSach = new JTextField());
         
@@ -66,6 +105,7 @@ public class AddAndEditBookGUI extends JDialog {
         
         inputPanel.add(new UILabel("Nhà xuất bản:"));
         cbMaNXB = new JComboBox<>();
+        cbMaNXB.setBackground(UIConstants.WHITE_FONT);
         nxbMap = new HashMap<>();  
         NhaXuatBanBUS nhaXuatBanBus = new NhaXuatBanBUS();
         for (NhaXuatBanDTO nxb : nhaXuatBanBus.getAllNhaXuatBan()) {
@@ -73,9 +113,57 @@ public class AddAndEditBookGUI extends JDialog {
             nxbMap.put(nxb.getTenNXB(), nxb.getMaNXB());  
         }
         inputPanel.add(cbMaNXB);
+        
+        
+        inputPanel.add(new UILabel("Tác giả:"));
+        JPanel inputPanelTG = new JPanel(new BorderLayout());
+        cbMaTG = new JComboBox<>();
+        cbMaTG.setBackground(UIConstants.WHITE_FONT);
+        tgMap = new HashMap<>();
+        TacGiaBUS tacGiaBus = new TacGiaBUS();
+        for(TacGiaDTO tg : tacGiaBus.getAllTacGia()){
+            cbMaTG.addItem(tg.getTenTG());
+            tgMap.put(tg.getTenTG(), tg.getMaTG());
+        }
+        UIButton addToAreaTG = new UIButton("menuButton", "ADD ", 50, 25);
+        addToAreaTG.addActionListener(e -> addToAreaTG());
+        inputPanelTG.add(cbMaTG, BorderLayout.CENTER);
+        inputPanelTG.add(addToAreaTG, BorderLayout.EAST);
+        inputPanel.add(inputPanelTG);
+        
+        inputPanel.add(new UILabel("Các tác giả:"));
+        areaTacGia = new JTextArea(2, 2);
+        JScrollPane scrollTG = new JScrollPane(areaTacGia);
+        scrollTG.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        scrollTG.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        inputPanel.add(scrollTG);
+        
+        inputPanel.add(new UILabel("Thể loại"));
+        JPanel inputPanelTL = new JPanel(new BorderLayout());
+        cbMaTL = new JComboBox<>();
+        cbMaTL.setBackground(UIConstants.WHITE_FONT);
+        tlMap = new HashMap<>();
+        TheLoaiBUS theLoaiBus = new TheLoaiBUS();
+        for(TheLoaiDTO tl : theLoaiBus.getAllTheLoai()){
+            cbMaTL.addItem(tl.getTenTL());
+            tlMap.put(tl.getTenTL(), tl.getMaTL());
+        }
+        UIButton addToAreaTL = new UIButton("menuButton", "ADD ", 50, 25);
+        addToAreaTL.addActionListener(e -> addToAreaTL());
+        inputPanelTL.add(cbMaTL, BorderLayout.CENTER);
+        inputPanelTL.add(addToAreaTL, BorderLayout.EAST);
+        inputPanel.add(inputPanelTL);
 
+        inputPanel.add(new UILabel("Các thể loại:"));
+        areaTheLoai = new JTextArea(2, 2);
+        JScrollPane scrollTL = new JScrollPane(areaTheLoai);
+        scrollTL.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        scrollTL.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        inputPanel.add(scrollTL);
+        
         inputPanel.add(new UILabel("Số lượng:"));
-        inputPanel.add(txtSoLuongTon = new JTextField());
+        inputPanel.add(txtSoLuongTon = new JTextField("0"));
+        txtSoLuongTon.setEnabled(false);
         //=============================( End Panel Input )==============================//
         
         
@@ -112,15 +200,26 @@ public class AddAndEditBookGUI extends JDialog {
             int soLuongTon = Integer.parseInt(txtSoLuongTon.getText().trim());
             SachDTO sach = new SachDTO(maSach, tenSach, giaSach, soLuongTon, maNXB);
             if (sachBus.updateSach(sach)) {
-                JOptionPane.showMessageDialog(this, "Cập nhật sách thành công!");
-                dispose();
+                ArrayList<Integer> dsMaTL = getMaTLFromArea();
+                ArrayList<Integer> dsMaTG = getMaTGFromArea();
+
+                NhomTheLoaiBUS nhomTheLoaiBUS = new NhomTheLoaiBUS();
+                NhomTacGiaBUS nhomTacGiaBUS = new NhomTacGiaBUS();
+
+                if (nhomTheLoaiBUS.addNhomTheLoai(maSach, dsMaTL) && nhomTacGiaBUS.addNhomTacGia(maSach, dsMaTG)) {
+                    JOptionPane.showMessageDialog(this, "Cập nhật sách và thông tin thành công!");
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Lỗi khi cập nhật thể loại hoặc tác giả!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                }
             } else {
                 JOptionPane.showMessageDialog(this, "Cập nhật sách thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
-        } catch (HeadlessException | NumberFormatException ex) {
+        } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Lỗi nhập dữ liệu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
+
 
     private void addBook() {
         if (!CheckFormInput()) return; 
@@ -132,12 +231,22 @@ public class AddAndEditBookGUI extends JDialog {
             int soLuongTon = Integer.parseInt(txtSoLuongTon.getText().trim());
             SachDTO sach = new SachDTO(maSach, tenSach, giaSach, soLuongTon, maNXB);
             if (sachBus.addSach(sach)) {
-                JOptionPane.showMessageDialog(this, "Thêm sách thành công!");
-                dispose();
+                ArrayList<Integer> dsMaTL = getMaTLFromArea();
+                ArrayList<Integer> dsMaTG = getMaTGFromArea();
+
+                NhomTheLoaiBUS nhomTheLoaiBUS = new NhomTheLoaiBUS();
+                NhomTacGiaBUS nhomTacGiaBUS = new NhomTacGiaBUS();
+
+                if (nhomTheLoaiBUS.addNhomTheLoai(maSach, dsMaTL) && nhomTacGiaBUS.addNhomTacGia(maSach, dsMaTG)) {
+                    JOptionPane.showMessageDialog(this, "Thêm sách thành công!");
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Lỗi khi thêm thể loại hoặc tác giả!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                }
             } else {
                 JOptionPane.showMessageDialog(this, "Mã sách đã tồn tại hoặc dữ liệu không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
-        } catch (HeadlessException | NumberFormatException ex) {
+        } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Lỗi nhập dữ liệu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -190,4 +299,45 @@ public class AddAndEditBookGUI extends JDialog {
         return true;
     }
     
+    private void addToAreaTG() {
+        String selected = (String) cbMaTG.getSelectedItem();
+        if (selected != null && !selected.isEmpty()) {
+            String currentText = areaTacGia.getText();
+            if (!currentText.contains(selected)) {
+                areaTacGia.append((currentText.isEmpty() ? "" : "\n") + selected);
+            }
+        }
+    }
+
+    private void addToAreaTL() {
+        String selected = (String) cbMaTL.getSelectedItem();
+        if (selected != null && !selected.isEmpty()) {
+            String currentText = areaTheLoai.getText();
+            if (!currentText.contains(selected)) {
+                areaTheLoai.append((currentText.isEmpty() ? "" : "\n") + selected);
+            }
+        }
+    }
+    
+    private ArrayList<Integer> getMaTLFromArea() {
+        ArrayList<Integer> dsMaTL = new ArrayList<>();
+        String[] theLoaiArr = areaTheLoai.getText().split("\n");
+        for (String tenTL : theLoaiArr) {
+            if (tlMap.containsKey(tenTL.trim())) {
+                dsMaTL.add(tlMap.get(tenTL.trim()));
+            }
+        }
+        return dsMaTL;
+    }
+
+    private ArrayList<Integer> getMaTGFromArea() {
+        ArrayList<Integer> dsMaTG = new ArrayList<>();
+        String[] tacGiaArr = areaTacGia.getText().split("\n");
+        for (String tenTG : tacGiaArr) {
+            if (tgMap.containsKey(tenTG.trim())) {
+                dsMaTG.add(tgMap.get(tenTG.trim()));
+            }
+        }
+        return dsMaTG;
+    }
 }

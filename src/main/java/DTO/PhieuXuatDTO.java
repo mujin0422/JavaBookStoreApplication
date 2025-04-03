@@ -10,6 +10,7 @@ public class PhieuXuatDTO {
     private int maKH;
     private int tongTien;
     private Date ngayXuat;
+    private int trangThaiXoa;
 
     public PhieuXuatDTO() {
     }
@@ -20,6 +21,7 @@ public class PhieuXuatDTO {
         this.maKH = maKH;
         this.tongTien = tongTien;
         this.ngayXuat = ngayXuat;
+        this.trangThaiXoa = 0;
     }
 
     public int getMaPX() {
@@ -62,49 +64,12 @@ public class PhieuXuatDTO {
         this.ngayXuat = ngayXuat;
     }
 
-    @Override
-    public String toString() {
-        return "PhieuXuatDTO{" + "maPX=" + maPX + ", maNV=" + maNV + ", maKH=" + maKH + ", tongTIen=" + tongTien + ", ngayXuat=" + ngayXuat + '}';
+    public int getTrangThaiXoa() {
+        return trangThaiXoa;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 37 * hash + this.maPX;
-        hash = 37 * hash + this.maNV;
-        hash = 37 * hash + this.maKH;
-        hash = 37 * hash + this.tongTien;
-        hash = 37 * hash + Objects.hashCode(this.ngayXuat);
-        return hash;
+    public void setTrangThaiXoa(int trangThaiXoa) {
+        this.trangThaiXoa = trangThaiXoa;
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final PhieuXuatDTO other = (PhieuXuatDTO) obj;
-        if (this.maPX != other.maPX) {
-            return false;
-        }
-        if (this.maNV != other.maNV) {
-            return false;
-        }
-        if (this.maKH != other.maKH) {
-            return false;
-        }
-        if (this.tongTien != other.tongTien) {
-            return false;
-        }
-        return Objects.equals(this.ngayXuat, other.ngayXuat);
-    }
-    
-    
     
 }

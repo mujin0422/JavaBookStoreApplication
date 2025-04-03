@@ -20,7 +20,6 @@ public class NhaXuatBanBUS {
     }
 
     public boolean addNhaXuatBan(NhaXuatBanDTO nxb) {
-        
         return nhaXuatBanDAO.add(nxb) > 0;
     }
 
@@ -31,9 +30,6 @@ public class NhaXuatBanBUS {
     public boolean deleteNhaXuatBan(int maNXB) {
         return nhaXuatBanDAO.delete(maNXB) > 0;
     }
-    
-    
-    
     
     public String getTenNXBById(int id){
         for (NhaXuatBanDTO nxb : nhaXuatBanDAO.getAll()) {

@@ -5,6 +5,7 @@ import java.util.Objects;
 public class NhaXuatBanDTO {
     private int maNXB;
     private String tenNXB;
+    private int trangThaiXoa;
 
     public NhaXuatBanDTO() {
     }
@@ -12,6 +13,7 @@ public class NhaXuatBanDTO {
     public NhaXuatBanDTO(int maNXB, String tenNXB) {
         this.maNXB = maNXB;
         this.tenNXB = tenNXB;
+        this.trangThaiXoa = 0;
     }
 
     public int getMaNXB() {
@@ -30,35 +32,11 @@ public class NhaXuatBanDTO {
         this.tenNXB = tenNXB;
     }
 
-    @Override
-    public String toString() {
-        return "NhaXuatBanDTO{" + "maNXB=" + maNXB + ", tenNXB=" + tenNXB + '}';
+    public int getTrangThaiXoa() {
+        return trangThaiXoa;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 13 * hash + this.maNXB;
-        hash = 13 * hash + Objects.hashCode(this.tenNXB);
-        return hash;
+    public void setTrangThaiXoa(int trangThaiXoa) {
+        this.trangThaiXoa = trangThaiXoa;
     }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final NhaXuatBanDTO other = (NhaXuatBanDTO) obj;
-        if (this.maNXB != other.maNXB) {
-            return false;
-        }
-        return Objects.equals(this.tenNXB, other.tenNXB);
-    }
-    
 }

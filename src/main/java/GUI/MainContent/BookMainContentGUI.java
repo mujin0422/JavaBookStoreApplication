@@ -1,6 +1,8 @@
 package GUI.MainContent;
 
 import BUS.NhaXuatBanBUS;
+import BUS.NhomTacGiaBUS;
+import BUS.NhomTheLoaiBUS;
 import BUS.SachBUS;
 import BUS.TacGiaBUS;
 import BUS.TheLoaiBUS;
@@ -140,7 +142,7 @@ public class BookMainContentGUI extends JPanel {
         int maSach = Integer.parseInt(tableModel.getValueAt(selectedRow, 0).toString());
         String tenSach = tableModel.getValueAt(selectedRow, 1).toString();
         int giaSach = Integer.parseInt(tableModel.getValueAt(selectedRow, 2).toString());
-        String tenNXB = tableModel.getValueAt(selectedRow, 3).toString(); // Tên NXB thay vì mã
+        String tenNXB = tableModel.getValueAt(selectedRow, 3).toString(); 
         int soLuongTon = Integer.parseInt(tableModel.getValueAt(selectedRow, 4).toString());
 
         // Tìm mã NXB theo tên NXB
@@ -152,7 +154,6 @@ public class BookMainContentGUI extends JPanel {
                 break;
             }
         }
-
         SachDTO sach = new SachDTO(maSach, tenSach, giaSach, soLuongTon, maNXB);
         Window window = SwingUtilities.getWindowAncestor(this);
         new AddAndEditBookGUI((JFrame) window, sachBUS, "Chỉnh sửa sách", "save", sach);
@@ -166,9 +167,14 @@ public class BookMainContentGUI extends JPanel {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn một cuốn sách để xóa!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
+
         int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa cuốn sách này không?", "Xác nhận", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             int maSach = Integer.parseInt(tableModel.getValueAt(selectedRow, 0).toString());
+            NhomTheLoaiBUS nhomTheLoaiBUS = new NhomTheLoaiBUS();
+            nhomTheLoaiBUS.deleteByMaSach(maSach);
+            NhomTacGiaBUS nhomTacGiaBUS = new NhomTacGiaBUS();
+            nhomTacGiaBUS.deleteByMaSach(maSach); 
             if (sachBUS.deleteSach(maSach)) { 
                 JOptionPane.showMessageDialog(this, "Xóa sách thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 loadTableData();
@@ -177,6 +183,7 @@ public class BookMainContentGUI extends JPanel {
             }
         }
     }
+
     private void addSearchFunctionality() {
         txtSearch.getDocument().addDocumentListener(new DocumentListener() {
             @Override

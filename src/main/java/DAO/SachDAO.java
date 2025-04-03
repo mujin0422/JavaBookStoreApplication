@@ -40,7 +40,7 @@ public class SachDAO {
     }
 
     public int delete(int maSach) {
-        String sql = "DELETE FROM sach WHERE maSach=?";
+        String sql = "UPDATE sach SET trangThaiXoa=1 WHERE maSach=?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, maSach);
@@ -53,7 +53,7 @@ public class SachDAO {
 
     public ArrayList<SachDTO> getAll() {
         ArrayList<SachDTO> dsSach = new ArrayList<>();
-        String sql = "SELECT * FROM sach";
+        String sql = "SELECT * FROM sach WHERE trangThaiXoa=0";
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stm = conn.createStatement();
              ResultSet rs = stm.executeQuery(sql)) {

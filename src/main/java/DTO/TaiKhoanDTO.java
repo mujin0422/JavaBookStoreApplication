@@ -8,6 +8,7 @@ public class TaiKhoanDTO {
     private String matKhau;
     private int maNV;
     private int maQuyen;
+    private int trangThaiXoa;
 
     public TaiKhoanDTO() {
     }
@@ -17,6 +18,15 @@ public class TaiKhoanDTO {
         this.matKhau = matKhau;
         this.maNV = maNV;
         this.maQuyen = maQuyen;
+        this.trangThaiXoa = 0;
+    }
+
+    public int getTrangThaiXoa() {
+        return trangThaiXoa;
+    }
+
+    public void setTrangThaiXoa(int trangThaiXoa) {
+        this.trangThaiXoa = trangThaiXoa;
     }
 
     public String getTenDangNhap() {

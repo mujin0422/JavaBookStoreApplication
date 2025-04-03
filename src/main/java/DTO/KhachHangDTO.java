@@ -8,6 +8,7 @@ public class KhachHangDTO {
     private String tenKH;
     private String sdt;
     private String email;
+    private int trangThaiXoa;
 
     public KhachHangDTO() {
     }
@@ -17,6 +18,7 @@ public class KhachHangDTO {
         this.tenKH = tenKH;
         this.sdt = sdt;
         this.email = email;
+        this.trangThaiXoa = 0;
     }
 
     public int getMaKH() {
@@ -51,34 +53,13 @@ public class KhachHangDTO {
         this.email = email;
     }
 
-    @Override
-    public String toString() {
-        return "KhachHangDTO{" + "maKH=" + maKH + ", tenKH=" + tenKH + ", sdt=" + sdt + ", email=" + email + '}';
+    public int getTrangThaiXoa() {
+        return trangThaiXoa;
     }
 
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final KhachHangDTO other = (KhachHangDTO) obj;
-        if (this.maKH != other.maKH) {
-            return false;
-        }
-        if (this.tenKH != other.tenKH) {
-            return false;
-        }
-        if (!Objects.equals(this.sdt, other.sdt)) {
-            return false;
-        }
-        return Objects.equals(this.email, other.email);
+    public void setTrangThaiXoa(int trangThaiXoa) {
+        this.trangThaiXoa = trangThaiXoa;
     }
-    
+
+   
 }

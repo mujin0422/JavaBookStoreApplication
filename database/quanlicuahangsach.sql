@@ -1,83 +1,95 @@
 ﻿CREATE TABLE THELOAI (
-    maTL INT NOT NULL PRIMARY KEY,
-    tenTL NVARCHAR(30) NOT NULL
+    maTL INT PRIMARY KEY,
+    tenTL NVARCHAR(30) NOT NULL,
+    trangThaiXoa INT NOT NULL DEFAULT 0
 );
 
 CREATE TABLE TACGIA (
-    maTG INT NOT NULL PRIMARY KEY,
-    tenTG NVARCHAR(50) NOT NULL
+    maTG INT PRIMARY KEY,
+    tenTG NVARCHAR(50) NOT NULL,
+    trangThaiXoa INT NOT NULL DEFAULT 0
 );
 
 CREATE TABLE NHAXUATBAN (
-    maNXB INT NOT NULL PRIMARY KEY,
-    tenNXB NVARCHAR(50) NOT NULL
+    maNXB INT PRIMARY KEY,
+    tenNXB NVARCHAR(50) NOT NULL,
+    trangThaiXoa INT NOT NULL DEFAULT 0
 );
 
 CREATE TABLE NHACUNGCAP (
-    maNCC INT NOT NULL PRIMARY KEY,
+    maNCC INT PRIMARY KEY,
     tenNCC NVARCHAR(100) NOT NULL,
     diaChi NVARCHAR(100),
-    sdt VARCHAR(15)
+    sdt VARCHAR(15),
+    trangThaiXoa INT NOT NULL DEFAULT 0
 );
 
 CREATE TABLE NHANVIEN (
-    maNV INT NOT NULL PRIMARY KEY,
+    maNV INT PRIMARY KEY,
     tenNV NVARCHAR(50) NOT NULL,
     email VARCHAR(50),
-    sdt VARCHAR(15)
+    sdt VARCHAR(15),
+    trangThaiXoa INT NOT NULL DEFAULT 0
 );
 
 CREATE TABLE KHACHHANG (
-    maKH INT NOT NULL PRIMARY KEY,
+    maKH INT PRIMARY KEY,
     tenKH NVARCHAR(50) NOT NULL,
     sdt VARCHAR(15),
-    email VARCHAR(50)
+    email VARCHAR(50),
+    trangThaiXoa INT NOT NULL DEFAULT 0
 );
 
 CREATE TABLE QUYEN (
-    maQuyen INT NOT NULL PRIMARY KEY,
-    tenQuyen NVARCHAR(30) NOT NULL
+    maQuyen INT PRIMARY KEY,
+    tenQuyen NVARCHAR(30) NOT NULL,
+    trangThaiXoa INT NOT NULL DEFAULT 0
 );
 
 CREATE TABLE CHUCNANG (
-    maCN INT NOT NULL PRIMARY KEY,
-    tenCN NVARCHAR(30) NOT NULL
+    maCN INT PRIMARY KEY,
+    tenCN NVARCHAR(30) NOT NULL,
+    trangThaiXoa INT NOT NULL DEFAULT 0
 );
 
 CREATE TABLE SACH (
-    maSach INT NOT NULL PRIMARY KEY,
+    maSach INT PRIMARY KEY,
     tenSach NVARCHAR(100) NOT NULL,
     giaSach INT NOT NULL,
     soLuongTon INT NOT NULL,
     maNXB INT NOT NULL,
+    trangThaiXoa INT NOT NULL DEFAULT 0,
     FOREIGN KEY (maNXB) REFERENCES NHAXUATBAN(maNXB)
 );
 
 CREATE TABLE PHIEUNHAP (
-    maPN INT NOT NULL PRIMARY KEY,
+    maPN INT PRIMARY KEY,
     maNV INT NOT NULL,
     maNCC INT NOT NULL,
     tongTien INT,
     ngayNhap DATE,
+    trangThaiXoa INT NOT NULL DEFAULT 0,
     FOREIGN KEY (maNV) REFERENCES NHANVIEN(maNV),
     FOREIGN KEY (maNCC) REFERENCES NHACUNGCAP(maNCC)
 );
 
 CREATE TABLE PHIEUXUAT (
-    maPX INT NOT NULL PRIMARY KEY,
+    maPX INT PRIMARY KEY,
     maNV INT NOT NULL,
     maKH INT NOT NULL,
     tongTien INT,
     ngayXuat DATE,
+    trangThaiXoa INT NOT NULL DEFAULT 0,
     FOREIGN KEY (maNV) REFERENCES NHANVIEN(maNV),
     FOREIGN KEY (maKH) REFERENCES KHACHHANG(maKH)
 );
 
 CREATE TABLE TAIKHOAN (
-    tenDangNhap VARCHAR(50) NOT NULL PRIMARY KEY,
+    tenDangNhap VARCHAR(50) PRIMARY KEY,
     matKhau VARCHAR(50) NOT NULL,
     maNV INT NOT NULL,
     maQuyen INT NOT NULL,
+    trangThaiXoa INT NOT NULL DEFAULT 0,
     FOREIGN KEY (maNV) REFERENCES NHANVIEN(maNV),
     FOREIGN KEY (maQuyen) REFERENCES QUYEN(maQuyen)
 );
@@ -126,10 +138,68 @@ CREATE TABLE CHITIETCHUCNANG (
     FOREIGN KEY (maQuyen) REFERENCES QUYEN(maQuyen)
 );
 
+
 INSERT INTO QUYEN (maQuyen, tenQuyen) VALUES
 (1, N'Quản trị viên (admin)'),
-(2, N'Nhân viên bán hàng'),
-(3, N'Kế toán');
+(2, N'Quản lí'),
+(3, N'Nhân viên bán hàng'),
+(4, N'Kế toán');
+
+INSERT INTO CHUCNANG (maCN, tenCN) VALUES
+(1, N'Xem Sách'),
+(2, N'Thêm Sách'),
+(3, N'Sửa Sách'),
+(4, N'Xóa Sách'),
+
+(5, N'Xem Nhân Viên'),
+(6, N'Thêm Nhân Viên'),
+(7, N'Sửa Nhân Viên'),
+(8, N'Xóa Nhân Viên'),
+
+(9, N'Xem Khách Hàng'),
+(10, N'Thêm Khách Hàng'),
+(11, N'Sửa Khách Hàng'),
+(12, N'Xóa Khách Hàng'),
+
+(13, N'Xem Thể Loại'),
+(14, N'Thêm Thể Loại'),
+(15, N'Sửa Thể Loại'),
+(16, N'Xóa Thể Loại'),
+
+(17, N'Xem Tác Giả'),
+(18, N'Thêm Tác Giả'),
+(19, N'Sửa Tác Giả'),
+(20, N'Xóa Tác Giả'),
+
+(21, N'Xem Nhà Xuất Bản'),
+(22, N'Thêm Nhà Xuất Bản'),
+(23, N'Sửa Nhà Xuất Bản'),
+(24, N'Xóa Nhà Xuất Bản'),
+
+(25, N'Xem Nhà Cung Cấp'),
+(26, N'Thêm Nhà Cung Cấp'),
+(27, N'Sửa Nhà Cung Cấp'),
+(28, N'Xóa Nhà Cung Cấp'),
+
+(29, N'Xem Quyền'),
+(30, N'Thêm Quyền'),
+(31, N'Sửa Quyền'),
+(32, N'Xóa Quyền'),
+
+(33, N'Xem Chức Năng'),
+(34, N'Thêm Chức Năng'),
+(35, N'Sửa Chức Năng'),
+(36, N'Xóa Chức Năng'),
+
+(37, N'Xem Phiếu Nhập'),
+(38, N'Thêm Phiếu Nhập'),
+(39, N'Sửa Phiếu Nhập'),
+(40, N'Xóa Phiếu Nhập'),
+
+(41, N'Xem Phiếu Xuất'),
+(42, N'Thêm Phiếu Xuất'),
+(43, N'Sửa Phiếu Xuất'),
+(44, N'Xóa Phiếu Xuất');
 
 INSERT INTO THELOAI (maTL, tenTL) VALUES
 (1, N'Văn học'),
@@ -203,26 +273,38 @@ INSERT INTO TAIKHOAN (tenDangNhap, matKhau, maNV, maQuyen) VALUES
 ('ketoan10', '123456', 10, 3);
 
 INSERT INTO SACH (maSach, tenSach, giaSach, soLuongTon, maNXB) VALUES
-(1, N'Tôi thấy hoa vàng trên cỏ xanh', 120000, 50, 1),
-(2, N'Harry Potter và Hòn đá phù thủy', 150000, 30, 2),
-(3, N'Bí mật tư duy triệu phú', 180000, 30, 3),
-(4, N'21 Bài học cho thế kỷ 21', 200000, 30, 4),
-(5, N'Nhà giả kim', 130000, 25, 1),
-(6, N'Nghệ thuật đàm phán', 170000, 47, 1),
-(7, N'Lược sử thời gian', 220000, 53, 1),
-(8, N'Một thoáng ta rực rỡ ở nhân gian', 160000, 56, 1),
-(9, N'Chuyện con mèo dạy hải âu bay', 90000, 27, 2),
-(10, N'Không gia đình', 140000, 40, 3),
-(11, N'Bách khoa thư vũ trụ', 250000, 32, 1),
-(12, N'Khoa học kỳ thú', 180000, 55, 1),
-(13, N'Chinh phục toán học', 190000, 65, 3),
-(14, N'Vũ trụ trong vỏ hạt dẻ', 230000, 30, 1),
-(15, N'Đi tìm lẽ sống', 135000, 40, 4),
-(16, N'Tư duy nhanh và chậm', 210000, 63, 2),
-(17, N'Chiến tranh tiền tệ', 195000, 48, 2),
-(18, N'Văn hóa & Con người', 170000, 59, 2),
-(19, N'Trí tuệ xúc cảm', 165000, 40, 1),
-(20, N'Sống tối giản', 145000, 60, 1);
+(1, N'Tôi thấy hoa vàng trên cỏ xanh', 120000, 0, 1),
+(2, N'Harry Potter và Hòn đá phù thủy', 150000, 0, 2),
+(3, N'Bí mật tư duy triệu phú', 180000, 0, 3),
+(4, N'21 Bài học cho thế kỷ 21', 200000, 0, 4),
+(5, N'Nhà giả kim', 130000, 0, 1),
+(6, N'Nghệ thuật đàm phán', 170000, 0, 1),
+(7, N'Lược sử thời gian', 220000, 0, 1),
+(8, N'Một thoáng ta rực rỡ ở nhân gian', 160000, 0, 1),
+(9, N'Chuyện con mèo dạy hải âu bay', 90000, 0, 2),
+(10, N'Không gia đình', 140000, 0, 3),
+(11, N'Bách khoa thư vũ trụ', 250000, 0, 1),
+(12, N'Khoa học kỳ thú', 180000, 0, 1),
+(13, N'Chinh phục toán học', 190000, 0, 3),
+(14, N'Vũ trụ trong vỏ hạt dẻ', 230000, 0, 1),
+(15, N'Đi tìm lẽ sống', 135000, 0, 4),
+(16, N'Tư duy nhanh và chậm', 210000, 0, 2),
+(17, N'Chiến tranh tiền tệ', 195000, 0, 2),
+(18, N'Văn hóa & Con người', 170000, 0, 2),
+(19, N'Trí tuệ xúc cảm', 165000, 0, 1),
+(20, N'Sống tối giản', 145000, 0, 1);
+
+INSERT INTO KHACHHANG (maKH, tenKH, sdt, email) VALUES
+(1, N'Nguyễn Văn An', '0901234567', 'an.nguyen@gmail.com'),
+(2, N'Trần Thị Bích Ngọc', '0912345678', 'ngoc.tran@gmail.com'),
+(3, N'Lê Văn Cường', '0923456789', 'cuong.le@gmail.com'),
+(4, N'Phạm Minh Tâm', '0934567890', 'tam.pham@gmail.com'),
+(5, N'Đỗ Hoàng Nam', '0945678901', 'nam.do@gmail.com'),
+(6, N'Võ Thanh Thảo', '0956789012', 'thao.vo@gmail.com'),
+(7, N'Huỳnh Nhật Hào', '0967890123', 'hao.huynh@gmail.com'),
+(8, N'Bùi Quỳnh Như', '0978901234', 'nhu.bui@gmail.com'),
+(9, N'Ngô Thị Lan', '0989012345', 'lan.ngo@gmail.com'),
+(10, N'Hoàng Tuấn Kiệt', '0990123456', 'kiet.hoang@gmail.com');
 
 INSERT INTO NHOMTACGIA (maTG, maSach) VALUES
 (1, 1), (2, 2), (6, 3), (8, 4), (5, 5), (16, 6), (7, 7), (18, 8), (9, 9), (10, 10),

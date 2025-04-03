@@ -28,32 +28,4 @@ public class ChiTietChucNangDTO {
     public void setMaQuyen(int maQuyen) {
         this.maQuyen = maQuyen;
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 31 * hash + this.maCN;
-        hash = 31 * hash + this.maQuyen;
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final ChiTietChucNangDTO other = (ChiTietChucNangDTO) obj;
-        if (this.maCN != other.maCN) {
-            return false;
-        }
-        return this.maQuyen == other.maQuyen;
-    }
-
-    
 }

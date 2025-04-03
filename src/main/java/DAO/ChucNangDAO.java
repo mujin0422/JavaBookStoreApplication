@@ -40,7 +40,7 @@ public class ChucNangDAO {
     }
     
     public int delete(int maCN) {
-        String sql = "DELETE FROM chucnang WHERE maCN=?";
+        String sql = "UPDATE chucnang SET trangThaiXoa=1 WHERE maCN=?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, maCN);
@@ -53,7 +53,7 @@ public class ChucNangDAO {
     
     public ArrayList<ChucNangDTO> getAll() {
         ArrayList<ChucNangDTO> dsChucNang = new ArrayList<>();
-        String sql = "SELECT * FROM chucnang";
+        String sql = "SELECT * FROM chucnang WHERE trangThaiXoa=0";
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stm = conn.createStatement();
              ResultSet rs = stm.executeQuery(sql)) {

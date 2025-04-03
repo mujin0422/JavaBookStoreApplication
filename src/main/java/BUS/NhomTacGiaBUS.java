@@ -26,4 +26,22 @@ public class NhomTacGiaBUS {
     public boolean deleteNhomTacGia(int maTG) {
         return nhomTacGiaDAO.delete(maTG) > 0;
     }
+    
+    public ArrayList<Integer> getMaTacGiaBySach(int maSach) {
+        return nhomTacGiaDAO.getMaTacGiaBySach(maSach);
+    }
+
+    public boolean deleteByMaSach(int maSach) {
+        return nhomTacGiaDAO.deleteByMaSach(maSach);
+    }
+
+    
+    public boolean addNhomTacGia(int maSach, ArrayList<Integer> dsMaTG) {
+        for (int maTG : dsMaTG) {
+            if (!addNhomTacGia(new NhomTacGiaDTO(maTG, maSach))) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

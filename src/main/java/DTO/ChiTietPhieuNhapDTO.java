@@ -48,39 +48,4 @@ public class ChiTietPhieuNhapDTO {
     public void setGiaNhap(int giaNhap) {
         this.giaNhap = giaNhap;
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 97 * hash + this.maPN;
-        hash = 97 * hash + this.maSach;
-        hash = 97 * hash + this.soLuong;
-        hash = 97 * hash + this.giaNhap;
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final ChiTietPhieuNhapDTO other = (ChiTietPhieuNhapDTO) obj;
-        if (this.maPN != other.maPN) {
-            return false;
-        }
-        if (this.maSach != other.maSach) {
-            return false;
-        }
-        if (this.soLuong != other.soLuong) {
-            return false;
-        }
-        return this.giaNhap == other.giaNhap;
-    }
-
 }

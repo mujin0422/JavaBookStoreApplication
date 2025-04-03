@@ -40,7 +40,7 @@ public class PhieuXuatDAO {
     }
 
     public int delete(int maPX) {
-        String sql = "DELETE FROM phieuxuat WHERE maPX=?";
+        String sql = "UPDATE phieuxuat SET trangThaiXoa=1 WHERE maPX=?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, maPX);
@@ -53,7 +53,7 @@ public class PhieuXuatDAO {
 
     public ArrayList<PhieuXuatDTO> getAll() {
         ArrayList<PhieuXuatDTO> list = new ArrayList<>();
-        String sql = "SELECT * FROM phieuxuat";
+        String sql = "SELECT * FROM phieuxuat WHERE trangThaiXoa=0";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {

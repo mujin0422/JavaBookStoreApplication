@@ -79,7 +79,7 @@ public class AddAndEditPublisherGUI extends JDialog {
     }
 
     private void savePublisher() {
-        if (!validateInput()) return;
+        if (!CheckFormInput()) return;
         try {
             int maNXB = Integer.parseInt(txtMaNXB.getText().trim());
             String tenNXB = txtTenNXB.getText().trim();
@@ -97,7 +97,7 @@ public class AddAndEditPublisherGUI extends JDialog {
     }
 
     private void addPublisher() {
-        if (!validateInput()) return;
+        if (!CheckFormInput()) return;
         try {
             int maNXB = Integer.parseInt(txtMaNXB.getText().trim());
             String tenNXB = txtTenNXB.getText().trim();
@@ -114,7 +114,7 @@ public class AddAndEditPublisherGUI extends JDialog {
         }
     }
 
-    private boolean validateInput() {
+    private boolean CheckFormInput() {
         try {
             String maNXBStr = txtMaNXB.getText().trim();
             if (maNXBStr.isEmpty()) {

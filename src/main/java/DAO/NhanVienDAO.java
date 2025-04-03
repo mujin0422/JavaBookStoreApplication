@@ -26,12 +26,11 @@ public class NhanVienDAO {
         String sql = "UPDATE nhanvien SET  tenNV=?, email=?, sdt=? WHERE maNV=?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-             ps.setString(1, obj.getTenNV());
-            ps.setString(3, obj.getEmail());
+            ps.setString(1, obj.getTenNV());
+            ps.setString(2, obj.getEmail());
             ps.setString(3, obj.getSdt());
             ps.setInt(4, obj.getMaNV());
             return ps.executeUpdate();
-            
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -39,7 +38,7 @@ public class NhanVienDAO {
     }
 
     public int delete(int maNhanVien) {
-        String sql = "DELETE FROM nhanvien WHERE maNV=?";
+        String sql = "UPDATE nhanvien SET trangThaiXoa=1 WHERE maNV=?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, maNhanVien);
@@ -52,7 +51,7 @@ public class NhanVienDAO {
 
     public ArrayList<NhanVienDTO> getAll() {
         ArrayList<NhanVienDTO> dsNhanVien = new ArrayList<>();
-        String sql = "SELECT * FROM nhanvien";
+        String sql = "SELECT * FROM nhanvien WHERE trangThaiXoa=0";
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stm = conn.createStatement();
              ResultSet rs = stm.executeQuery(sql)) {

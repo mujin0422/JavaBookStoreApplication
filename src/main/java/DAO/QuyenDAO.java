@@ -42,7 +42,7 @@ public class QuyenDAO {
     }
     
     public int delete(int maQuyen){
-        String sql ="DELETE FROM quyen WHERE maQuyen=?";
+        String sql ="UPDATE quyen SET trangThaiXoa=1 WHERE maQuyen=?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)){
             ps.setInt(1, maQuyen);
@@ -55,7 +55,7 @@ public class QuyenDAO {
     
     public ArrayList<QuyenDTO> getAll(){
         ArrayList<QuyenDTO> dsquyen = new ArrayList<>();
-        String sql = "SELECT * FROM quyen";
+        String sql = "SELECT * FROM quyen WHERE trangThaiXoa=0";
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stm = conn.createStatement();
              ResultSet rs = stm.executeQuery(sql)){

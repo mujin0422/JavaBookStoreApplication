@@ -50,40 +50,4 @@ public class ChiTietPhieuXuatDTO {
     public void setSoLuongSP(int soLuongSP) {
         this.soLuongSP = soLuongSP;
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 23 * hash + this.maPX;
-        hash = 23 * hash + this.maSach;
-        hash = 23 * hash + this.giaBan;
-        hash = 23 * hash + this.soLuongSP;
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final ChiTietPhieuXuatDTO other = (ChiTietPhieuXuatDTO) obj;
-        if (this.maPX != other.maPX) {
-            return false;
-        }
-        if (this.maSach != other.maSach) {
-            return false;
-        }
-        if (this.giaBan != other.giaBan) {
-            return false;
-        }
-        return this.soLuongSP == other.soLuongSP;
-    }
-
-   
 }

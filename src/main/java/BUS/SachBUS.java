@@ -27,33 +27,15 @@ public class SachBUS {
     }
     
     public boolean addSach(SachDTO sach) {       
-        if (sachDAO.exists(sach.getMaSach())) {
-            return false;
-        }
-        if (sach == null || sach.getTenSach().isEmpty() || sach.getGiaSach() <= 10000 || sach.getSoLuongTon() < 0) {
-            return false;
-        }
         return sachDAO.add(sach) > 0;
     }
 
     public boolean updateSach(SachDTO sach) {
-        if (sach == null || sach.getMaSach() <= 0 || sach.getTenSach().isEmpty() || sach.getGiaSach() <= 0 || sach.getSoLuongTon() < 0) {
-            return false;
-        }
         return sachDAO.update(sach) > 0; 
     }
 
     public boolean deleteSach(int maSach) {
         return sachDAO.delete(maSach) > 0;  
-    }
-    
-    public boolean informationSach(int maSach){
-        
-     
-        
-        
-        
-        return true;
     }
     
     public ArrayList<SachDTO> searchSach(String keyword) {
@@ -81,7 +63,6 @@ public class SachBUS {
             }
         }
         return ketQua;
-}
-
+    }
 
 }

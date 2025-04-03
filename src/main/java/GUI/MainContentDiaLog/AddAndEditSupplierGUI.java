@@ -4,14 +4,15 @@
  */
 package GUI.MainContentDiaLog;
 
-import BUS.NhanVienBUS;
-import DTO.NhanVienDTO;
+import BUS.NhaCungCapBUS;
+import DTO.NhaCungCapDTO;
 import Utils.UIButton;
 import Utils.UIConstants;
 import Utils.UILabel;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.HeadlessException;
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -23,31 +24,31 @@ import javax.swing.JTextField;
  *
  * @author Dell Vostro
  */
-public class AddAndEditStaffGUI extends JDialog{
-    private JTextField txtMaNV, txtTenNV, txtEmail, txtSDT;
+public class AddAndEditSupplierGUI extends JDialog{
+    private JTextField txtMaNCC, txtTenNCC, txtDiaChi, txtSDT;
     private UIButton btnAdd, btnSave, btnCancel;
-    private NhanVienBUS nvBus;
-    private NhanVienDTO nv;
+    private NhaCungCapBUS nccBus;
+    private NhaCungCapDTO ncc;
     
-    public AddAndEditStaffGUI(JFrame parent, NhanVienBUS nvBus, String title, String type, NhanVienDTO nv) {
+    public AddAndEditSupplierGUI(JFrame parent, NhaCungCapBUS nccBus, String title, String type, NhaCungCapDTO ncc) {
         super(parent, title, true);
-        this.nvBus = nvBus;
-        this.nv = nv;
+        this.nccBus = nccBus;
+        this.ncc = ncc;
         initComponent(type);
-        if (nv != null) {
-            txtMaNV.setText(String.valueOf(nv.getMaNV()));
-            txtTenNV.setText(nv.getTenNV());
-            txtEmail.setText(nv.getEmail());
-            txtSDT.setText(nv.getSdt());
-            txtMaNV.setEnabled(false);
+        if (ncc != null) {
+            txtMaNCC.setText(String.valueOf(ncc.getMaNCC()));
+            txtTenNCC.setText(ncc.getTenNCC());
+            txtDiaChi.setText(ncc.getDiaChi());
+            txtSDT.setText(ncc.getSdt());
+            txtMaNCC.setEnabled(false);
         }
         this.setLocationRelativeTo(parent);
         this.setVisible(true);
     }
 
-    public AddAndEditStaffGUI(JFrame parent, NhanVienBUS nvBus, String title, String type) {
+    public AddAndEditSupplierGUI(JFrame parent, NhaCungCapBUS nccBus, String title, String type) {
         super(parent, title, true);
-        this.nvBus = nvBus;
+        this.nccBus = nccBus;
         initComponent(type);
         this.setLocationRelativeTo(parent);
         this.setVisible(true);
@@ -61,14 +62,14 @@ public class AddAndEditStaffGUI extends JDialog{
         inputPanel.setBackground(UIConstants.MAIN_BACKGROUND);
         inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
-        inputPanel.add(new UILabel("Mã nhân viên:"));
-        inputPanel.add(txtMaNV = new JTextField());
+        inputPanel.add(new UILabel("Mã nhà cung cấp:"));
+        inputPanel.add(txtMaNCC = new JTextField());
         
-        inputPanel.add(new UILabel("Tên nhân viên:"));
-        inputPanel.add(txtTenNV = new JTextField());
+        inputPanel.add(new UILabel("Tên nhà cung cấp:"));
+        inputPanel.add(txtTenNCC = new JTextField());
         
-        inputPanel.add(new UILabel("Email:"));
-        inputPanel.add(txtEmail = new JTextField());
+        inputPanel.add(new UILabel("Địa chỉ:"));
+        inputPanel.add(txtDiaChi = new JTextField());
         
         inputPanel.add(new UILabel("Số điện thọại"));
         inputPanel.add(txtSDT = new JTextField());
@@ -86,68 +87,67 @@ public class AddAndEditStaffGUI extends JDialog{
         this.add(btnPanel, BorderLayout.SOUTH);
 
         btnCancel.addActionListener(e -> dispose());
-        btnAdd.addActionListener(e -> addStaff());
-        btnSave.addActionListener(e -> saveStaff());
+        btnAdd.addActionListener(e -> addSupplier());
+        btnSave.addActionListener(e -> saveSupplier());
     }
     
-    private void addStaff(){
+    private void addSupplier(){
         if(!CheckFormInput()) return;
         try {
-            int maNV = Integer.parseInt(txtMaNV.getText().trim());
-            String tenNV = txtTenNV.getText().trim();
-            String email = txtEmail.getText().trim();
+            int maNCC = Integer.parseInt(txtMaNCC.getText().trim());
+            String tenNCC = txtTenNCC.getText().trim();
+            String diaChi = txtDiaChi.getText().trim();
             String sdt = txtSDT.getText().trim();
-            NhanVienDTO nv = new NhanVienDTO(maNV, tenNV, email, sdt);
-            if(nvBus.addNhanVien(nv)){
-                JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công!");
+            NhaCungCapDTO ncc = new NhaCungCapDTO(maNCC, tenNCC, diaChi, sdt);
+            if(nccBus.addNhaCungCap(ncc)){
+                JOptionPane.showMessageDialog(this, "Thêm nhà cung cấp thành công!");
                 dispose();
             }else {
-                JOptionPane.showMessageDialog(this, "Mã nhân viên đã tồn tại hoặc dữ liệu không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Mã NCC đã tồn tại hoặc dữ liệu không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Lỗi nhập dữ liệu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
     
-    private void saveStaff(){
-        if(!CheckFormInput()) return;
+    private void saveSupplier(){
+    if(!CheckFormInput()) return;
         try {
-            int maNV = Integer.parseInt(txtMaNV.getText().trim());
-            String tenNV = txtTenNV.getText().trim();
-            String email = txtEmail.getText().trim();
+            int maNCC = Integer.parseInt(txtMaNCC.getText().trim());
+            String tenNCC = txtTenNCC.getText().trim();
+            String diaChi = txtDiaChi.getText().trim();
             String sdt = txtSDT.getText().trim();
-            NhanVienDTO nv = new NhanVienDTO(maNV, tenNV, email, sdt);
-            if(nvBus.updateNhanVien(nv)){
-                JOptionPane.showMessageDialog(this, "Cập nhật nhân viên thành công!");
+            NhaCungCapDTO ncc = new NhaCungCapDTO(maNCC, tenNCC, diaChi, sdt);
+            if(nccBus.updateNhaCungCap(ncc)){
+                JOptionPane.showMessageDialog(this, "Cập nhật nhà cung cấp thành công!");
                 dispose();
             }else {
-                JOptionPane.showMessageDialog(this, "Cập nhật nhân viên thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Cập nhật nhà cung cấp thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Lỗi nhập dữ liệu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-        }
-    }
+        }}
     
     private boolean CheckFormInput(){
         try {
-            String maNVStr = txtMaNV.getText().trim();
-            if (maNVStr.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Mã nhân viên không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            String maNCCStr = txtMaNCC.getText().trim();
+            if (maNCCStr.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Mã NCC không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
-            int maNV = Integer.parseInt(maNVStr);
-            if (maNV < 0) {
-                JOptionPane.showMessageDialog(this, "Mã nhân viên phải là số nguyên dương!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            int maNXB = Integer.parseInt(maNCCStr);
+            if (maNXB < 0) {
+                JOptionPane.showMessageDialog(this, "Mã NCC phải là số nguyên dương!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
-            String tenNV = txtTenNV.getText().trim();
-            if (tenNV.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Tên nhân viên không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            String tenNXB = txtTenNCC.getText().trim();
+            if (tenNXB.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Tên NCC không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
-            String email = txtEmail.getText().trim();
-            if (!email.isEmpty() && !email.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
-                JOptionPane.showMessageDialog(this, "Email không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            String diaChi = txtDiaChi.getText().trim();
+            if(diaChi.isEmpty()){
+                JOptionPane.showMessageDialog(this, "Địa chỉ NCC không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
             String sdt = txtSDT.getText().trim();

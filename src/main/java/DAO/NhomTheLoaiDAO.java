@@ -84,5 +84,36 @@ public class NhomTheLoaiDAO {
         }
         return null;
     }
+    
+    public ArrayList<Integer> getMaTheLoaiBySach(int maSach) {
+        ArrayList<Integer> list = new ArrayList<>();
+        String sql = "SELECT maTL FROM nhomtheloai WHERE maSach = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, maSach);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                list.add(rs.getInt("maTL"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    public boolean deleteByMaSach(int maSach) {
+        String sql = "DELETE FROM nhomtheloai WHERE maSach = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, maSach);
+            stmt.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 }

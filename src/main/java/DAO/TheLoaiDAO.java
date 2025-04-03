@@ -34,7 +34,7 @@ public class TheLoaiDAO {
     }
 
     public int delete(int maTL) {
-        String sql = "DELETE FROM theloai WHERE maTL=?";
+        String sql = "UPDATE theloai SET trangThaiXoa=1 WHERE maTL=?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, maTL);
@@ -47,7 +47,7 @@ public class TheLoaiDAO {
 
     public ArrayList<TheLoaiDTO> getAll() {
         ArrayList<TheLoaiDTO> dsTheLoai = new ArrayList<>();
-        String sql = "SELECT * FROM theloai";
+        String sql = "SELECT * FROM theloai WHERE trangThaiXoa=0 ";
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stm = conn.createStatement();
              ResultSet rs = stm.executeQuery(sql)) {
