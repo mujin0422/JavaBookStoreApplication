@@ -36,17 +36,47 @@ public class NhomTheLoaiDAO {
         return 0;
     }
 
-    public int delete(int maTL) {
-        String sql = "DELETE FROM nhomtheloai WHERE maTL=?";
+    public int delete(int maSach) {
+        String sql = "DELETE FROM nhomtheloai WHERE maSach=?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, maTL);
+            ps.setInt(1, maSach);
             return ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return 0;
     }
+    
+    public int delete(int maTL, int maSach) {
+        String sql = "DELETE FROM nhomtheloai WHERE maSach = ? AND maTL = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, maSach);
+            ps.setInt(2, maTL);
+            return ps.executeUpdate(); 
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return 0;  
+    }
+
+    public int exists(int maTL, int maSach) {
+        String sql = "SELECT COUNT(*) FROM nhomtheloai WHERE maSach = ? AND maTL = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, maSach);
+            ps.setInt(2, maTL);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1); 
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return 0; 
+    }
+
 
     public ArrayList<NhomTheLoaiDTO> getAll() {
         ArrayList<NhomTheLoaiDTO> dsNhomTheLoai = new ArrayList<>();
@@ -65,35 +95,14 @@ public class NhomTheLoaiDAO {
         }
         return dsNhomTheLoai;
     }
-
-    public NhomTheLoaiDTO getById(int id) {
-        String sql = "SELECT * FROM nhomtheloai WHERE maTL=?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return new NhomTheLoaiDTO(
-                        rs.getInt("maTL"),
-                        rs.getInt("maSach")
-                    );
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
     
-    public ArrayList<Integer> getMaTheLoaiBySach(int maSach) {
+    public ArrayList<Integer> getMaTheLoaiByMaSach(int maSach) {
         ArrayList<Integer> list = new ArrayList<>();
         String sql = "SELECT maTL FROM nhomtheloai WHERE maSach = ?";
-
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, maSach);
             ResultSet rs = ps.executeQuery();
-
             while (rs.next()) {
                 list.add(rs.getInt("maTL"));
             }
@@ -103,17 +112,5 @@ public class NhomTheLoaiDAO {
         return list;
     }
     
-    public boolean deleteByMaSach(int maSach) {
-        String sql = "DELETE FROM nhomtheloai WHERE maSach = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, maSach);
-            stmt.executeUpdate();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
+   
 }

@@ -78,20 +78,20 @@ public class BookMainContentGUI extends JPanel {
         pnlContent = new JPanel();
         pnlContent.setLayout(new BorderLayout());
         pnlContent.setBackground(UIConstants.MAIN_BACKGROUND);
-            // Tạo bảng dữ liệu
+            
         String[] columnNames = {"MÃ SÁCH", "TÊN SÁCH", "GIÁ", "NHÀ XUẤT BẢN", "TỒN KHO"};
         tableModel = new DefaultTableModel(columnNames, 0); // ####
         tblContent = new JTable(tableModel);
         tblContent.setDefaultEditor(Object.class, null);
-            // Chinh sua bang 
+            
         tblContent.getTableHeader().setFont(UIConstants.SUBTITLE_FONT);
         tblContent.getTableHeader().setBackground(UIConstants.MAIN_BUTTON);
         tblContent.getTableHeader().setForeground(UIConstants.WHITE_FONT);
         tblContent.setRowHeight(25);
-            // Đặt bảng vào JScrollPane
+            
         JScrollPane scrollPane = new JScrollPane(tblContent);
         scrollPane.getViewport().setBackground(UIConstants.MAIN_BACKGROUND);
-            // Thêm JScrollPane vào pnlContent
+            
         pnlContent.add(scrollPane, BorderLayout.CENTER);
         //===============================( End Panel Content )===========================//
 
@@ -106,17 +106,15 @@ public class BookMainContentGUI extends JPanel {
         // STEP 1: xóa dữ liệu cũ
         tableModel.setRowCount(0); 
         // STEP 2: tải từng dòng lên bảng  
-         // Tạo HashMap để ánh xạ mã NXB -> tên NXB
         NhaXuatBanBUS nhaXuatBanBUS = new NhaXuatBanBUS();
         HashMap<Integer, String> nhaXuatBanMap = new HashMap<>();
         for (NhaXuatBanDTO nxb : nhaXuatBanBUS.getAllNhaXuatBan()) {
             nhaXuatBanMap.put(nxb.getMaNXB(), nxb.getTenNXB());
         }
 
-        // Lấy danh sách sách và hiển thị tên NXB thay vì mã
         ArrayList<SachDTO> listSach = sachBUS.getAllSach();
         for (SachDTO sach : listSach) {
-            String tenNXB = nhaXuatBanMap.getOrDefault(sach.getMaNXB(), "Không xác định");
+            String tenNXB = nhaXuatBanMap.get(sach.getMaNXB());
             tableModel.addRow(new Object[]{
                 sach.getMaSach(),
                 sach.getTenSach(),
@@ -145,7 +143,6 @@ public class BookMainContentGUI extends JPanel {
         String tenNXB = tableModel.getValueAt(selectedRow, 3).toString(); 
         int soLuongTon = Integer.parseInt(tableModel.getValueAt(selectedRow, 4).toString());
 
-        // Tìm mã NXB theo tên NXB
         int maNXB = 0;
         NhaXuatBanBUS nhaXuatBanBUS = new NhaXuatBanBUS();
         for (NhaXuatBanDTO nxb : nhaXuatBanBUS.getAllNhaXuatBan()) {
@@ -167,14 +164,9 @@ public class BookMainContentGUI extends JPanel {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn một cuốn sách để xóa!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
-
         int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa cuốn sách này không?", "Xác nhận", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             int maSach = Integer.parseInt(tableModel.getValueAt(selectedRow, 0).toString());
-            NhomTheLoaiBUS nhomTheLoaiBUS = new NhomTheLoaiBUS();
-            nhomTheLoaiBUS.deleteByMaSach(maSach);
-            NhomTacGiaBUS nhomTacGiaBUS = new NhomTacGiaBUS();
-            nhomTacGiaBUS.deleteByMaSach(maSach); 
             if (sachBUS.deleteSach(maSach)) { 
                 JOptionPane.showMessageDialog(this, "Xóa sách thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 loadTableData();

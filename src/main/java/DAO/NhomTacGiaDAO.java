@@ -45,6 +45,35 @@ public class NhomTacGiaDAO {
         }
         return 0;
     }
+    
+    public int delete(int maTG, int maSach) {
+        String sql = "DELETE FROM nhomtacgia WHERE maSach = ? AND maTG = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, maSach);
+            ps.setInt(2, maTG);
+            return ps.executeUpdate(); 
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return 0; 
+    }
+    
+    public int exists(int maTG, int maSach) {
+        String sql = "SELECT COUNT(*) FROM nhomtacgia WHERE maSach = ? AND maTG = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, maSach);
+            ps.setInt(2, maTG);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);  
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return 0;  
+    }
 
     public ArrayList<NhomTacGiaDTO> getAll() {
         ArrayList<NhomTacGiaDTO> dsTG = new ArrayList<>();
@@ -83,7 +112,7 @@ public class NhomTacGiaDAO {
         return null;
     }
     
-    public ArrayList<Integer> getMaTacGiaBySach(int maSach) {
+    public ArrayList<Integer> getMaTacGiaByMaSach(int maSach) {
         ArrayList<Integer> list = new ArrayList<>();
         String sql = "SELECT maTG FROM nhomtacgia WHERE maSach = ?";
 
@@ -101,18 +130,7 @@ public class NhomTacGiaDAO {
         return list;
     }
     
-    public boolean deleteByMaSach(int maSach) {
-        String sql = "DELETE FROM nhomtacgia WHERE maSach = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, maSach);
-            stmt.executeUpdate();
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
+    
+    
 
 }

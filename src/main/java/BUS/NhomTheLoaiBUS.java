@@ -26,18 +26,13 @@ public class NhomTheLoaiBUS {
         return nhomTheLoaiDAO.update(ntl) > 0;
     }
 
-    public boolean deleteNhomTheLoai(int MaTL) {
-        return nhomTheLoaiDAO.delete(MaTL) > 0;
+    public boolean deleteNhomTheLoai(int maSach) {
+        return nhomTheLoaiDAO.delete(maSach) > 0;
     }
     
-    public ArrayList<Integer> getMaTheLoaiBySach(int maSach) {
-        return nhomTheLoaiDAO.getMaTheLoaiBySach(maSach);
+    public ArrayList<Integer> getMaTheLoaiByMaSach(int maSach) {
+        return nhomTheLoaiDAO.getMaTheLoaiByMaSach(maSach);
     }
-
-    public boolean deleteByMaSach(int maSach) {
-        return nhomTheLoaiDAO.deleteByMaSach(maSach);
-    }
-
     
     public boolean addNhomTheLoai(int maSach, ArrayList<Integer> dsMaTL) {
         for (int maTL : dsMaTL) {
@@ -47,4 +42,13 @@ public class NhomTheLoaiBUS {
         }
         return true;
     }
+    
+    public boolean existsNhomTheLoai(int maTL, int maSach) {
+        return nhomTheLoaiDAO.exists(maTL, maSach) > 0;
+    }
+    public boolean deleteNhomTheLoai(int maTL, int maSach) {
+        return nhomTheLoaiDAO.delete(maTL, maSach) > 0;
+    }
+
+
 }

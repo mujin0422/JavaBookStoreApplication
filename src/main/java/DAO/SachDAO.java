@@ -93,19 +93,8 @@ public class SachDAO {
         }
         return null;
     }
-
-    // ======================(KIỂM TRA MÃ SÁCH ĐÃ TỒN TẠI CHƯA)=========================//
-    public boolean exists(int maSach) {
-        String sql = "SELECT 1 FROM sach WHERE maSach = ? LIMIT 1";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, maSach);
-            try (ResultSet rs = pstmt.executeQuery()) {
-                return rs.next(); 
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
+    
+//    public void updateSoLuong(int maSach, int soLuong){
+//        
+//    }
 }

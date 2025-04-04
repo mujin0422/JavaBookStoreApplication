@@ -44,15 +44,15 @@ public class AddAndEditAuthorGUI extends JDialog {
         this.setLayout(new BorderLayout());
         
         JPanel inputPanel = new JPanel(new GridLayout(2, 2, 10, 10));
-        inputPanel.setBackground(UIConstants.MAIN_BACKGROUND);
+        inputPanel.setBackground(UIConstants.MAIN_BUTTON);
         inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         inputPanel.add(new UILabel("Mã tác giả:"));
         inputPanel.add(txtMaTG = new JTextField());
         inputPanel.add(new UILabel("Tên tác giả:"));
         inputPanel.add(txtTenTG = new JTextField());
 
-        JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 10));
-        btnPanel.setBackground(UIConstants.MAIN_BACKGROUND);
+        JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
+        btnPanel.setBackground(UIConstants.MAIN_BUTTON);
         btnAdd = new UIButton("add", "THÊM", 90, 35);
         btnSave = new UIButton("confirm", "LƯU", 90, 35);
         btnCancel = new UIButton("cancel", "HỦY", 90, 35);
@@ -62,7 +62,6 @@ public class AddAndEditAuthorGUI extends JDialog {
             case "save" -> btnPanel.add(btnSave);
         }
         btnPanel.add(btnCancel);
-
         this.add(inputPanel, BorderLayout.CENTER);
         this.add(btnPanel, BorderLayout.SOUTH);
 

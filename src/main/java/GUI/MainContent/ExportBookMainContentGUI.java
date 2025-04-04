@@ -22,7 +22,7 @@ public class ExportBookMainContentGUI extends JPanel{
     private JTextField txtSearch;
     private JComboBox<String> cbFilter;
     private JTable tblContent;
-    private JPanel pnlHeader, pnlContent;
+    private JPanel pnlHeader, pnlContent, pnlForm, pnlInfo;
     
     private DefaultTableModel tableModel;
     private PhieuXuatBUS phieuXuatBUS;
@@ -58,12 +58,12 @@ public class ExportBookMainContentGUI extends JPanel{
         
         
         //================================( PANEL CONTENT )=============================//
-        pnlContent = new JPanel();
-        pnlContent.setLayout(new BorderLayout());
+        pnlContent = new JPanel(new BorderLayout());
+        pnlContent.setPreferredSize(new Dimension(0, 200));
         pnlContent.setBackground(UIConstants.MAIN_BACKGROUND);
 
         // Tạo bảng dữ liệu
-        String[] columnNames = {"MÃ PHIẾU XUẤT", "MÃ NHÂN VIÊN", "MÃ KHÁCH HÀNG", "TỔNG TIỀN", "NGÀY GHI PHIẾU"};
+        String[] columnNames = {"MÃ PHIẾU XUẤT", "NHÂN VIÊN", "KHÁCH HÀNG", "TỔNG TIỀN", "NGÀY GHI PHIẾU"};
         Object[][] data = {}; // Chưa có dữ liệu
         tblContent = new JTable(new DefaultTableModel(data, columnNames));
 
@@ -85,6 +85,6 @@ public class ExportBookMainContentGUI extends JPanel{
         
         
         this.add(pnlHeader, BorderLayout.NORTH);
-        this.add(pnlContent, BorderLayout.CENTER);
+        this.add(pnlContent, BorderLayout.SOUTH);
     }
 }

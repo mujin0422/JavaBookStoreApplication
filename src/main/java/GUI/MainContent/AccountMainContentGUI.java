@@ -1,14 +1,23 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package GUI.MainContent;
 
 import BUS.NhanVienBUS;
+import BUS.QuyenBUS;
+import BUS.TaiKhoanBUS;
 import DTO.NhanVienDTO;
-import GUI.MainContentDiaLog.AddAndEditStaffGUI;
+import DTO.QuyenDTO;
+import DTO.TaiKhoanDTO;
+import GUI.MainContentDiaLog.AddAndEditAccountGUI;
 import Utils.UIButton;
 import Utils.UIConstants;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Window;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -19,7 +28,11 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
-public class StaffMainContentGUI extends JPanel{
+/**
+ *
+ * @author Dell Vostro
+ */
+public class AccountMainContentGUI extends JPanel{
     private UIButton btnAdd, btnDelete, btnEdit;
     private JTextField txtSearch;
     private JComboBox<String> cbFilter;
@@ -27,15 +40,14 @@ public class StaffMainContentGUI extends JPanel{
     private JPanel pnlHeader, pnlContent;
     
     private DefaultTableModel tableModel;
-    private NhanVienBUS nhanVienBUS;
+    private TaiKhoanBUS taiKhoanBUS;
 
-    public StaffMainContentGUI() {
-        this.nhanVienBUS= new NhanVienBUS();
+    public AccountMainContentGUI() {
+        this.taiKhoanBUS = new TaiKhoanBUS();
         this.setBackground(UIConstants.SUB_BACKGROUND);
         this.setPreferredSize(new Dimension(UIConstants.WIDTH_CONTENT, UIConstants.HEIGHT_CONTENT));
         this.setLayout(new BorderLayout(5, 5));
 
-        
         //==============================( PANEL HEADER )================================//
         pnlHeader = new JPanel();
         pnlHeader.setLayout(null); 
@@ -43,24 +55,21 @@ public class StaffMainContentGUI extends JPanel{
         pnlHeader.setPreferredSize(new Dimension(this.getWidth(), 50));
 
         btnAdd = new UIButton("menuButton", "THÊM", 100, 30, "/Icon/them_icon.png");
-        btnAdd.addActionListener(e -> addStaff());
+        btnAdd.addActionListener(e -> addAccount());
         btnDelete = new UIButton("menuButton", "XÓA", 100, 30, "/Icon/xoa_icon.png");
-        btnDelete.addActionListener(e -> deleteStaff());
+        btnDelete.addActionListener(e -> deleteAccount());
         btnEdit = new UIButton("menuButton", "SỬA", 100, 30, "/Icon/sua_icon.png");
-        btnEdit.addActionListener(e -> editStaff());
+        btnEdit.addActionListener(e -> editAccount());
         btnAdd.setBounds(5, 5, 90, 40);
         btnDelete.setBounds(105, 5, 90, 40);
         btnEdit.setBounds(210, 5, 90, 40);
 
-            // Tạo combobox và ô tìm kiếm
         int panelWidth = this.getPreferredSize().width; 
         cbFilter = new JComboBox<>(new String[]{"Lọc"});
         cbFilter.setBounds(panelWidth - 320, 10, 100, 30);
-
         txtSearch = new JTextField();
         txtSearch.setBounds(panelWidth - 210, 10, 190, 30);
 
-            // Thêm tất cả vào pnlHeader
         pnlHeader.add(btnAdd);
         pnlHeader.add(btnDelete);
         pnlHeader.add(btnEdit);
@@ -74,9 +83,8 @@ public class StaffMainContentGUI extends JPanel{
         pnlContent = new JPanel();
         pnlContent.setLayout(new BorderLayout());
         pnlContent.setBackground(UIConstants.MAIN_BACKGROUND);
-
         // Tạo bảng dữ liệu
-        String[] columnNames = {"MÃ NHÂN VIÊN", "TÊN NHÂN VIÊN", "EMAIL", "SỐ ĐIỆN THOẠI"};
+        String[] columnNames = {"NHÂN VIÊN", "TÊN ĐĂNG NHẬP", "MẬT KHẨU", "QUYỀN"};
         tableModel = new DefaultTableModel(columnNames, 0); 
         tblContent = new JTable(tableModel);
         tblContent.setDefaultEditor(Object.class, null);
@@ -100,56 +108,82 @@ public class StaffMainContentGUI extends JPanel{
     }
     
     private void loadTableData(){
-        // STEP 1: xóa dữ liệu cũ
-        tableModel.setRowCount(0); 
-        // STEP 2: tải từng dòng lên bảng  
-        ArrayList<NhanVienDTO> listNhanVien = nhanVienBUS.getAllNhanVien();
-        for (NhanVienDTO nhanvien : listNhanVien) {
+        tableModel.setRowCount(0);
+        NhanVienBUS nvBus = new NhanVienBUS();
+        HashMap<Integer,String> nvMap = new HashMap<>();
+        for(NhanVienDTO nv : nvBus.getAllNhanVien()){
+            nvMap.put(nv.getMaNV(), nv.getTenNV());
+        }
+        QuyenBUS quyenBus = new QuyenBUS();
+        HashMap<Integer,String> quyenMap = new HashMap<>();
+        for(QuyenDTO quyen : quyenBus.getAllQuyen()){
+            quyenMap.put(quyen.getMaQuyen(), quyen.getTenQuyen());
+        }
+        ArrayList<TaiKhoanDTO> listTK = taiKhoanBUS.getAllTaiKhoan();
+        for(TaiKhoanDTO tk : listTK){
+            String tenNV = nvMap.get(tk.getMaNV());
+            String tenQuyen = quyenMap.get(tk.getMaQuyen());
             tableModel.addRow(new Object[]{
-                nhanvien.getMaNV(),
-                nhanvien.getTenNV(),
-                nhanvien.getEmail(),
-                nhanvien.getSdt()             
+                tenNV,
+                tk.getTenDangNhap(),
+                tk.getMatKhau(),
+                tenQuyen
             });
         }
     }
     
-    private void addStaff(){
+    private void addAccount(){
         Window window = SwingUtilities.getWindowAncestor(this);
-        new AddAndEditStaffGUI((JFrame) window, nhanVienBUS, "Thêm Nhân Viên", "add");
-        loadTableData(); 
-    }
-    
-    private void editStaff(){
-        int selectedRow = tblContent.getSelectedRow();
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn một nhân viên để chỉnh sửa!", "Thông báo", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        int maNV = Integer.parseInt(tableModel.getValueAt(selectedRow, 0).toString());
-        String tenNV = tableModel.getValueAt(selectedRow, 1).toString();
-        String email = tableModel.getValueAt(selectedRow, 2).toString(); 
-        String sdt = tableModel.getValueAt(selectedRow, 3).toString(); 
-        NhanVienDTO nv = new NhanVienDTO(maNV, tenNV, email, sdt);
-        Window window = SwingUtilities.getWindowAncestor(this);
-        new AddAndEditStaffGUI((JFrame) window, nhanVienBUS, "Chỉnh sửa nhân viên", "save", nv);
+        new AddAndEditAccountGUI((JFrame) window, taiKhoanBUS, "Thêm Tài Khoản", "add");
         loadTableData();
     }
     
-    private void deleteStaff(){
+    private void editAccount(){
         int selectedRow = tblContent.getSelectedRow();
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn một nhân viên để xóa!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+        if(selectedRow == -1){
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn một tài khoản chỉnh sửa!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        String tenNV = tableModel.getValueAt(selectedRow, 0).toString();
+        String tenDangNhap = tableModel.getValueAt(selectedRow, 1).toString();
+        String matKhau = tableModel.getValueAt(selectedRow, 2).toString();
+        String tenQuyen = tableModel.getValueAt(selectedRow, 3).toString();
+        int maNV = 0;
+        NhanVienBUS nvBus = new NhanVienBUS();
+        for(NhanVienDTO nv : nvBus.getAllNhanVien()){
+            if(nv.getTenNV().equals(tenNV)){
+                maNV = nv.getMaNV();
+                break;
+            }
+        }
+        int maQuyen = 0;
+        QuyenBUS quyenBus = new QuyenBUS();
+        for(QuyenDTO quyen : quyenBus.getAllQuyen()){
+            if(quyen.getTenQuyen().equals(tenQuyen))
+                maQuyen = quyen.getMaQuyen();
+            break;
+        }
+        
+        TaiKhoanDTO tk = new TaiKhoanDTO(tenDangNhap, matKhau, maNV, maQuyen);
+        Window window = SwingUtilities.getWindowAncestor(this);
+        new AddAndEditAccountGUI((JFrame) window, taiKhoanBUS, "Chỉnh sửa tài khoản", "save", tk);
+        loadTableData();
+    }
+    
+    private void deleteAccount(){
+        int selectedRow = tblContent.getSelectedRow();
+        if(selectedRow == -1){
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn một tài khoản để xóa!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
         int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa không?", "Xác nhận", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             int maNV = Integer.parseInt(tableModel.getValueAt(selectedRow, 0).toString());
-            if (nhanVienBUS.deleteNhanVien(maNV)) { 
-                JOptionPane.showMessageDialog(this, "Xóa nhân viên thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            if(taiKhoanBUS.deleteTaiKhoan(maNV)){
+                JOptionPane.showMessageDialog(this, "Xóa thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 loadTableData();
             } else {
-                JOptionPane.showMessageDialog(this, "Xóa nhân viên thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Xóa thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
         }
     }

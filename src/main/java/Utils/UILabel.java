@@ -11,11 +11,12 @@ public class UILabel extends JLabel {
     }
     
     public UILabel(String text) {
-        initComponent(text, 100, 20);
+        initComponent(text, 100, 30);
     }
     
     private void initComponent(String text, int width, int height) {
         this.setText(text); 
+        this.setForeground(UIConstants.WHITE_FONT);
         this.setPreferredSize(new Dimension(width, height)); 
         this.setFont(UIConstants.FONT_BUTTON); 
         this.setHorizontalAlignment(JLabel.LEFT); 

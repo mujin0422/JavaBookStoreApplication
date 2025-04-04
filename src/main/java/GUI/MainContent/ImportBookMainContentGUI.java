@@ -25,7 +25,7 @@ public class ImportBookMainContentGUI extends JPanel{
     private JTextField txtSearch;
     private JComboBox<String> cbFilter;
     private JTable tblContent;
-    private JPanel pnlHeader, pnlContent;
+    private JPanel pnlHeader, pnlContent, pnlForm, pnlInfo;
     
     private DefaultTableModel tableModel;
     private PhieuNhapBUS phieuNhapBUS;
@@ -57,15 +57,21 @@ public class ImportBookMainContentGUI extends JPanel{
         pnlHeader.add(cbFilter);
         pnlHeader.add(txtSearch);
         //==============================( End Panel Header )============================//
-
+        
+        
+        //==================================( PANEL FORM )==============================//
+        pnlForm = new JPanel(new BorderLayout());
+        pnlForm.setPreferredSize(new Dimension(500, 0));
+        pnlForm.setBackground(UIConstants.MAIN_BACKGROUND);
+        //================================( End Panel Form )============================//
         
         //================================( PANEL CONTENT )=============================//
-        pnlContent = new JPanel();
-        pnlContent.setLayout(new BorderLayout());
+        pnlContent = new JPanel(new BorderLayout());
+        pnlContent.setPreferredSize(new Dimension(0, 200));
         pnlContent.setBackground(UIConstants.MAIN_BACKGROUND);
 
         // Tạo bảng dữ liệu
-        String[] columnNames = {"MÃ PHIẾU NHẬP", "MÃ NHÂN VIÊN", "MÃ NHÀ CUNG CẤP", "TỔNG TIỀN", "NGÀY GHI PHIẾU"};
+        String[] columnNames = {"MÃ PHIẾU NHẬP", "NHÂN VIÊN", "NHÀ CUNG CẤP", "TỔNG TIỀN", "NGÀY GHI PHIẾU"};
         Object[][] data = {}; // Chưa có dữ liệu
         tblContent = new JTable(new DefaultTableModel(data, columnNames));
 
@@ -84,8 +90,8 @@ public class ImportBookMainContentGUI extends JPanel{
         //===============================( End Panel Content )===========================//
         
         
-        
         this.add(pnlHeader, BorderLayout.NORTH);
-        this.add(pnlContent, BorderLayout.CENTER);
+        this.add(pnlForm, BorderLayout.WEST);
+        this.add(pnlContent, BorderLayout.SOUTH);
     }
 }
