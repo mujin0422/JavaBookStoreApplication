@@ -37,11 +37,11 @@ public class TaiKhoanDAO {
         return 0;
     }
 
-    public int delete(int maNV) {
-        String sql = "UPDATE taikhoan SET trangThaiXoa=1 WHERE maNV=?";
+    public int delete(String tenDangNhap) {
+        String sql = "UPDATE taikhoan SET trangThaiXoa=1 WHERE tenDangNhap=?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, maNV);
+            ps.setString(1, tenDangNhap );
             return ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -92,7 +92,7 @@ public class TaiKhoanDAO {
     }
     
     public TaiKhoanDTO getByUsername(String username) {
-        String sql = "SELECT * FROM taikhoan WHERE tenDangNhap=?";
+        String sql = "SELECT * FROM taikhoan WHERE tenDangNhap=? AND trangThaiXoa=0";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, username);
@@ -111,7 +111,6 @@ public class TaiKhoanDAO {
         }
         return null;
     }
-    
 }
 
    

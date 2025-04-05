@@ -60,40 +60,4 @@ public class TaiKhoanDTO {
     public void setMaQuyen(int maQuyen) {
         this.maQuyen = maQuyen;
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 23 * hash + Objects.hashCode(this.tenDangNhap);
-        hash = 23 * hash + Objects.hashCode(this.matKhau);
-        hash = 23 * hash + this.maNV;
-        hash = 23 * hash + this.maQuyen;
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final TaiKhoanDTO other = (TaiKhoanDTO) obj;
-        if (this.maNV != other.maNV) {
-            return false;
-        }
-        if (this.maQuyen != other.maQuyen) {
-            return false;
-        }
-        if (!Objects.equals(this.tenDangNhap, other.tenDangNhap)) {
-            return false;
-        }
-        return Objects.equals(this.matKhau, other.matKhau);
-    }
-
-    
 }

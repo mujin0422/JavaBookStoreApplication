@@ -178,8 +178,8 @@ public class AccountMainContentGUI extends JPanel{
         }
         int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa không?", "Xác nhận", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
-            int maNV = Integer.parseInt(tableModel.getValueAt(selectedRow, 0).toString());
-            if(taiKhoanBUS.deleteTaiKhoan(maNV)){
+            String tenDangNhap = tableModel.getValueAt(selectedRow, 1).toString();
+            if(taiKhoanBUS.deleteTaiKhoan(tenDangNhap)){
                 JOptionPane.showMessageDialog(this, "Xóa thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 loadTableData();
             } else {
