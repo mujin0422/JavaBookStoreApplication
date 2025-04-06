@@ -16,7 +16,6 @@ import Utils.UIButton;
 import Utils.UIConstants;
 import Utils.UILabel;
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.util.ArrayList;

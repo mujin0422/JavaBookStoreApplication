@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Image;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 

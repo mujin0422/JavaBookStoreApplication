@@ -5,7 +5,6 @@ import DTO.TaiKhoanDTO;
 import java.awt.*;
 import javax.swing.*;
 import Utils.UIButton;
-import java.awt.event.ActionListener;
 
 public final class LoginGUI extends JFrame {
     private JTextField txtAccount;
@@ -18,7 +17,7 @@ public final class LoginGUI extends JFrame {
     public LoginGUI() {
         initComponent();
         taiKhoanDAO = new TaiKhoanDAO();
-        txtAccount.setText("admin1");
+        txtAccount.setText("admin3");
         txtPassword.setText("123456");
     }
 
@@ -137,7 +136,7 @@ public final class LoginGUI extends JFrame {
             JOptionPane.showMessageDialog(this, "Mật khẩu không chính xác!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         } else {
             JOptionPane.showMessageDialog(this, "Đăng nhập thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-            new MainLayoutGUI();
+            new MainLayoutGUI(taiKhoan);
             this.dispose();
         }
         

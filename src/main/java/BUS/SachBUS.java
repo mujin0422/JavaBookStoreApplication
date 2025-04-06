@@ -38,6 +38,13 @@ public class SachBUS {
         return sachDAO.delete(maSach) > 0;  
     }
     
+    public int getSoLuongTonSach(int maSach){
+        return sachDAO.getSoLuongTonSach(maSach);
+    }
+    public boolean updateSoLuongTonSach(int maSach, int soLuongTon){
+        return sachDAO.updateSoLuongTonSach(maSach, soLuongTon) > 0;
+    }
+    
     public ArrayList<SachDTO> searchSach(String keyword) {
         if (keyword == null || keyword.trim().isEmpty()) {
             return sachDAO.getAll();

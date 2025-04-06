@@ -1,8 +1,11 @@
 package DAO;
 
 import DTO.NhanVienDTO;
-import DAO.DatabaseConnection;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 public class NhanVienDAO {
@@ -74,6 +77,60 @@ public class NhanVienDAO {
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return new NhanVienDTO(
+                        rs.getInt("maNV"),
+                        rs.getString("tenNV"),
+                        rs.getString("email"),
+                        rs.getString("sdt")
+                    );
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public int getMaNvByTenNv(String tenNv) {
+        String sql = "SELECT maNV FROM nhanvien WHERE tenNV=?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, tenNv); 
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("maNV"); 
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0; 
+    }
+    
+    public String getTenNvByMaNv(int maNv) {
+        String sql = "SELECT tenNV FROM nhanvien WHERE maNV=?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, maNv); 
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("tenNV"); 
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; 
+    }
+    
+    public NhanVienDTO getCurrentStaffByUserName(String username){
+        String sql = "SELECT * FROM taikhoan tk JOIN nhanvien nv "
+                + "WHERE nv.maNV = tk.maNV AND tk.tenDangNhap=? ";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, username);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return new NhanVienDTO(

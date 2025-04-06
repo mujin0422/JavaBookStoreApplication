@@ -1,8 +1,6 @@
 package GUI.MainContent;
 
 import BUS.NhaXuatBanBUS;
-import BUS.NhomTacGiaBUS;
-import BUS.NhomTheLoaiBUS;
 import BUS.SachBUS;
 import BUS.TacGiaBUS;
 import BUS.TheLoaiBUS;
@@ -11,6 +9,7 @@ import DTO.SachDTO;
 import GUI.MainContentDiaLog.*;
 import Utils.UIConstants;
 import Utils.UIButton;
+import Utils.UIScrollPane;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -78,6 +77,7 @@ public class BookMainContentGUI extends JPanel {
         pnlContent = new JPanel();
         pnlContent.setLayout(new BorderLayout());
         pnlContent.setBackground(UIConstants.MAIN_BACKGROUND);
+        pnlContent.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
             
         String[] columnNames = {"MÃ SÁCH", "TÊN SÁCH", "GIÁ", "NHÀ XUẤT BẢN", "TỒN KHO"};
         tableModel = new DefaultTableModel(columnNames, 0); // ####
@@ -87,11 +87,10 @@ public class BookMainContentGUI extends JPanel {
         tblContent.getTableHeader().setFont(UIConstants.SUBTITLE_FONT);
         tblContent.getTableHeader().setBackground(UIConstants.MAIN_BUTTON);
         tblContent.getTableHeader().setForeground(UIConstants.WHITE_FONT);
-        tblContent.setRowHeight(25);
+        tblContent.getTableHeader().setPreferredSize(new Dimension(0,30));
+        tblContent.setRowHeight(30);
             
-        JScrollPane scrollPane = new JScrollPane(tblContent);
-        scrollPane.getViewport().setBackground(UIConstants.MAIN_BACKGROUND);
-            
+        UIScrollPane scrollPane = new UIScrollPane(tblContent);  
         pnlContent.add(scrollPane, BorderLayout.CENTER);
         //===============================( End Panel Content )===========================//
 
@@ -102,7 +101,7 @@ public class BookMainContentGUI extends JPanel {
         loadTableData();
     }
 
-    private void loadTableData() {
+    public void loadTableData() {
         // STEP 1: xóa dữ liệu cũ
         tableModel.setRowCount(0); 
         // STEP 2: tải từng dòng lên bảng  

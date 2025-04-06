@@ -1,8 +1,11 @@
 package DAO;
 
 import DTO.SachDTO;
-import DAO.DatabaseConnection;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 public class SachDAO {
@@ -94,7 +97,33 @@ public class SachDAO {
         return null;
     }
     
-//    public void updateSoLuong(int maSach, int soLuong){
-//        
-//    }
+    public int getSoLuongTonSach(int maSach){
+        String sql = "SELECT soLuongTon FROM sach WHERE maSach=?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, maSach);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("soLuongTon");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+    public int updateSoLuongTonSach(int maSach, int soLuongTon) {
+        String sql = "UPDATE sach SET soLuongTon = ? WHERE maSach = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, soLuongTon);
+            ps.setInt(2, maSach);
+            return ps.executeUpdate(); 
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+
 }

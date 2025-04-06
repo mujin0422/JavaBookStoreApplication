@@ -15,9 +15,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
@@ -57,15 +55,10 @@ public class AboutBookMainContentGUI extends JPanel{
         tblNhaXuatBan.setDefaultEditor(Object.class,null);
 
         tblNhaXuatBan.getTableHeader().setFont(UIConstants.SUBTITLE_FONT);
-        tblNhaXuatBan.getTableHeader().setBackground(UIConstants.MAIN_BUTTON);
-        tblNhaXuatBan.getTableHeader().setForeground(UIConstants.WHITE_FONT);
-        tblNhaXuatBan.setRowHeight(25);
+        tblNhaXuatBan.getTableHeader().setPreferredSize(new Dimension(0,30));
+        tblNhaXuatBan.setRowHeight(30);
         
-        JScrollPane scrollNXB = new JScrollPane(tblNhaXuatBan);
-        scrollNXB.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-        scrollNXB.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-
-        
+        UIScrollPane scrollNXB = new UIScrollPane(tblNhaXuatBan);
         pnlNhaXuatBan.getPnlContent().add(scrollNXB, BorderLayout.CENTER);
         //===========================( End Panel Nha Xuat Ban )=========================//
         
@@ -90,13 +83,10 @@ public class AboutBookMainContentGUI extends JPanel{
         tblTacGia.setDefaultEditor(Object.class,null);
         
         tblTacGia.getTableHeader().setFont(UIConstants.SUBTITLE_FONT);
-        tblTacGia.getTableHeader().setBackground(UIConstants.MAIN_BUTTON);
-        tblTacGia.getTableHeader().setForeground(UIConstants.WHITE_FONT);
-        tblTacGia.setRowHeight(25);
+        tblTacGia.getTableHeader().setPreferredSize(new Dimension(0,30));
+        tblTacGia.setRowHeight(30);
         
-        JScrollPane scrollTG = new JScrollPane(tblTacGia);
-        scrollTG.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-        scrollTG.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        UIScrollPane scrollTG = new UIScrollPane(tblTacGia);
         
         pnlTacGia.getPnlContent().add(scrollTG, BorderLayout.CENTER);
         //==============================( End Panel Tac Gia )===========================//
@@ -122,14 +112,10 @@ public class AboutBookMainContentGUI extends JPanel{
         tblTheLoai.setDefaultEditor(Object.class,null);
         
         tblTheLoai.getTableHeader().setFont(UIConstants.SUBTITLE_FONT);
-        tblTheLoai.getTableHeader().setBackground(UIConstants.MAIN_BUTTON);
-        tblTheLoai.getTableHeader().setForeground(UIConstants.WHITE_FONT);
-        tblTheLoai.setRowHeight(25);
+        tblTheLoai.getTableHeader().setPreferredSize(new Dimension(0,30));
+        tblTheLoai.setRowHeight(30);
         
-        JScrollPane scrollTL = new JScrollPane(tblTheLoai);
-        scrollTL.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-        scrollTL.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        
+        UIScrollPane scrollTL = new UIScrollPane(tblTheLoai);
         pnlTheLoai.getPnlContent().add(scrollTL, BorderLayout.CENTER);
         //==============================( End Panel The Loai )==========================//
         

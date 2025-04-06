@@ -1,13 +1,16 @@
 package DAO;
 
 import DTO.PhieuNhapDTO;
-import DAO.DatabaseConnection;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 public class PhieuNhapDAO {
     public int add(PhieuNhapDTO obj) {
-        String sql = "INNERT INTO phieunhap(maPN, maNV, maNCC, tongTien, ngayNhap) VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO phieunhap(maPN, maNV, maNCC, tongTien, ngayNhap) VALUES (?,?,?,?,?)";
         try(Connection conn = DatabaseConnection.getConnection(); 
              PreparedStatement ps = conn.prepareStatement(sql)){
             ps.setInt(1, obj.getMaPN());
@@ -50,6 +53,22 @@ public class PhieuNhapDAO {
         return 0;
     }
 
+    public int exists(int maPN) {
+        String sql = "SELECT COUNT(*) FROM PhieuNhap WHERE MaPN = ?";
+        try (Connection conn = DatabaseConnection.getConnection(); 
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, maPN);  
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);  
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;  
+    }
+
+    
     public ArrayList<PhieuNhapDTO> getAll() {
         ArrayList<PhieuNhapDTO> dspn = new ArrayList<>();
         String sql = "SELECT * FROM phieunhap WHERE trangThaiXoa=0";
@@ -93,5 +112,7 @@ public class PhieuNhapDAO {
         }
         return null;
     }
-
+    
+    
+    
 }

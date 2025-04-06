@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package GUI.MainContent;
 
 import BUS.PhieuXuatBUS;
@@ -14,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 
 
@@ -41,7 +38,6 @@ public class ExportBookMainContentGUI extends JPanel{
         btnAdd = new UIButton("menuButton", "THÊM", 100, 30, "/Icon/them_icon.png");
         btnAdd.setBounds(5, 5, 90, 40);
 
-            // Tạo combobox và ô tìm kiếm
         int panelWidth = this.getPreferredSize().width; 
         cbFilter = new JComboBox<>(new String[]{"Lọc"});
         cbFilter.setBounds(panelWidth - 320, 10, 100, 30);
@@ -49,7 +45,6 @@ public class ExportBookMainContentGUI extends JPanel{
         txtSearch = new JTextField();
         txtSearch.setBounds(panelWidth - 210, 10, 190, 30);
 
-            // Thêm tất cả vào pnlHeader
         pnlHeader.add(btnAdd);
         pnlHeader.add(cbFilter);
         pnlHeader.add(txtSearch);
@@ -62,22 +57,21 @@ public class ExportBookMainContentGUI extends JPanel{
         pnlContent.setPreferredSize(new Dimension(0, 200));
         pnlContent.setBackground(UIConstants.MAIN_BACKGROUND);
 
-        // Tạo bảng dữ liệu
         String[] columnNames = {"MÃ PHIẾU XUẤT", "NHÂN VIÊN", "KHÁCH HÀNG", "TỔNG TIỀN", "NGÀY GHI PHIẾU"};
         Object[][] data = {}; // Chưa có dữ liệu
         tblContent = new JTable(new DefaultTableModel(data, columnNames));
 
-        // Thiết lập header của bảng
         tblContent.getTableHeader().setFont(UIConstants.SUBTITLE_FONT);
         tblContent.getTableHeader().setBackground(UIConstants.MAIN_BUTTON);
         tblContent.getTableHeader().setForeground(UIConstants.WHITE_FONT);
-        tblContent.setRowHeight(25);
+        tblContent.getTableHeader().setPreferredSize(new Dimension(0,30));
+        tblContent.setRowHeight(30);
 
-        // Đặt bảng vào JScrollPane
         JScrollPane scrollPane = new JScrollPane(tblContent);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.getViewport().setBackground(UIConstants.MAIN_BACKGROUND);
 
-        // Thêm JScrollPane vào pnlContent
         pnlContent.add(scrollPane, BorderLayout.CENTER);
         //===============================( End Panel Content )===========================//
         

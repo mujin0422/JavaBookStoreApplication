@@ -1,5 +1,6 @@
 package GUI;
 
+import DTO.TaiKhoanDTO;
 import GUI.MainContent.*;
 import Utils.UIButton;
 import Utils.UIConstants;
@@ -10,8 +11,10 @@ import javax.swing.*;
 public final class MainLayoutGUI extends JFrame {
     private JPanel pnlTitle, pnlMenu, pnlContent; 
     private ArrayList<UIButton> buttons; 
+    private TaiKhoanDTO taiKhoan;
 
-    public MainLayoutGUI() {
+    public MainLayoutGUI(TaiKhoanDTO taiKhoan) {
+        this.taiKhoan = taiKhoan;
         initComponent();
     }
 
@@ -77,7 +80,7 @@ public final class MainLayoutGUI extends JFrame {
         AboutBookMainContentGUI aboutBookPanel = new AboutBookMainContentGUI();
         SupplierMainContentGUI supplierPanel = new SupplierMainContentGUI();
         DecentralizationMainContentGUI decentralizationPanel = new DecentralizationMainContentGUI();
-        ImportBookMainContentGUI importBookPanel = new ImportBookMainContentGUI();
+        ImportBookMainContentGUI importBookPanel = new ImportBookMainContentGUI(taiKhoan);
         ExportBookMainContentGUI exportBookPanel = new ExportBookMainContentGUI();
         AccountMainContentGUI accountPanel = new AccountMainContentGUI();
 

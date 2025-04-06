@@ -1,19 +1,16 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package GUI.MainContent;
 
 import BUS.QuyenBUS;
 import DTO.QuyenDTO;
 import Utils.UIButton;
 import Utils.UIConstants;
+import Utils.UIScrollPane;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.util.ArrayList;
+import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
@@ -73,20 +70,19 @@ public class DecentralizationMainContentGUI extends JPanel{
         pnlContent = new JPanel();
         pnlContent.setLayout(new BorderLayout());
         pnlContent.setBackground(UIConstants.MAIN_BACKGROUND);
-        // Tạo bảng dữ liệu
+        pnlContent.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
         String[] columnNames = {"MÃ QUYỀN", "TÊN QUYỀN"};
         tableModel = new DefaultTableModel(columnNames, 0); 
         tblContent = new JTable(tableModel);
         tblContent.setDefaultEditor(Object.class, null);
-        // Thiết lập header của bảng
         tblContent.getTableHeader().setFont(UIConstants.SUBTITLE_FONT);
         tblContent.getTableHeader().setBackground(UIConstants.MAIN_BUTTON);
         tblContent.getTableHeader().setForeground(UIConstants.WHITE_FONT);
-        tblContent.setRowHeight(25);
-        // Đặt bảng vào JScrollPane
-        JScrollPane scrollPane = new JScrollPane(tblContent);
-        scrollPane.getViewport().setBackground(UIConstants.MAIN_BACKGROUND);
-        // Thêm JScrollPane vào pnlContent
+        tblContent.getTableHeader().setPreferredSize(new Dimension(0,30));
+        tblContent.setRowHeight(30);
+       
+        UIScrollPane scrollPane = new UIScrollPane(tblContent);
         pnlContent.add(scrollPane, BorderLayout.CENTER);
         //===============================( End Panel Content )===========================//
         

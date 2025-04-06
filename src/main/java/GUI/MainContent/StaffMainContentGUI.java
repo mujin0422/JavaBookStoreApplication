@@ -5,15 +5,16 @@ import DTO.NhanVienDTO;
 import GUI.MainContentDiaLog.AddAndEditStaffGUI;
 import Utils.UIButton;
 import Utils.UIConstants;
+import Utils.UIScrollPane;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Window;
 import java.util.ArrayList;
+import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
@@ -74,21 +75,19 @@ public class StaffMainContentGUI extends JPanel{
         pnlContent = new JPanel();
         pnlContent.setLayout(new BorderLayout());
         pnlContent.setBackground(UIConstants.MAIN_BACKGROUND);
+        pnlContent.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        // Tạo bảng dữ liệu
         String[] columnNames = {"MÃ NHÂN VIÊN", "TÊN NHÂN VIÊN", "EMAIL", "SỐ ĐIỆN THOẠI"};
         tableModel = new DefaultTableModel(columnNames, 0); 
         tblContent = new JTable(tableModel);
         tblContent.setDefaultEditor(Object.class, null);
-        // Thiết lập header của bảng
         tblContent.getTableHeader().setFont(UIConstants.SUBTITLE_FONT);
         tblContent.getTableHeader().setBackground(UIConstants.MAIN_BUTTON);
         tblContent.getTableHeader().setForeground(UIConstants.WHITE_FONT);
-        tblContent.setRowHeight(25);
-        // Đặt bảng vào JScrollPane
-        JScrollPane scrollPane = new JScrollPane(tblContent);
-        scrollPane.getViewport().setBackground(UIConstants.MAIN_BACKGROUND);
-        // Thêm JScrollPane vào pnlContent
+        tblContent.getTableHeader().setPreferredSize(new Dimension(0,30));
+        tblContent.setRowHeight(30);
+        
+        UIScrollPane scrollPane = new UIScrollPane(tblContent);
         pnlContent.add(scrollPane, BorderLayout.CENTER);
         //===============================( End Panel Content )===========================//
         
