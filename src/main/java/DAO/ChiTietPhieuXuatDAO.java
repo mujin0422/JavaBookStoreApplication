@@ -18,7 +18,7 @@ public class ChiTietPhieuXuatDAO {
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, obj.getMaSach());
             ps.setInt(2, obj.getMaPX());
-            ps.setInt(3, obj.getSoLuongSP());
+            ps.setInt(3, obj.getSoLuong());
             ps.setInt(4, obj.getGiaBan());
             return ps.executeUpdate();
         } catch (SQLException e) {
@@ -31,7 +31,7 @@ public class ChiTietPhieuXuatDAO {
         String sql = "UPDATE chitietphieuxuat SET soLuong=?, giaBan=? WHERE maSach=? AND maPX=?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, obj.getSoLuongSP());
+            ps.setInt(1, obj.getSoLuong());
             ps.setInt(2, obj.getGiaBan());
             ps.setInt(3, obj.getMaSach());
             ps.setInt(4, obj.getMaPX());

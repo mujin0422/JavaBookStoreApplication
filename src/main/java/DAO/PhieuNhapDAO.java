@@ -5,7 +5,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 public class PhieuNhapDAO {
@@ -54,7 +53,7 @@ public class PhieuNhapDAO {
     }
 
     public int exists(int maPN) {
-        String sql = "SELECT COUNT(*) FROM PhieuNhap WHERE MaPN = ?";
+        String sql = "SELECT COUNT(*) FROM phieunhap WHERE maPN = ?";
         try (Connection conn = DatabaseConnection.getConnection(); 
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, maPN);  
@@ -112,7 +111,5 @@ public class PhieuNhapDAO {
         }
         return null;
     }
-    
-    
-    
+
 }

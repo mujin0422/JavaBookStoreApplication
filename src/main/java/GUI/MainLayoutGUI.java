@@ -81,7 +81,7 @@ public final class MainLayoutGUI extends JFrame {
         SupplierMainContentGUI supplierPanel = new SupplierMainContentGUI();
         DecentralizationMainContentGUI decentralizationPanel = new DecentralizationMainContentGUI();
         ImportBookMainContentGUI importBookPanel = new ImportBookMainContentGUI(taiKhoan);
-        ExportBookMainContentGUI exportBookPanel = new ExportBookMainContentGUI();
+        ExportBookMainContentGUI exportBookPanel = new ExportBookMainContentGUI(taiKhoan);
         AccountMainContentGUI accountPanel = new AccountMainContentGUI();
 
         for (int i = 0; i < buttonLabels.length; i++) {

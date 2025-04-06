@@ -5,18 +5,18 @@ package DTO;
 public class ChiTietPhieuXuatDTO {
     private int maPX;
     private int maSach;
+    private int soLuong;
     private int giaBan;
-    private int soLuongSP;
 
     public ChiTietPhieuXuatDTO() {
     }
 
     
-    public ChiTietPhieuXuatDTO(int maPX, int maSach, int giaBan, int soLuongSP) {
+    public ChiTietPhieuXuatDTO(int maPX, int maSach, int soLuong, int giaBan) {
         this.maPX = maPX;
         this.maSach = maSach;
         this.giaBan = giaBan;
-        this.soLuongSP = soLuongSP;
+        this.soLuong = soLuong;
     }
 
     public int getMaPX() {
@@ -31,8 +31,8 @@ public class ChiTietPhieuXuatDTO {
         return giaBan;
     }
 
-    public int getSoLuongSP() {
-        return soLuongSP;
+    public int getSoLuong() {
+        return soLuong;
     }
 
     public void setMaPX(int maPX) {
@@ -47,7 +47,7 @@ public class ChiTietPhieuXuatDTO {
         this.giaBan = giaBan;
     }
 
-    public void setSoLuongSP(int soLuongSP) {
-        this.soLuongSP = soLuongSP;
+    public void setSoLuong(int soLuongSP) {
+        this.soLuong = soLuongSP;
     }
 }

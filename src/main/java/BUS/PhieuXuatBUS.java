@@ -32,7 +32,11 @@ public class PhieuXuatBUS {
     public boolean deletePhieuXuat(int maPX) {
         return phieuXuatDAO.delete(maPX) > 0;  
     }
-
+    
+    public boolean existsPhieuXuat(int maPX){
+        return phieuXuatDAO.exists(maPX) > 0;
+    }
+    
     public ArrayList<PhieuXuatDTO> searchPhieuXuat(String keyword) {
         if (keyword == null || keyword.trim().isEmpty()) {
             return phieuXuatDAO.getAll();

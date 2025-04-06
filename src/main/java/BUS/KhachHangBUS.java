@@ -16,24 +16,23 @@ public class KhachHangBUS {
     }
 
     public boolean addKhachHang(KhachHangDTO khachHang) {
-        if (khachHang == null || khachHang.getTenKH().isEmpty() || khachHang.getSdt().isEmpty()) {
-            return false;
-        }
         return khachHangDAO.add(khachHang) > 0;
     }
 
     public boolean updateKhachHang(KhachHangDTO khachHang) {
-        if (khachHang == null || khachHang.getMaKH() <= 0 || khachHang.getTenKH().isEmpty() || khachHang.getSdt().isEmpty()) {
-            return false;
-        }
         return khachHangDAO.update(khachHang) > 0;
     }
 
     public boolean deleteKhachHang(int maKH) {
-        if (maKH <= 0) {
-            return false;
-        }
         return khachHangDAO.delete(maKH) > 0;
+    }
+    
+    public int getMaKhByTenKh(String tenKh){
+        return khachHangDAO.getMaKhByTenKh(tenKh);
+    }
+    
+    public String getTenKhByMaKh(int maKh){
+        return khachHangDAO.getTenKhByMaKh(maKh);
     }
 
     public ArrayList<KhachHangDTO> searchKhachHang(String keyword) {

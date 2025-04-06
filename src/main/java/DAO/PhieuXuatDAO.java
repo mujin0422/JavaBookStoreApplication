@@ -5,7 +5,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 
 public class PhieuXuatDAO {
@@ -52,6 +51,21 @@ public class PhieuXuatDAO {
             e.printStackTrace();
         }
         return 0;
+    }
+    
+    public int exists(int maPX) {
+        String sql = "SELECT COUNT(*) FROM phieuxuat WHERE maPX=?";
+        try (Connection conn = DatabaseConnection.getConnection(); 
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, maPX);  
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);  
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;  
     }
 
     public ArrayList<PhieuXuatDTO> getAll() {

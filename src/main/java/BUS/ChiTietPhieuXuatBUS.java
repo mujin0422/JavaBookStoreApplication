@@ -15,17 +15,11 @@ public class ChiTietPhieuXuatBUS {
         return chiTietPhieuXuatDAO.getAll();
     }
 
-    public boolean addChiTietPhieuXuat(ChiTietPhieuXuatDTO chiTietPhieuXuat) {
-        if (chiTietPhieuXuat == null || chiTietPhieuXuat.getSoLuongSP() <= 0 || chiTietPhieuXuat.getGiaBan() <= 0) {
-            return false;
-        }
+    public boolean addChiTietPhieuXuat(ChiTietPhieuXuatDTO chiTietPhieuXuat) {     
         return chiTietPhieuXuatDAO.add(chiTietPhieuXuat) > 0;
     }
 
     public boolean updateChiTietPhieuXuat(ChiTietPhieuXuatDTO chiTietPhieuXuat) {
-        if (chiTietPhieuXuat == null || chiTietPhieuXuat.getMaPX() <= 0 || chiTietPhieuXuat.getMaSach() <= 0) {
-            return false;
-        }
         return chiTietPhieuXuatDAO.update(chiTietPhieuXuat) > 0;
     }
 
