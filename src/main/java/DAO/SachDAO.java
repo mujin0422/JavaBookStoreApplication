@@ -112,6 +112,7 @@ public class SachDAO {
         }
         return -1;
     }
+    
     public int updateSoLuongTonSach(int maSach, int soLuongTon) {
         String sql = "UPDATE sach SET soLuongTon = ? WHERE maSach = ?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -124,6 +125,22 @@ public class SachDAO {
         }
         return 0;
     }
-
-
+    
+    public String getTenNxbByMaSach(int maSach){
+        String sql = "SELECT tenNXB FROM sach sch "
+                + "JOIN nhaxuatban nxb WHERE sch.maNXB=nxb.maNXB AND maSach=?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, maSach);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("tenNXB");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+            
 }

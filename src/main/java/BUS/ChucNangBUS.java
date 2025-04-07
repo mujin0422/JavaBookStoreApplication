@@ -26,20 +26,4 @@ public class ChucNangBUS {
     public boolean deleteChucNang(int maCN) {
         return chucNangDAO.delete(maCN) > 0;
     }
-
-    public ArrayList<ChucNangDTO> searchChucNang(String keyword) {
-        if (keyword == null || keyword.trim().isEmpty()) return chucNangDAO.getAll();
-
-        ArrayList<ChucNangDTO> ketQua = new ArrayList<>();
-        keyword = keyword.toLowerCase();
-        ArrayList<ChucNangDTO> danhSach = chucNangDAO.getAll();
-        if (danhSach != null) {
-            for (ChucNangDTO cn : danhSach) {
-                if (cn.getTenCN().toLowerCase().contains(keyword)) {
-                    ketQua.add(cn);
-                }
-            }
-        }
-        return ketQua;
-    }
 }

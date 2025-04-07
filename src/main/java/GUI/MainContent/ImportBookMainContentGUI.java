@@ -23,8 +23,6 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,16 +33,18 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 public class ImportBookMainContentGUI extends JPanel{
-    private UIButton btnAdd, btnThemVaoPhieu, btnXoaKhoiPhieu, btnSuaSoLuong, btnAddToPN, btnSavePN;
+    private UIButton btnAdd ,btnView, btnThemVaoPhieu, btnXoaKhoiPhieu, btnSuaSoLuong, btnAddToPN, btnSavePN;
     private UITextField txtSearch, txtSoLuong, txtMaPN, txtMaNV, txtTongTien;
     private JTextField txtSearchSach;
     private JComboBox<String> cbMaNCC;
     private JTable tblContent, tblForProduct , tblForForm;
     private JPanel pnlHeader, pnlContent, pnlForm, pnlProduct;
-    private DefaultTableModel tableModel, tableModelForProduct;
+    private DefaultTableModel tableModel, tableModelForProduct, tableModelForForm;
     private PhieuNhapBUS phieuNhapBUS;
     private NhaCungCapBUS nhaCungCapBUS;
     private SachBUS sachBUS;
@@ -68,11 +68,14 @@ public class ImportBookMainContentGUI extends JPanel{
         pnlHeader.setBackground(UIConstants.MAIN_BACKGROUND);
         pnlHeader.setPreferredSize(new Dimension(this.getWidth(), 50));
         btnAdd = new UIButton("menuButton", "THÊM", 100, 30, "/Icon/them_icon.png");
+        btnView = new UIButton("menuButton", "XEM", 100, 30, "/Icon/chitiet_icon.png");
         btnAdd.setBounds(5, 5, 90, 40);
+        btnView.setBounds(105, 5, 90, 40);
         int panelWidth = this.getPreferredSize().width; 
         txtSearch = new UITextField(190,30);
         txtSearch.setBounds(panelWidth - 210, 10, 190, 30);
         pnlHeader.add(btnAdd);
+        pnlHeader.add(btnView);
         pnlHeader.add(txtSearch);
         //==============================( End Panel Header )============================//
         
@@ -89,10 +92,9 @@ public class ImportBookMainContentGUI extends JPanel{
         pnlFormNorth.add(new UILabel("Mã phiếu nhập:", 160, 25));
         txtMaPN = new UITextField(350,25);
         pnlFormNorth.add(txtMaPN);
+        
         pnlFormNorth.add(new UILabel("Nhân viên :", 160, 25));
         txtMaNV = new UITextField(350, 25);
-        
-        
         NhanVienDTO nhanVien = nhanVienBUS.getCurrentStaffByUserName(taiKhoan.getTenDangNhap());
         if (nhanVien != null) {
             txtMaNV.setText(nhanVien.getTenNV()); 
@@ -109,8 +111,8 @@ public class ImportBookMainContentGUI extends JPanel{
         }
         pnlFormNorth.add(cbMaNCC);
             //CENTER
-        String[] columns = {"MÃ SÁCH", "TÊN SÁCH", "SỐ LƯỢNG", "THÀNH TIỀN"};
-        DefaultTableModel tableModelForForm = new DefaultTableModel(columns, 0);
+        String[] columnsForm = {"MÃ SÁCH", "TÊN SÁCH", "SỐ LƯỢNG", "THÀNH TIỀN"};
+        tableModelForForm = new DefaultTableModel(columnsForm, 0);
         tblForForm = new JTable(tableModelForForm);
         tblForForm.setRowHeight(30);
         UIScrollPane scrollPaneForForm = new UIScrollPane(tblForForm);
@@ -120,6 +122,7 @@ public class ImportBookMainContentGUI extends JPanel{
         pnlFormSouth.setBackground(UIConstants.MAIN_BACKGROUND);
         JPanel pnl1 = new JPanel(new FlowLayout(FlowLayout.CENTER,25,5)); 
         btnXoaKhoiPhieu = new UIButton("delete", "XÓA KHỎI PHIẾU", 130, 30);
+        btnXoaKhoiPhieu.addActionListener(e -> removeFromTableForForm());
         btnSuaSoLuong = new UIButton("edit", "SỬA SỐ LƯỢNG", 130, 30);
         pnl1.setBackground(UIConstants.MAIN_BACKGROUND);
         pnl1.add(btnXoaKhoiPhieu);
@@ -151,23 +154,9 @@ public class ImportBookMainContentGUI extends JPanel{
         pnlProduct.setBackground(UIConstants.MAIN_BACKGROUND);
         pnlProduct.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
-        txtSearchSach = new JTextField("Tìm kiếm theo tên sách");
+        txtSearchSach = new JTextField();
         txtSearchSach.setPreferredSize(new Dimension(400 ,30));
         txtSearchSach.setForeground(Color.GRAY);
-        txtSearchSach.addFocusListener(new FocusAdapter() {
-            public void focusGained(FocusEvent e) {
-                if (txtSearchSach.getText().equals("Tìm kiếm theo tên sách")) {
-                    txtSearchSach.setText("");
-                    txtSearchSach.setForeground(Color.BLACK);
-                }
-            }
-            public void focusLost(FocusEvent e) {
-                if (txtSearchSach.getText().isEmpty()) {
-                    txtSearchSach.setForeground(Color.GRAY);
-                    txtSearchSach.setText("Tìm kiếm theo tên sách");
-                }
-            }
-        });
         
         String[] columnForProduct = {"MÃ SÁCH", "TÊN SÁCH", "GIÁ"};
         tableModelForProduct = new DefaultTableModel(columnForProduct, 0);
@@ -222,6 +211,7 @@ public class ImportBookMainContentGUI extends JPanel{
         this.add(pnlContent, BorderLayout.SOUTH);
         loadTableData();
         loadTableProduct();
+        addSearchFunctionality();
     }
     
     private void loadTableData(){
@@ -279,6 +269,15 @@ public class ImportBookMainContentGUI extends JPanel{
         txtSoLuong.setText("");
     }
     
+    private void removeFromTableForForm(){
+        int selectedRow = tblForForm.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn một sản phẩm trong phiếu để hủy bỏ", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        tableModelForForm.removeRow(selectedRow);
+    }
+    
     private void calcTongTien() {
         int tongTien = 0;
         for (int i = 0; i < tblForForm.getRowCount(); i++) {
@@ -299,7 +298,8 @@ public class ImportBookMainContentGUI extends JPanel{
     }
     
     private void resetFormInput(){
-        
+        txtMaPN.setText("");
+        tableModelForForm.setRowCount(0);
     }
     private boolean checkFormInput(){
         try {
@@ -326,36 +326,44 @@ public class ImportBookMainContentGUI extends JPanel{
     
     private void addPhieuNhap(){
         if(!checkFormInput()) return;
-        int maPN = Integer.parseInt(txtMaPN.getText().trim());
-        int maNV = nhanVienBUS.getMaNvByTenNv(txtMaNV.getText().trim());
-        int maNCC = nhaCungCapBUS.getMaNccByTenNcc(cbMaNCC.getSelectedItem().toString());
-        int tongTien = Integer.parseInt(txtTongTien.getText().trim());
-        Date ngayNhap = getCurrentDate();
-        if (phieuNhapBUS.existsPhieuNhap(maPN)) {
-            JOptionPane.showMessageDialog(this, "Mã phiếu nhập đã tồn tại", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        PhieuNhapDTO phieuNhap = new PhieuNhapDTO(maPN, maNV, maNCC, tongTien, ngayNhap);
-        if (phieuNhapBUS.addPhieuNhap(phieuNhap)) {
-            DefaultTableModel tableModelForForm = (DefaultTableModel) tblForForm.getModel();
+        try {
+            int maPN = Integer.parseInt(txtMaPN.getText().trim());
+            int maNV = nhanVienBUS.getMaNvByTenNv(txtMaNV.getText().trim());
+            int maNCC = nhaCungCapBUS.getMaNccByTenNcc(cbMaNCC.getSelectedItem().toString());
+            int tongTien = Integer.parseInt(txtTongTien.getText().trim());
+            Date ngayNhap = getCurrentDate();
+            if (phieuNhapBUS.existsPhieuNhap(maPN)) {
+                JOptionPane.showMessageDialog(this, "Mã phiếu nhập đã tồn tại", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            PhieuNhapDTO phieuNhap = new PhieuNhapDTO(maPN, maNV, maNCC, tongTien, ngayNhap);
+            if (!phieuNhapBUS.addPhieuNhap(phieuNhap)) {
+                JOptionPane.showMessageDialog(this, "Thêm phiếu nhập thất bại", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            tableModelForForm = (DefaultTableModel) tblForForm.getModel();
             for (int i = 0; i < tableModelForForm.getRowCount(); i++) {
                 int maSach = Integer.parseInt(tableModelForForm.getValueAt(i, 0).toString());
-                int soluong = Integer.parseInt(tableModelForForm.getValueAt(i, 2).toString());
+                int soLuong = Integer.parseInt(tableModelForForm.getValueAt(i, 2).toString());
                 int giaNhap = Integer.parseInt(tableModelForForm.getValueAt(i, 3).toString());
-                ChiTietPhieuNhapDTO chiTietPhieuNhap = new ChiTietPhieuNhapDTO(maPN, maSach, soluong, giaNhap);
-                boolean isChiTietAdded = chiTietPhieuNhapBUS.addChiTietPhieuNhap(chiTietPhieuNhap);
-                if (!isChiTietAdded) {
-                    JOptionPane.showMessageDialog(this, "Thêm chi tiết phiếu nhập thất bại", "Lỗi", JOptionPane.ERROR_MESSAGE);
+
+                ChiTietPhieuNhapDTO chiTiet = new ChiTietPhieuNhapDTO(maPN, maSach, soLuong, giaNhap);
+                if (!chiTietPhieuNhapBUS.addChiTietPhieuNhap(chiTiet)) {
+                    JOptionPane.showMessageDialog(this, "Thêm chi tiết phiếu nhập thất bại ở dòng " + (i + 1), "Lỗi", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-                    //cap nhat so lai so luong ton
-                int soLuongHienTai = sachBUS.getSoLuongTonSach(maSach); 
-                int soLuongMoi = soLuongHienTai + soluong;
-                sachBUS.updateSoLuongTonSach(maSach, soLuongMoi);
+                // Cập nhật tồn kho
+                int soLuongHienTai = sachBUS.getSoLuongTonSach(maSach);
+                sachBUS.updateSoLuongTonSach(maSach, soLuongHienTai + soLuong);
             }
+            JOptionPane.showMessageDialog(this, "Thêm phiếu nhập thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            resetFormInput();
+            loadTableData();
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Dữ liệu nhập không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
-        JOptionPane.showMessageDialog(this, "Thêm phiếu nhập thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
-        loadTableData();
+        
         
         Container parent = this.getParent();
         while (parent != null && !(parent instanceof JFrame)) {
@@ -364,14 +372,32 @@ public class ImportBookMainContentGUI extends JPanel{
         if (parent != null) {
             for (Component comp : ((JFrame) parent).getContentPane().getComponents()) {
                 if (comp instanceof BookMainContentGUI) {
+                    System.out.println(comp);
                     ((BookMainContentGUI) comp).loadTableData();
                     break;
                 }
             }
         }
     }
-
-
-
     
+    private void addSearchFunctionality() {
+        txtSearchSach.getDocument().addDocumentListener(new DocumentListener() {
+            public void insertUpdate(DocumentEvent e) { searchBook(); }
+            public void removeUpdate(DocumentEvent e) { searchBook(); }
+            public void changedUpdate(DocumentEvent e) { searchBook(); }
+        });
+    }
+    
+    private void searchBook() {
+        String keyword = txtSearchSach.getText().trim().toLowerCase();
+        tableModelForProduct.setRowCount(0); 
+        ArrayList<SachDTO> listSach = sachBUS.searchSach(keyword);
+        for (SachDTO sach : listSach) {
+            tableModelForProduct.addRow(new Object[]{
+                sach.getMaSach(),
+                sach.getTenSach(),
+                sach.getGiaSach()
+            });
+        }
+    }
 }

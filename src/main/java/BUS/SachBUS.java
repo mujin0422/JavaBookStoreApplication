@@ -45,6 +45,10 @@ public class SachBUS {
         return sachDAO.updateSoLuongTonSach(maSach, soLuongTon) > 0;
     }
     
+    public String getTenNxbByMaSach(int maSach){
+        return sachDAO.getTenNxbByMaSach(maSach);
+    }
+    
     public ArrayList<SachDTO> searchSach(String keyword) {
         if (keyword == null || keyword.trim().isEmpty()) {
             return sachDAO.getAll();

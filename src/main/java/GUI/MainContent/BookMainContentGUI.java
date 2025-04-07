@@ -9,10 +9,10 @@ import DTO.SachDTO;
 import GUI.MainContentDiaLog.*;
 import Utils.UIConstants;
 import Utils.UIButton;
+import Utils.UILabel;
 import Utils.UIScrollPane;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -105,20 +105,13 @@ public class BookMainContentGUI extends JPanel {
         // STEP 1: xóa dữ liệu cũ
         tableModel.setRowCount(0); 
         // STEP 2: tải từng dòng lên bảng  
-        NhaXuatBanBUS nhaXuatBanBUS = new NhaXuatBanBUS();
-        HashMap<Integer, String> nhaXuatBanMap = new HashMap<>();
-        for (NhaXuatBanDTO nxb : nhaXuatBanBUS.getAllNhaXuatBan()) {
-            nhaXuatBanMap.put(nxb.getMaNXB(), nxb.getTenNXB());
-        }
-
         ArrayList<SachDTO> listSach = sachBUS.getAllSach();
         for (SachDTO sach : listSach) {
-            String tenNXB = nhaXuatBanMap.get(sach.getMaNXB());
             tableModel.addRow(new Object[]{
                 sach.getMaSach(),
                 sach.getTenSach(),
                 sach.getGiaSach(),
-                tenNXB, 
+                sachBUS.getTenNxbByMaSach(sach.getMaSach()),
                 sach.getSoLuongTon()
             });
         }
@@ -177,18 +170,9 @@ public class BookMainContentGUI extends JPanel {
 
     private void addSearchFunctionality() {
         txtSearch.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                searchBook();
-            }
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                searchBook();
-            }
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                searchBook();
-            }
+            public void insertUpdate(DocumentEvent e) { searchBook(); }
+            public void removeUpdate(DocumentEvent e) { searchBook(); }
+            public void changedUpdate(DocumentEvent e) { searchBook(); }
         });
     }
     
@@ -196,20 +180,12 @@ public class BookMainContentGUI extends JPanel {
         String keyword = txtSearch.getText().trim().toLowerCase();
         tableModel.setRowCount(0); 
         ArrayList<SachDTO> listSach = sachBUS.searchSach(keyword);
-
-        NhaXuatBanBUS nhaXuatBanBUS = new NhaXuatBanBUS();
-        HashMap<Integer, String> nhaXuatBanMap = new HashMap<>();
-        for (NhaXuatBanDTO nxb : nhaXuatBanBUS.getAllNhaXuatBan()) {
-            nhaXuatBanMap.put(nxb.getMaNXB(), nxb.getTenNXB());
-        }
-
         for (SachDTO sach : listSach) {
-            String tenNXB = nhaXuatBanMap.getOrDefault(sach.getMaNXB(), "Không xác định");
             tableModel.addRow(new Object[]{
                 sach.getMaSach(),
                 sach.getTenSach(),
                 sach.getGiaSach(),
-                tenNXB, 
+                sachBUS.getTenNxbByMaSach(sach.getMaSach()),
                 sach.getSoLuongTon()
             });
         }
@@ -229,17 +205,16 @@ public class BookMainContentGUI extends JPanel {
             return;
         }
         NhaXuatBanBUS nhaXuatBanBUS = new NhaXuatBanBUS();
-        int maNXB = -1;
+        int maNXB = 0;
         for (NhaXuatBanDTO nxb : nhaXuatBanBUS.getAllNhaXuatBan()) {
             if (nxb.getTenNXB().equals(selectedPublisher)) {
                 maNXB = nxb.getMaNXB();
                 break;
             }
         }
-        if (maNXB != -1) {
+        if (maNXB != 0) {
             ArrayList<SachDTO> listSach = sachBUS.filterSach(maNXB);
             tableModel.setRowCount(0); 
-
             for (SachDTO sach : listSach) {
                 tableModel.addRow(new Object[]{
                     sach.getMaSach(),
@@ -275,28 +250,18 @@ public class BookMainContentGUI extends JPanel {
     
     private void showBookDetailsDialog(SachDTO sach, String tenNXB, ArrayList<String> dsTacGia, ArrayList<String> dsTheLoai) {
         JDialog dialog = new JDialog((JFrame) SwingUtilities.getWindowAncestor(this), "Thông tin chi tiết sách", true);
-        dialog.setSize(400, 200);
+        dialog.setSize(500, 300);
         dialog.setLayout(new BorderLayout());
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        panel.add(new JLabel("Mã sách: " + sach.getMaSach()));
-        panel.add(new JLabel("Tên sách: " + sach.getTenSach()));
-        panel.add(new JLabel("Giá: " + sach.getGiaSach() + " VND"));
-        panel.add(new JLabel("Nhà xuất bản: " + tenNXB));
-        panel.add(new JLabel("Tác giả: " + String.join(", ", dsTacGia)));
-        panel.add(new JLabel("Thể loại: " + String.join(", ", dsTheLoai)));
-
-        JButton btnClose = new JButton("Đóng");
-        btnClose.addActionListener(e -> dialog.dispose());
-        JPanel panelButton = new JPanel();
-        panelButton.add(btnClose);
+        panel.add(new UILabel("MÃ SÁCH: " + sach.getMaSach(), 450, 30));
+        panel.add(new UILabel("TÊN SÁCH: " + sach.getTenSach(), 450, 30));
+        panel.add(new UILabel("GIÁ SÁCH: " + sach.getGiaSach() + " VND", 450, 30));
+        panel.add(new UILabel("NHÀ XUẤT BẢN: " + tenNXB, 450, 30));
+        panel.add(new UILabel("TÁC GIẢ: " + String.join(", ", dsTacGia), 450, 30));
+        panel.add(new UILabel("THỂ LOẠI: " + String.join(", ", dsTheLoai), 450, 30));
 
         dialog.add(panel, BorderLayout.CENTER);
-        dialog.add(panelButton, BorderLayout.SOUTH);
-
         dialog.setLocationRelativeTo(this);
         dialog.setVisible(true);
     }
