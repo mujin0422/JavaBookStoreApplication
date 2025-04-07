@@ -2,17 +2,22 @@ package GUI.MainContent;
 
 import BUS.QuyenBUS;
 import DTO.QuyenDTO;
+import GUI.MainContentDiaLog.AddAndEditDecentralizationGUI;
 import Utils.UIButton;
 import Utils.UIConstants;
 import Utils.UIScrollPane;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Window;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -31,6 +36,7 @@ public class DecentralizationMainContentGUI extends JPanel{
 
     public DecentralizationMainContentGUI() {
         this.quyenBUS = new QuyenBUS();
+     
         this.setBackground(UIConstants.SUB_BACKGROUND);
         this.setPreferredSize(new Dimension(UIConstants.WIDTH_CONTENT, UIConstants.HEIGHT_CONTENT));
         this.setLayout(new BorderLayout(5, 5));
@@ -42,11 +48,11 @@ public class DecentralizationMainContentGUI extends JPanel{
         pnlHeader.setPreferredSize(new Dimension(this.getWidth(), 50));
 
         btnAdd = new UIButton("menuButton", "THÊM", 100, 30, "/Icon/them_icon.png");
-        //btnAdd.addActionListener(e -> addAccount());
+        btnAdd.addActionListener(e -> addDecentralization());
         btnDelete = new UIButton("menuButton", "XÓA", 100, 30, "/Icon/xoa_icon.png");
-        //btnDelete.addActionListener(e -> deleteAccount());
+        btnDelete.addActionListener(e -> deleteDecentralization());
         btnEdit = new UIButton("menuButton", "SỬA", 100, 30, "/Icon/sua_icon.png");
-        //btnEdit.addActionListener(e -> editAccount());
+        btnEdit.addActionListener(e -> editDecentralization());
         btnAdd.setBounds(5, 5, 90, 40);
         btnDelete.setBounds(105, 5, 90, 40);
         btnEdit.setBounds(210, 5, 90, 40);
@@ -101,6 +107,44 @@ public class DecentralizationMainContentGUI extends JPanel{
                 qn.getMaQuyen(),
                 qn.getTenQuyen()
             });
+        }
+    }
+    
+    private void addDecentralization(){
+        Window window = SwingUtilities.getWindowAncestor(this);
+        new AddAndEditDecentralizationGUI((JFrame) window, quyenBUS, "Thêm Quyen", "add");
+        loadTableData(); 
+    }
+    
+    private void editDecentralization(){
+        int selectedRow = tblContent.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn một quyền để chỉnh sửa!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        int maQuyen = Integer.parseInt(tableModel.getValueAt(selectedRow, 0).toString());
+        String tenQuyen = tableModel.getValueAt(selectedRow, 1).toString();
+        QuyenDTO quyen = new QuyenDTO(maQuyen, tenQuyen);
+        Window window = SwingUtilities.getWindowAncestor(this);
+        new AddAndEditDecentralizationGUI((JFrame) window, quyenBUS, "Phân quyền", "save", quyen);
+        loadTableData();
+    }
+    
+    private void deleteDecentralization(){
+        int selectedRow = tblContent.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn một quyền để xóa!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa không?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            int maQuyen = Integer.parseInt(tableModel.getValueAt(selectedRow, 0).toString());
+            if (quyenBUS.deleteQuyen(maQuyen)) { 
+                JOptionPane.showMessageDialog(this, "Xóa quyền thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                loadTableData();
+            } else {
+                JOptionPane.showMessageDialog(this, "Xóa quyền thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 }

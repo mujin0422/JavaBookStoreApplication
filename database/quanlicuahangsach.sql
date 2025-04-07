@@ -113,10 +113,14 @@ INSERT INTO KHACHHANG (maKH, tenKH, sdt, email) VALUES
 
 CREATE TABLE HANHDONG (
 	maHD VARCHAR(10) PRIMARY KEY,
+	tenHD NVARCHAR(30) NOT NULL,
 	trangThaiXoa INT NOT NULL DEFAULT 0
 );
-INSERT INTO HANHDONG (maHD) VALUES
-('view'), ('add'), ('edit'), ('delete');
+INSERT INTO HANHDONG (maHD, tenHD) VALUES
+('view', N'XEM'), 
+('add', N'THÊM'), 
+('edit', N'SỬA'), 
+('delete', N'XÓA');
 
 
 CREATE TABLE QUYEN (

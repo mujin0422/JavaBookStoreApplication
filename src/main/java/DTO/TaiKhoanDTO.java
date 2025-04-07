@@ -1,8 +1,5 @@
 package DTO;
 
-import java.util.Objects;
-
-
 public class TaiKhoanDTO {
     private String tenDangNhap;
     private String matKhau;
@@ -10,8 +7,7 @@ public class TaiKhoanDTO {
     private int maQuyen;
     private int trangThaiXoa;
 
-    public TaiKhoanDTO() {
-    }
+    public TaiKhoanDTO() { }
 
     public TaiKhoanDTO(String tenDangNhap, String matKhau, int maNV, int maQuyen) {
         this.tenDangNhap = tenDangNhap;

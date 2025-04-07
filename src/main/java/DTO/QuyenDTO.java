@@ -1,7 +1,5 @@
 package DTO;
 
-import java.util.Objects;
-
 public class QuyenDTO {
     private int maQuyen;
     private String tenQuyen;

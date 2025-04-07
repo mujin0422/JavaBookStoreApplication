@@ -1,17 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package BUS;
 
 import DAO.HanhDongDAO;
 import DTO.HanhDongDTO;
 import java.util.ArrayList;
 
-/**
- *
- * @author Dell Vostro
- */
 public class HanhDongBUS {
     private HanhDongDAO hanhDongDAO;
     
@@ -25,6 +17,10 @@ public class HanhDongBUS {
     
     public boolean addHanhDong(HanhDongDTO hanhDong){
         return hanhDongDAO.add(hanhDong) > 0;
+    }
+    
+    public boolean editHanhDong(HanhDongDTO hanhDong){
+        return hanhDongDAO.edit(hanhDong) > 0;
     }
     
     public boolean deleteHanhDong(String maHD){

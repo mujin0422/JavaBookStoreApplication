@@ -50,7 +50,6 @@ public class AddAndEditBookGUI extends JDialog {
             }
             txtSoLuongTon.setText(String.valueOf(sach.getSoLuongTon()));
             txtMaSach.setEnabled(false);
-            
             areaTheLoai.setText("");
             areaTacGia.setText("");
 

@@ -2,11 +2,16 @@ package DTO;
 
 public class HanhDongDTO {
     private String maHD;
+    private String tenHD;
     private int trangThaiXoa;
 
-    public HanhDongDTO(String maHD) {
+    public HanhDongDTO(String maHD, String tenHD) {
         this.maHD = maHD;
+        this.tenHD = tenHD;
         this.trangThaiXoa = 0;
+    }
+
+    public HanhDongDTO() {
     }
  
     public String getMaHD() {
@@ -23,6 +28,14 @@ public class HanhDongDTO {
 
     public void setTrangThaiXoa(int trangThaiXoa) {
         this.trangThaiXoa = trangThaiXoa;
+    }
+
+    public String getTenHD() {
+        return tenHD;
+    }
+
+    public void setTenHD(String tenHD) {
+        this.tenHD = tenHD;
     }
     
     

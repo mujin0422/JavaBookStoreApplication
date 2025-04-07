@@ -22,19 +22,23 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Frame;
 import java.awt.GridLayout;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
@@ -118,6 +122,7 @@ public class ExportBookMainContentGUI extends JPanel{
         tableModelForForm = new DefaultTableModel(columns, 0);
         tblForForm = new JTable(tableModelForForm);
         tblForForm.setRowHeight(30);
+        tblForForm.setDefaultEditor(Object.class, null);
         UIScrollPane scrollPaneForForm = new UIScrollPane(tblForForm);
         scrollPaneForForm.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
             //SOUTH
@@ -127,6 +132,7 @@ public class ExportBookMainContentGUI extends JPanel{
         btnXoaKhoiPhieu = new UIButton("delete", "XÓA KHỎI PHIẾU", 130, 30);
         btnXoaKhoiPhieu.addActionListener(e -> removeFromTableForForm());
         btnSuaSoLuong = new UIButton("edit", "SỬA SỐ LƯỢNG", 130, 30);
+        btnSuaSoLuong.addActionListener(e -> editSoLuongInFromTableForForm());
         pnl1.setBackground(UIConstants.MAIN_BACKGROUND);
         pnl1.add(btnXoaKhoiPhieu);
         pnl1.add(btnSuaSoLuong);
@@ -161,7 +167,7 @@ public class ExportBookMainContentGUI extends JPanel{
         txtSearchSach.setPreferredSize(new Dimension(400 ,30));
         txtSearchSach.setForeground(Color.GRAY);
         
-        String[] columnForProduct = {"MÃ SÁCH", "TÊN SÁCH", "GIÁ"};
+        String[] columnForProduct = {"MÃ SÁCH", "TÊN SÁCH", "GIÁ", "TỒN KHO"};
         tableModelForProduct = new DefaultTableModel(columnForProduct, 0);
         tblForProduct = new JTable(tableModelForProduct);
         tblForProduct.setDefaultEditor(Object.class, null);
@@ -214,7 +220,7 @@ public class ExportBookMainContentGUI extends JPanel{
         this.add(pnlProduct, BorderLayout.EAST);
         this.add(pnlContent, BorderLayout.SOUTH);
         loadTableData();
-        loadTableProduct();
+        addSearchFunctionality();
     }
     
     private void loadTableData(){
@@ -229,15 +235,14 @@ public class ExportBookMainContentGUI extends JPanel{
                 px.getNgayXuat()
             });
         }     
-    }
-    private void loadTableProduct(){
         tableModelForProduct.setRowCount(0);
         ArrayList<SachDTO> listSach = sachBUS.getAllSach();
         for(SachDTO sach : listSach){
             tableModelForProduct.addRow(new Object[]{
                 sach.getMaSach(),
                 sach.getTenSach(),
-                sach.getGiaSach()
+                sach.getGiaSach(),
+                sach.getSoLuongTon()
             });
         }
     }
@@ -251,6 +256,10 @@ public class ExportBookMainContentGUI extends JPanel{
         }
         if (soLuongText.isEmpty() || !soLuongText.matches("\\d+") || Integer.parseInt(soLuongText) <= 0) {
             JOptionPane.showMessageDialog(this, "Số lượng không hợp lệ", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (Integer.parseInt(soLuongText) > sachBUS.getSoLuongTonSach(Integer.parseInt(tblForProduct.getValueAt(selectedRow, 0).toString()))){
+            JOptionPane.showMessageDialog(this, "Số lượng sách bán ra không đuọc lớn hơn số lượng sách trong kho", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return;
         }
         int soLuong = Integer.parseInt(soLuongText);
@@ -279,6 +288,40 @@ public class ExportBookMainContentGUI extends JPanel{
             return;
         }
         tableModelForForm.removeRow(selectedRow);
+    }
+    
+    private void editSoLuongInFromTableForForm(){
+        int selectedRow = tblForForm.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn một sản phẩm trong phiếu để sửa số lượng", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        Window window = SwingUtilities.getWindowAncestor(this);
+        JDialog dialog = new JDialog((Frame) window, "Sửa Số Lượng", true);
+        dialog.setSize(300, 150);
+        dialog.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 15));
+        UITextField txtSoLuong = new UITextField(50, 30);
+        dialog.add(new UILabel("Số lượng mới: ", 150, 30));
+        dialog.add(txtSoLuong);
+        UIButton btnSave = new UIButton("add","Lưu", 100, 30);
+        dialog.add(btnSave);
+
+        btnSave.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String soLuongText = txtSoLuong.getText().trim();
+                if (soLuongText.isEmpty() || !soLuongText.matches("\\d+") || Integer.parseInt(soLuongText) <= 0) {
+                    JOptionPane.showMessageDialog(dialog, "Số lượng không hợp lệ", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                // kiểm tra số lượng lớn hơn kho
+                int soLuong = Integer.parseInt(soLuongText);
+                tblForForm.setValueAt(soLuong, selectedRow, 2); 
+                dialog.dispose(); 
+            }
+        });
+        dialog.setLocationRelativeTo(this); 
+        dialog.setVisible(true);
     }
     
     private void calcTongTien() {
@@ -369,8 +412,8 @@ public class ExportBookMainContentGUI extends JPanel{
         }
         if (parent != null) {
             for (Component comp : ((JFrame) parent).getContentPane().getComponents()) {
-                if (comp instanceof BookMainContentGUI) {
-                    ((BookMainContentGUI) comp).loadTableData();
+                if (comp instanceof BookMainContentGUI bookMainContentGUI) {
+                    bookMainContentGUI.loadTableData();
                     break;
                 }
             }
@@ -379,8 +422,11 @@ public class ExportBookMainContentGUI extends JPanel{
     
     private void addSearchFunctionality() {
         txtSearchSach.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
             public void insertUpdate(DocumentEvent e) { searchBook(); }
+            @Override
             public void removeUpdate(DocumentEvent e) { searchBook(); }
+            @Override
             public void changedUpdate(DocumentEvent e) { searchBook(); }
         });
     }
