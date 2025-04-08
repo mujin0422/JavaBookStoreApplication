@@ -58,9 +58,8 @@ public class SachBUS {
         ArrayList<SachDTO> danhSach = sachDAO.getAll();
         if (danhSach != null) {
             for (SachDTO sach : danhSach) {
-                if (sach.getTenSach().toLowerCase().contains(keyword)) {
+                if (sach.getTenSach().toLowerCase().contains(keyword))
                     ketQua.add(sach);
-                }
             }
         }
         return ketQua;

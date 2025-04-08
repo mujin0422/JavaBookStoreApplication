@@ -6,27 +6,27 @@ import GUI.MainContentDiaLog.AddAndEditSupplierGUI;
 import Utils.UIButton;
 import Utils.UIConstants;
 import Utils.UIScrollPane;
+import Utils.UITable;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Window;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 public class SupplierMainContentGUI extends JPanel {
     private UIButton btnAdd, btnDelete, btnEdit;
     private JTextField txtSearch;
-    private JComboBox<String> cbFilter;
-    private JTable tblContent;
+    private UITable tblContent;
     private JPanel pnlHeader, pnlContent;
-    
     private DefaultTableModel tableModel;
     private NhaCungCapBUS nhaCungCapBUS;
 
@@ -51,18 +51,14 @@ public class SupplierMainContentGUI extends JPanel {
         btnAdd.setBounds(5, 5, 90, 40);
         btnDelete.setBounds(105, 5, 90, 40);
         btnEdit.setBounds(210, 5, 90, 40);
-
-            // Tạo combobox và ô tìm kiếm
+            // Tạo ô tìm kiếm
         int panelWidth = this.getPreferredSize().width; 
-        cbFilter = new JComboBox<>(new String[]{"Lọc"});
-        cbFilter.setBounds(panelWidth - 320, 10, 100, 30);
         txtSearch = new JTextField();
         txtSearch.setBounds(panelWidth - 210, 10, 190, 30);
             // Thêm tất cả vào pnlHeader
         pnlHeader.add(btnAdd);
         pnlHeader.add(btnDelete);
         pnlHeader.add(btnEdit);
-        pnlHeader.add(cbFilter);
         pnlHeader.add(txtSearch);
         //==============================( End Panel Header )============================//
 
@@ -74,17 +70,9 @@ public class SupplierMainContentGUI extends JPanel {
         pnlContent.setBackground(UIConstants.MAIN_BACKGROUND);
         pnlContent.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        String[] columnNames = {"MÃ NCC", "TÊN NHÀ CUNG CẤP", "SỐ ĐIỆN THOẠI", "ĐỊA CHỈ"};
+        String[] columnNames = {"MÃ NHÀ CUNG CẤP", "TÊN NHÀ CUNG CẤP", "SỐ ĐIỆN THOẠI", "ĐỊA CHỈ"};
         tableModel = new DefaultTableModel(columnNames, 0); // ####
-        tblContent = new JTable(tableModel);
-        tblContent.setDefaultEditor(Object.class, null);
-
-        tblContent.getTableHeader().setFont(UIConstants.SUBTITLE_FONT);
-        tblContent.getTableHeader().setBackground(UIConstants.MAIN_BUTTON);
-        tblContent.getTableHeader().setForeground(UIConstants.WHITE_FONT);
-        tblContent.getTableHeader().setPreferredSize(new Dimension(0,30));
-        tblContent.setRowHeight(30);
-        
+        tblContent = new UITable(tableModel);
         UIScrollPane scrollPane = new UIScrollPane(tblContent);
         pnlContent.add(scrollPane, BorderLayout.CENTER);
         //===============================( End Panel Content )===========================//
@@ -92,6 +80,7 @@ public class SupplierMainContentGUI extends JPanel {
         this.add(pnlHeader, BorderLayout.NORTH);
         this.add(pnlContent, BorderLayout.CENTER);
         loadTableData();
+        addSearchFunctionality();
     }
     
     private void loadTableData(){
@@ -144,6 +133,28 @@ public class SupplierMainContentGUI extends JPanel {
             } else {
                 JOptionPane.showMessageDialog(this, "Xóa thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
+        }
+    }
+    
+    private void addSearchFunctionality() {
+        txtSearch.getDocument().addDocumentListener(new DocumentListener() {
+            public void insertUpdate(DocumentEvent e) { searchSupplier(); }
+            public void removeUpdate(DocumentEvent e) { searchSupplier(); }
+            public void changedUpdate(DocumentEvent e) { searchSupplier(); }
+        });
+    }
+    
+    private void searchSupplier() {
+        String keyword = txtSearch.getText().trim().toLowerCase();
+        tableModel.setRowCount(0); 
+        ArrayList<NhaCungCapDTO> list = nhaCungCapBUS.searchNhaCungCap(keyword);
+        for (NhaCungCapDTO obj : list) {
+            tableModel.addRow(new Object[]{
+                obj.getMaNCC(),
+                obj.getTenNCC(),
+                obj.getSdt(),
+                obj.getDiaChi()
+            });
         }
     }
 }

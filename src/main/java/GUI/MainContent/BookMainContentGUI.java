@@ -11,9 +11,20 @@ import Utils.UIConstants;
 import Utils.UIButton;
 import Utils.UILabel;
 import Utils.UIScrollPane;
-import java.awt.*;
+import Utils.UITable;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Window;
 import java.util.ArrayList;
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
@@ -22,9 +33,8 @@ public class BookMainContentGUI extends JPanel {
     private UIButton btnAdd, btnDelete, btnEdit, btnView;
     private JTextField txtSearch;
     private JComboBox<String> cbFilter;
-    private JTable tblContent;
+    private UITable tblContent;
     private JPanel pnlHeader, pnlContent;
-    // $$$$ 
     private DefaultTableModel tableModel;
     private SachBUS sachBUS;
 
@@ -80,16 +90,9 @@ public class BookMainContentGUI extends JPanel {
         pnlContent.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
             
         String[] columnNames = {"MÃ SÁCH", "TÊN SÁCH", "GIÁ", "NHÀ XUẤT BẢN", "TỒN KHO"};
-        tableModel = new DefaultTableModel(columnNames, 0); // ####
-        tblContent = new JTable(tableModel);
-        tblContent.setDefaultEditor(Object.class, null);
-            
-        tblContent.getTableHeader().setFont(UIConstants.SUBTITLE_FONT);
-        tblContent.getTableHeader().setBackground(UIConstants.MAIN_BUTTON);
-        tblContent.getTableHeader().setForeground(UIConstants.WHITE_FONT);
-        tblContent.getTableHeader().setPreferredSize(new Dimension(0,30));
-        tblContent.setRowHeight(30);
-            
+        tableModel = new DefaultTableModel(columnNames, 0); 
+        tblContent = new UITable(tableModel);
+       
         UIScrollPane scrollPane = new UIScrollPane(tblContent);  
         pnlContent.add(scrollPane, BorderLayout.CENTER);
         //===============================( End Panel Content )===========================//
@@ -253,7 +256,6 @@ public class BookMainContentGUI extends JPanel {
         dialog.setSize(500, 300);
         dialog.setLayout(new BorderLayout());
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 0));
-
         panel.add(new UILabel("MÃ SÁCH: " + sach.getMaSach(), 450, 30));
         panel.add(new UILabel("TÊN SÁCH: " + sach.getTenSach(), 450, 30));
         panel.add(new UILabel("GIÁ SÁCH: " + sach.getGiaSach() + " VND", 450, 30));

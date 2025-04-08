@@ -15,6 +15,7 @@ import Utils.UIButton;
 import Utils.UIConstants;
 import Utils.UILabel;
 import Utils.UIScrollPane;
+import Utils.UITable;
 import Utils.UITextField;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -36,7 +37,6 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
@@ -48,7 +48,7 @@ public class ImportBookMainContentGUI extends JPanel{
     private UITextField txtSearch, txtSoLuong, txtMaPN, txtMaNV, txtTongTien;
     private JTextField txtSearchSach;
     private JComboBox<String> cbMaNCC;
-    private JTable tblContent, tblForProduct , tblForForm;
+    private UITable tblContent, tblForProduct , tblForForm;
     private JPanel pnlHeader, pnlContent, pnlForm, pnlProduct;
     private DefaultTableModel tableModel, tableModelForProduct, tableModelForForm;
     private PhieuNhapBUS phieuNhapBUS;
@@ -74,6 +74,7 @@ public class ImportBookMainContentGUI extends JPanel{
         pnlHeader.setBackground(UIConstants.MAIN_BACKGROUND);
         pnlHeader.setPreferredSize(new Dimension(this.getWidth(), 50));
         btnAdd = new UIButton("menuButton", "THÊM", 100, 30, "/Icon/them_icon.png");
+        btnAdd.addActionListener(e -> resetFormInput());
         btnView = new UIButton("menuButton", "XEM", 100, 30, "/Icon/chitiet_icon.png");
         btnAdd.setBounds(5, 5, 90, 40);
         btnView.setBounds(105, 5, 90, 40);
@@ -119,9 +120,10 @@ public class ImportBookMainContentGUI extends JPanel{
             //CENTER
         String[] columnsForm = {"MÃ SÁCH", "TÊN SÁCH", "SỐ LƯỢNG", "THÀNH TIỀN"};
         tableModelForForm = new DefaultTableModel(columnsForm, 0);
-        tblForForm = new JTable(tableModelForForm);
-        tblForForm.setRowHeight(30);
-        tblForForm.setDefaultEditor(Object.class, null);
+        tblForForm = new UITable(tableModelForForm);
+        tblForForm.getTableHeader().setBackground(UIConstants.MAIN_BACKGROUND);
+        tblForForm.getTableHeader().setForeground(UIConstants.BLACK_FONT);
+        tblForForm.getTableHeader().setPreferredSize(new Dimension(0,25));
         UIScrollPane scrollPaneForForm = new UIScrollPane(tblForForm);
         scrollPaneForForm.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
             //SOUTH
@@ -168,11 +170,9 @@ public class ImportBookMainContentGUI extends JPanel{
         
         String[] columnForProduct = {"MÃ SÁCH", "TÊN SÁCH", "GIÁ", "TỒN KHO"};
         tableModelForProduct = new DefaultTableModel(columnForProduct, 0);
-        tblForProduct = new JTable(tableModelForProduct);
-        tblForProduct.setDefaultEditor(Object.class, null);
-        tblForProduct.getTableHeader().setFont(UIConstants.SUBTITLE_FONT);
-        tblForProduct.getTableHeader().setPreferredSize(new Dimension(0,30));
-        tblForProduct.setRowHeight(30);
+        tblForProduct = new UITable(tableModelForProduct);
+        tblForProduct.getTableHeader().setBackground(UIConstants.MAIN_BACKGROUND);
+        tblForProduct.getTableHeader().setForeground(UIConstants.BLACK_FONT);
         UIScrollPane scrollPaneForProduct = new UIScrollPane(tblForProduct);
         
         JPanel pnlSouthOfproduct = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
@@ -201,13 +201,7 @@ public class ImportBookMainContentGUI extends JPanel{
 
         String[] columnNames = {"MÃ PHIẾU NHẬP", "NHÂN VIÊN", "NHÀ CUNG CẤP", "TỔNG TIỀN", "NGÀY GHI PHIẾU"};
         tableModel = new DefaultTableModel(columnNames, 0);
-        tblContent = new JTable(tableModel);
-        tblContent.setDefaultEditor(Object.class, null);
-        tblContent.getTableHeader().setFont(UIConstants.SUBTITLE_FONT);
-        tblContent.getTableHeader().setBackground(UIConstants.MAIN_BUTTON);
-        tblContent.getTableHeader().setForeground(UIConstants.WHITE_FONT);
-        tblContent.getTableHeader().setPreferredSize(new Dimension(0,30));
-        tblContent.setRowHeight(30);
+        tblContent = new UITable(tableModel);
         UIScrollPane scrollPane = new UIScrollPane(tblContent);
         pnlContent.add(scrollPane, BorderLayout.CENTER);
         //===============================( End Panel Content )===========================//

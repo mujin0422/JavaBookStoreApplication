@@ -15,14 +15,12 @@ import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 public class AboutBookMainContentGUI extends JPanel{
     private UIAboutPanel pnlNhaXuatBan, pnlTacGia, pnlTheLoai;
-    private JTable tblNhaXuatBan, tblTacGia, tblTheLoai;
-    
+    private UITable tblNhaXuatBan, tblTacGia, tblTheLoai;
     private DefaultTableModel tableModelNXB, tableModelTG, tableModelTL;  
     private NhaXuatBanBUS nxbBus;
     private TacGiaBUS tgBus;
@@ -51,13 +49,9 @@ public class AboutBookMainContentGUI extends JPanel{
         
         String[] columnNXBNames = {"MÃ NHÀ XUẤT BẢN", "TÊN NHÀ XUẤT BẢN"};
         tableModelNXB = new DefaultTableModel(columnNXBNames,0);
-        tblNhaXuatBan = new JTable(tableModelNXB);
-        tblNhaXuatBan.setDefaultEditor(Object.class,null);
-
-        tblNhaXuatBan.getTableHeader().setFont(UIConstants.SUBTITLE_FONT);
-        tblNhaXuatBan.getTableHeader().setPreferredSize(new Dimension(0,30));
-        tblNhaXuatBan.setRowHeight(30);
-        
+        tblNhaXuatBan = new UITable(tableModelNXB);
+        tblNhaXuatBan.getTableHeader().setBackground(UIConstants.MAIN_BACKGROUND);
+        tblNhaXuatBan.getTableHeader().setForeground(UIConstants.BLACK_FONT);
         UIScrollPane scrollNXB = new UIScrollPane(tblNhaXuatBan);
         pnlNhaXuatBan.getPnlContent().add(scrollNXB, BorderLayout.CENTER);
         //===========================( End Panel Nha Xuat Ban )=========================//
@@ -79,15 +73,10 @@ public class AboutBookMainContentGUI extends JPanel{
         
         String[] columnTGNames = {"MÃ TÁC GIẢ", "TÊN TÁC GIẢ"};
         tableModelTG = new DefaultTableModel(columnTGNames,0);
-        tblTacGia = new JTable(tableModelTG);
-        tblTacGia.setDefaultEditor(Object.class,null);
-        
-        tblTacGia.getTableHeader().setFont(UIConstants.SUBTITLE_FONT);
-        tblTacGia.getTableHeader().setPreferredSize(new Dimension(0,30));
-        tblTacGia.setRowHeight(30);
-        
+        tblTacGia = new UITable(tableModelTG);
+        tblTacGia.getTableHeader().setBackground(UIConstants.MAIN_BACKGROUND);
+        tblTacGia.getTableHeader().setForeground(UIConstants.BLACK_FONT);
         UIScrollPane scrollTG = new UIScrollPane(tblTacGia);
-        
         pnlTacGia.getPnlContent().add(scrollTG, BorderLayout.CENTER);
         //==============================( End Panel Tac Gia )===========================//
         
@@ -108,13 +97,9 @@ public class AboutBookMainContentGUI extends JPanel{
         
         String[] columnTLNames = {"MÃ THỂ LOẠI", "THỂ LOẠI"};
         tableModelTL = new DefaultTableModel(columnTLNames,0);
-        tblTheLoai = new JTable(tableModelTL);
-        tblTheLoai.setDefaultEditor(Object.class,null);
-        
-        tblTheLoai.getTableHeader().setFont(UIConstants.SUBTITLE_FONT);
-        tblTheLoai.getTableHeader().setPreferredSize(new Dimension(0,30));
-        tblTheLoai.setRowHeight(30);
-        
+        tblTheLoai = new UITable(tableModelTL);
+        tblTheLoai.getTableHeader().setBackground(UIConstants.MAIN_BACKGROUND);
+        tblTheLoai.getTableHeader().setForeground(UIConstants.BLACK_FONT);
         UIScrollPane scrollTL = new UIScrollPane(tblTheLoai);
         pnlTheLoai.getPnlContent().add(scrollTL, BorderLayout.CENTER);
         //==============================( End Panel The Loai )==========================//

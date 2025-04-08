@@ -38,4 +38,20 @@ public class NhanVienBUS {
     public String getTenNvByMaNv(int maNv){
         return NhanVienDAO.getTenNvByMaNv(maNv);
     }
+    
+    public ArrayList<NhanVienDTO> searchNhanVien(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return NhanVienDAO.getAll();
+        }
+        ArrayList<NhanVienDTO> ketQua = new ArrayList<>();
+        keyword = keyword.toLowerCase(); 
+        ArrayList<NhanVienDTO> danhSach = NhanVienDAO.getAll();
+        if (danhSach != null) {
+            for (NhanVienDTO nv : danhSach) {
+                if (nv.getTenNV().toLowerCase().contains(keyword))
+                    ketQua.add(nv);
+            }
+        }
+        return ketQua;
+    }
 }

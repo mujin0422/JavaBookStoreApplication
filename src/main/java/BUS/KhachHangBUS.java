@@ -41,12 +41,11 @@ public class KhachHangBUS {
         }
         ArrayList<KhachHangDTO> ketQua = new ArrayList<>();
         keyword = keyword.toLowerCase();
-        for (KhachHangDTO kh : khachHangDAO.getAll()) {
-            if (String.valueOf(kh.getMaKH()).contains(keyword) ||
-                kh.getTenKH().toLowerCase().contains(keyword) ||
-                kh.getSdt().contains(keyword) ||
-                (kh.getEmail() != null && kh.getEmail().toLowerCase().contains(keyword))) {
-                ketQua.add(kh);
+        ArrayList<KhachHangDTO> ds = khachHangDAO.getAll();
+        if(ds != null){
+            for(KhachHangDTO kh : ds){
+                if(kh.getTenKH().toLowerCase().contains(keyword)) 
+                    ketQua.add(kh);      
             }
         }
         return ketQua;

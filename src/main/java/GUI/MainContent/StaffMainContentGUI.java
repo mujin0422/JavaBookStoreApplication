@@ -6,27 +6,28 @@ import GUI.MainContentDiaLog.AddAndEditStaffGUI;
 import Utils.UIButton;
 import Utils.UIConstants;
 import Utils.UIScrollPane;
+import Utils.UITable;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Window;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 public class StaffMainContentGUI extends JPanel{
     private UIButton btnAdd, btnDelete, btnEdit;
     private JTextField txtSearch;
-    private JComboBox<String> cbFilter;
-    private JTable tblContent;
+    private UITable tblContent;
     private JPanel pnlHeader, pnlContent;
-    
     private DefaultTableModel tableModel;
     private NhanVienBUS nhanVienBUS;
 
@@ -53,19 +54,13 @@ public class StaffMainContentGUI extends JPanel{
         btnDelete.setBounds(105, 5, 90, 40);
         btnEdit.setBounds(210, 5, 90, 40);
 
-            // Tạo combobox và ô tìm kiếm
         int panelWidth = this.getPreferredSize().width; 
-        cbFilter = new JComboBox<>(new String[]{"Lọc"});
-        cbFilter.setBounds(panelWidth - 320, 10, 100, 30);
-
         txtSearch = new JTextField();
         txtSearch.setBounds(panelWidth - 210, 10, 190, 30);
-
-            // Thêm tất cả vào pnlHeader
+  
         pnlHeader.add(btnAdd);
         pnlHeader.add(btnDelete);
         pnlHeader.add(btnEdit);
-        pnlHeader.add(cbFilter);
         pnlHeader.add(txtSearch);
         //==============================( End Panel Header )============================//
 
@@ -79,13 +74,7 @@ public class StaffMainContentGUI extends JPanel{
 
         String[] columnNames = {"MÃ NHÂN VIÊN", "TÊN NHÂN VIÊN", "EMAIL", "SỐ ĐIỆN THOẠI"};
         tableModel = new DefaultTableModel(columnNames, 0); 
-        tblContent = new JTable(tableModel);
-        tblContent.setDefaultEditor(Object.class, null);
-        tblContent.getTableHeader().setFont(UIConstants.SUBTITLE_FONT);
-        tblContent.getTableHeader().setBackground(UIConstants.MAIN_BUTTON);
-        tblContent.getTableHeader().setForeground(UIConstants.WHITE_FONT);
-        tblContent.getTableHeader().setPreferredSize(new Dimension(0,30));
-        tblContent.setRowHeight(30);
+        tblContent = new UITable(tableModel);
         
         UIScrollPane scrollPane = new UIScrollPane(tblContent);
         pnlContent.add(scrollPane, BorderLayout.CENTER);
@@ -96,6 +85,7 @@ public class StaffMainContentGUI extends JPanel{
         this.add(pnlHeader, BorderLayout.NORTH);
         this.add(pnlContent, BorderLayout.CENTER);
         loadTableData();
+        addSearchFunctionality();
     }
     
     private void loadTableData(){
@@ -150,6 +140,28 @@ public class StaffMainContentGUI extends JPanel{
             } else {
                 JOptionPane.showMessageDialog(this, "Xóa nhân viên thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
+        }
+    }
+    
+    private void addSearchFunctionality() {
+        txtSearch.getDocument().addDocumentListener(new DocumentListener() {
+            public void insertUpdate(DocumentEvent e) { searchStaff(); }
+            public void removeUpdate(DocumentEvent e) { searchStaff(); }
+            public void changedUpdate(DocumentEvent e) { searchStaff(); }
+        });
+    }
+    
+    private void searchStaff() {
+        String keyword = txtSearch.getText().trim().toLowerCase();
+        tableModel.setRowCount(0); 
+        ArrayList<NhanVienDTO> list = nhanVienBUS.searchNhanVien(keyword);
+        for (NhanVienDTO obj : list) {
+            tableModel.addRow(new Object[]{
+                obj.getMaNV(),
+                obj.getTenNV(),
+                obj.getEmail(),
+                obj.getSdt()
+            });
         }
     }
 }

@@ -38,4 +38,20 @@ public class NhaCungCapBUS{
     public String getTenNccByMaNcc(int maNcc){
         return nhaCungCapDAO.getTenNccByMaNCC(maNcc);
     }
+    
+    public ArrayList<NhaCungCapDTO> searchNhaCungCap(String keyword) {
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return nhaCungCapDAO.getAll();
+        }
+        ArrayList<NhaCungCapDTO> ketQua = new ArrayList<>();
+        keyword = keyword.toLowerCase(); 
+        ArrayList<NhaCungCapDTO> danhSach = nhaCungCapDAO.getAll();
+        if (danhSach != null) {
+            for (NhaCungCapDTO ncc : danhSach) {
+                if (ncc.getTenNCC().toLowerCase().contains(keyword))
+                    ketQua.add(ncc);
+            }
+        }
+        return ketQua;
+    }
 }

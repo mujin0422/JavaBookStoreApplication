@@ -27,5 +27,12 @@ public class TaiKhoanBUS {
         return TaiKhoanDAO.delete(tenDangNhap) > 0;  
     }
     
-
+    public String getTenNvByUsername(String username){
+        return TaiKhoanDAO.getTenNvByUserName(username);
+    }
+    
+    public String getTenQuyenByUsername(String username){
+        return TaiKhoanDAO.getTenQuyenByUserName(username);
+    }
+    
 }

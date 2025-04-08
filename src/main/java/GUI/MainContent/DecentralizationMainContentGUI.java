@@ -6,31 +6,26 @@ import GUI.MainContentDiaLog.AddAndEditDecentralizationGUI;
 import Utils.UIButton;
 import Utils.UIConstants;
 import Utils.UIScrollPane;
+import Utils.UITable;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Window;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author Dell Vostro
- */
 public class DecentralizationMainContentGUI extends JPanel{
     private UIButton btnAdd, btnDelete, btnEdit;
     private JTextField txtSearch;
-    private JComboBox<String> cbFilter;
-    private JTable tblContent;
+    private UITable tblContent;
     private JPanel pnlHeader, pnlContent;
-    
     private DefaultTableModel tableModel;
     private QuyenBUS quyenBUS;
 
@@ -58,15 +53,12 @@ public class DecentralizationMainContentGUI extends JPanel{
         btnEdit.setBounds(210, 5, 90, 40);
 
         int panelWidth = this.getPreferredSize().width; 
-        cbFilter = new JComboBox<>(new String[]{"Lọc"});
-        cbFilter.setBounds(panelWidth - 320, 10, 100, 30);
         txtSearch = new JTextField();
         txtSearch.setBounds(panelWidth - 210, 10, 190, 30);
 
         pnlHeader.add(btnAdd);
         pnlHeader.add(btnDelete);
         pnlHeader.add(btnEdit);
-        pnlHeader.add(cbFilter);
         pnlHeader.add(txtSearch);
         //==============================( End Panel Header )============================//
 
@@ -80,13 +72,7 @@ public class DecentralizationMainContentGUI extends JPanel{
 
         String[] columnNames = {"MÃ QUYỀN", "TÊN QUYỀN"};
         tableModel = new DefaultTableModel(columnNames, 0); 
-        tblContent = new JTable(tableModel);
-        tblContent.setDefaultEditor(Object.class, null);
-        tblContent.getTableHeader().setFont(UIConstants.SUBTITLE_FONT);
-        tblContent.getTableHeader().setBackground(UIConstants.MAIN_BUTTON);
-        tblContent.getTableHeader().setForeground(UIConstants.WHITE_FONT);
-        tblContent.getTableHeader().setPreferredSize(new Dimension(0,30));
-        tblContent.setRowHeight(30);
+        tblContent = new UITable(tableModel);
        
         UIScrollPane scrollPane = new UIScrollPane(tblContent);
         pnlContent.add(scrollPane, BorderLayout.CENTER);
