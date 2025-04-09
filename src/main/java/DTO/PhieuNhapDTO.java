@@ -1,7 +1,6 @@
 package DTO;
 
 import java.util.Date;
-import java.util.Objects;
 
 public class PhieuNhapDTO {
     private int maPN;

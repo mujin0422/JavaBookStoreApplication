@@ -427,7 +427,8 @@ public class ImportBookMainContentGUI extends JPanel{
             tableModelForProduct.addRow(new Object[]{
                 sach.getMaSach(),
                 sach.getTenSach(),
-                sach.getGiaSach()
+                sach.getGiaSach(),
+                sach.getSoLuongTon()
             });
         }
     }

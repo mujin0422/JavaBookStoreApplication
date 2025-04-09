@@ -51,7 +51,6 @@ public class BookMainContentGUI extends JPanel {
 
         JPanel pnlButton = new JPanel(new FlowLayout(FlowLayout.LEFT,5,5));
         pnlButton.setBackground(UIConstants.MAIN_BACKGROUND);
-        pnlButton.setPreferredSize(new Dimension(500, 50));
         btnAdd = new UIButton("menuButton", "THÊM", 90, 40, "/Icon/them_icon.png");
         btnAdd.addActionListener(e -> addBook());
         btnDelete = new UIButton("menuButton", "XÓA", 90, 40, "/Icon/xoa_icon.png");
