@@ -12,6 +12,7 @@ import Utils.UIButton;
 import Utils.UILabel;
 import Utils.UIScrollPane;
 import Utils.UITable;
+import Utils.UITextField;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -23,7 +24,6 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -31,7 +31,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class BookMainContentGUI extends JPanel {
     private UIButton btnAdd, btnDelete, btnEdit, btnView;
-    private JTextField txtSearch;
+    private UITextField txtSearch;
     private JComboBox<String> cbFilter;
     private UITable tblContent;
     private JPanel pnlHeader, pnlContent;
@@ -45,40 +45,39 @@ public class BookMainContentGUI extends JPanel {
         this.setLayout(new BorderLayout(5, 5));
 
         //==============================( PANEL HEADER )================================//
-        pnlHeader = new JPanel();
-        pnlHeader.setLayout(null);
+        pnlHeader = new JPanel(new BorderLayout());
         pnlHeader.setBackground(UIConstants.MAIN_BACKGROUND);
         pnlHeader.setPreferredSize(new Dimension(this.getWidth(), 50));
 
-        btnAdd = new UIButton("menuButton", "THÊM", 100, 30, "/Icon/them_icon.png");
+        JPanel pnlButton = new JPanel(new FlowLayout(FlowLayout.LEFT,5,5));
+        pnlButton.setBackground(UIConstants.MAIN_BACKGROUND);
+        pnlButton.setPreferredSize(new Dimension(500, 50));
+        btnAdd = new UIButton("menuButton", "THÊM", 90, 40, "/Icon/them_icon.png");
         btnAdd.addActionListener(e -> addBook());
-        btnDelete = new UIButton("menuButton", "XÓA", 100, 30, "/Icon/xoa_icon.png");
+        btnDelete = new UIButton("menuButton", "XÓA", 90, 40, "/Icon/xoa_icon.png");
         btnDelete.addActionListener(e -> deleteBook());
-        btnEdit = new UIButton("menuButton", "SỬA", 100, 30, "/Icon/sua_icon.png");
+        btnEdit = new UIButton("menuButton", "SỬA", 90, 40, "/Icon/sua_icon.png");
         btnEdit.addActionListener(e -> editBook());
-        btnView = new UIButton("menuButton", "XEM", 100, 30, "/Icon/chitiet_icon.png");
+        btnView = new UIButton("menuButton", "XEM", 90, 40, "/Icon/chitiet_icon.png");
         btnView.addActionListener(e -> viewBookDetails());
+        pnlButton.add(btnAdd);
+        pnlButton.add(btnDelete);
+        pnlButton.add(btnEdit);
+        pnlButton.add(btnView);
 
-        btnAdd.setBounds(5, 5, 90, 40);
-        btnDelete.setBounds(105, 5, 90, 40);
-        btnEdit.setBounds(210, 5, 90, 40);
-        btnView.setBounds(315, 5, 90, 40);
-
-        int panelWidth = this.getPreferredSize().width;
+        JPanel pnlSearchFilter = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,10));
+        pnlSearchFilter.setBackground(UIConstants.MAIN_BACKGROUND);
         cbFilter = new JComboBox<>();
-        cbFilter.setBounds(panelWidth - 380, 10, 150, 30);
+        cbFilter.setPreferredSize(new Dimension(150,30));
         cbFilter.addItem("Tất cả");
         loadListPublishers();
         cbFilter.addActionListener(e -> filterBook());
-        txtSearch = new JTextField();
-        txtSearch.setBounds(panelWidth - 210, 10, 190, 30);
+        txtSearch = new UITextField(190,30);
+        pnlSearchFilter.add(cbFilter);
+        pnlSearchFilter.add(txtSearch);
 
-        pnlHeader.add(btnAdd);
-        pnlHeader.add(btnDelete);
-        pnlHeader.add(btnEdit);
-        pnlHeader.add(btnView);
-        pnlHeader.add(cbFilter);
-        pnlHeader.add(txtSearch);
+        pnlHeader.add(pnlButton, BorderLayout.WEST);
+        pnlHeader.add(pnlSearchFilter, BorderLayout.CENTER);
         //==============================( End Panel Header )============================//
 
         
@@ -105,11 +104,8 @@ public class BookMainContentGUI extends JPanel {
     }
 
     public void loadTableData() {
-        // STEP 1: xóa dữ liệu cũ
         tableModel.setRowCount(0); 
-        // STEP 2: tải từng dòng lên bảng  
-        ArrayList<SachDTO> listSach = sachBUS.getAllSach();
-        for (SachDTO sach : listSach) {
+        for (SachDTO sach : sachBUS.getAllSach()) {
             tableModel.addRow(new Object[]{
                 sach.getMaSach(),
                 sach.getTenSach(),

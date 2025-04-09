@@ -45,8 +45,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class ImportBookMainContentGUI extends JPanel{
     private UIButton btnAdd ,btnView, btnThemVaoPhieu, btnXoaKhoiPhieu, btnSuaSoLuong, btnAddToPN, btnSavePN;
-    private UITextField txtSearch, txtSoLuong, txtMaPN, txtMaNV, txtTongTien;
-    private JTextField txtSearchSach;
+    private UITextField txtSearch, txtSoLuong, txtMaPN, txtMaNV, txtTongTien, txtSearchSach;
     private JComboBox<String> cbMaNCC;
     private UITable tblContent, tblForProduct , tblForForm;
     private JPanel pnlHeader, pnlContent, pnlForm, pnlProduct;
@@ -69,21 +68,25 @@ public class ImportBookMainContentGUI extends JPanel{
         this.setLayout(new BorderLayout(5, 5));
 
        //===============================( Panel Header )================================//
-        pnlHeader = new JPanel();
-        pnlHeader.setLayout(null); 
+        pnlHeader = new JPanel(new BorderLayout());
         pnlHeader.setBackground(UIConstants.MAIN_BACKGROUND);
         pnlHeader.setPreferredSize(new Dimension(this.getWidth(), 50));
-        btnAdd = new UIButton("menuButton", "THÊM", 100, 30, "/Icon/them_icon.png");
+
+        JPanel pnlButton = new JPanel(new FlowLayout(FlowLayout.LEFT,5,5));
+        pnlButton.setBackground(UIConstants.MAIN_BACKGROUND);
+        btnAdd = new UIButton("menuButton", "THÊM", 90, 40, "/Icon/them_icon.png");
         btnAdd.addActionListener(e -> resetFormInput());
-        btnView = new UIButton("menuButton", "XEM", 100, 30, "/Icon/chitiet_icon.png");
-        btnAdd.setBounds(5, 5, 90, 40);
-        btnView.setBounds(105, 5, 90, 40);
-        int panelWidth = this.getPreferredSize().width; 
+        btnView = new UIButton("menuButton", "XEM", 90, 40, "/Icon/chitiet_icon.png");
+        pnlButton.add(btnAdd);
+        pnlButton.add(btnView);
+        
+        JPanel pnlSearchFilter = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,10));
+        pnlSearchFilter.setBackground(UIConstants.MAIN_BACKGROUND);
         txtSearch = new UITextField(190,30);
-        txtSearch.setBounds(panelWidth - 210, 10, 190, 30);
-        pnlHeader.add(btnAdd);
-        pnlHeader.add(btnView);
-        pnlHeader.add(txtSearch);
+        pnlSearchFilter.add(txtSearch);
+
+        pnlHeader.add(pnlButton, BorderLayout.WEST);
+        pnlHeader.add(pnlSearchFilter, BorderLayout.CENTER);
         //==============================( End Panel Header )============================//
         
         
@@ -164,9 +167,7 @@ public class ImportBookMainContentGUI extends JPanel{
         pnlProduct.setBackground(UIConstants.MAIN_BACKGROUND);
         pnlProduct.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
-        txtSearchSach = new JTextField();
-        txtSearchSach.setPreferredSize(new Dimension(400 ,30));
-        txtSearchSach.setForeground(Color.GRAY);
+        txtSearchSach = new UITextField(400 ,30);
         
         String[] columnForProduct = {"MÃ SÁCH", "TÊN SÁCH", "GIÁ", "TỒN KHO"};
         tableModelForProduct = new DefaultTableModel(columnForProduct, 0);
@@ -217,8 +218,7 @@ public class ImportBookMainContentGUI extends JPanel{
     
     private void loadTableData(){
         tableModel.setRowCount(0);
-        ArrayList<PhieuNhapDTO> listPN = phieuNhapBUS.getAllPhieuNhap();
-        for(PhieuNhapDTO pn : listPN){
+        for(PhieuNhapDTO pn : phieuNhapBUS.getAllPhieuNhap()){
             tableModel.addRow(new Object[]{
                 pn.getMaPN(),
                 nhanVienBUS.getTenNvByMaNv(pn.getMaNV()),
@@ -228,8 +228,7 @@ public class ImportBookMainContentGUI extends JPanel{
             });
         }   
         tableModelForProduct.setRowCount(0);
-        ArrayList<SachDTO> listSach = sachBUS.getAllSach();
-        for(SachDTO sach : listSach){
+        for(SachDTO sach : sachBUS.getAllSach()){
             tableModelForProduct.addRow(new Object[]{
                 sach.getMaSach(),
                 sach.getTenSach(),

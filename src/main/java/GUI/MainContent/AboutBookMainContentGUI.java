@@ -12,7 +12,6 @@ import GUI.MainContentDiaLog.AddAndEditPublisherGUI;
 import javax.swing.JPanel;
 import Utils.*;
 import java.awt.*;
-import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -117,8 +116,7 @@ public class AboutBookMainContentGUI extends JPanel{
     //==================================================================================
     private void loadTableDataNhaXuatBan(){
         tableModelNXB.setRowCount(0);
-        ArrayList<NhaXuatBanDTO> listNXB = nxbBus.getAllNhaXuatBan();
-        for (NhaXuatBanDTO nxb : listNXB) {
+        for (NhaXuatBanDTO nxb : nxbBus.getAllNhaXuatBan()) {
             tableModelNXB.addRow(new Object[]{ nxb.getMaNXB(), nxb.getTenNXB()});
         }
     }
@@ -162,8 +160,7 @@ public class AboutBookMainContentGUI extends JPanel{
     //==================================================================================
     private void loadTableDataTacGia() {
         tableModelTG.setRowCount(0);  
-        ArrayList<TacGiaDTO> listTG = tgBus.getAllTacGia();
-        for (TacGiaDTO tg : listTG) {
+        for (TacGiaDTO tg : tgBus.getAllTacGia()) {
             tableModelTG.addRow(new Object[]{ tg.getMaTG(), tg.getTenTG()});
         }
     }
@@ -207,8 +204,7 @@ public class AboutBookMainContentGUI extends JPanel{
     //==================================================================================
     private void loadTableDataTheLoai() {
         tableModelTL.setRowCount(0);
-        ArrayList<TheLoaiDTO> listTL = tlBus.getAllTheLoai();
-        for (TheLoaiDTO tl : listTL) {
+        for (TheLoaiDTO tl : tlBus.getAllTheLoai()) {
             tableModelTL.addRow(new Object[]{ tl.getMaTL(), tl.getTenTL() });
         }
     }

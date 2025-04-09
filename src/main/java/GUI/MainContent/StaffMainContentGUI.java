@@ -7,17 +7,16 @@ import Utils.UIButton;
 import Utils.UIConstants;
 import Utils.UIScrollPane;
 import Utils.UITable;
+import Utils.UITextField;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Window;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -25,7 +24,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class StaffMainContentGUI extends JPanel{
     private UIButton btnAdd, btnDelete, btnEdit;
-    private JTextField txtSearch;
+    private UITextField txtSearch;
     private UITable tblContent;
     private JPanel pnlHeader, pnlContent;
     private DefaultTableModel tableModel;
@@ -39,29 +38,29 @@ public class StaffMainContentGUI extends JPanel{
 
         
         //==============================( PANEL HEADER )================================//
-        pnlHeader = new JPanel();
-        pnlHeader.setLayout(null); 
+        pnlHeader = new JPanel(new BorderLayout());
         pnlHeader.setBackground(UIConstants.MAIN_BACKGROUND);
         pnlHeader.setPreferredSize(new Dimension(this.getWidth(), 50));
 
-        btnAdd = new UIButton("menuButton", "THÊM", 100, 30, "/Icon/them_icon.png");
+        JPanel pnlButton = new JPanel(new FlowLayout(FlowLayout.LEFT,5,5));
+        pnlButton.setBackground(UIConstants.MAIN_BACKGROUND);
+        btnAdd = new UIButton("menuButton", "THÊM", 90, 40, "/Icon/them_icon.png");
         btnAdd.addActionListener(e -> addStaff());
-        btnDelete = new UIButton("menuButton", "XÓA", 100, 30, "/Icon/xoa_icon.png");
+        btnDelete = new UIButton("menuButton", "XÓA", 90, 40, "/Icon/xoa_icon.png");
         btnDelete.addActionListener(e -> deleteStaff());
-        btnEdit = new UIButton("menuButton", "SỬA", 100, 30, "/Icon/sua_icon.png");
+        btnEdit = new UIButton("menuButton", "SỬA", 90, 40, "/Icon/sua_icon.png");
         btnEdit.addActionListener(e -> editStaff());
-        btnAdd.setBounds(5, 5, 90, 40);
-        btnDelete.setBounds(105, 5, 90, 40);
-        btnEdit.setBounds(210, 5, 90, 40);
+        pnlButton.add(btnAdd);
+        pnlButton.add(btnDelete);
+        pnlButton.add(btnEdit);
 
-        int panelWidth = this.getPreferredSize().width; 
-        txtSearch = new JTextField();
-        txtSearch.setBounds(panelWidth - 210, 10, 190, 30);
-  
-        pnlHeader.add(btnAdd);
-        pnlHeader.add(btnDelete);
-        pnlHeader.add(btnEdit);
-        pnlHeader.add(txtSearch);
+        JPanel pnlSearchFilter = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,10));
+        pnlSearchFilter.setBackground(UIConstants.MAIN_BACKGROUND);
+        txtSearch = new UITextField(190 ,30);
+        pnlSearchFilter.add(txtSearch);
+
+        pnlHeader.add(pnlButton, BorderLayout.WEST);
+        pnlHeader.add(pnlSearchFilter, BorderLayout.CENTER);
         //==============================( End Panel Header )============================//
 
         
@@ -89,11 +88,8 @@ public class StaffMainContentGUI extends JPanel{
     }
     
     private void loadTableData(){
-        // STEP 1: xóa dữ liệu cũ
         tableModel.setRowCount(0); 
-        // STEP 2: tải từng dòng lên bảng  
-        ArrayList<NhanVienDTO> listNhanVien = nhanVienBUS.getAllNhanVien();
-        for (NhanVienDTO nhanvien : listNhanVien) {
+        for (NhanVienDTO nhanvien : nhanVienBUS.getAllNhanVien()) {
             tableModel.addRow(new Object[]{
                 nhanvien.getMaNV(),
                 nhanvien.getTenNV(),

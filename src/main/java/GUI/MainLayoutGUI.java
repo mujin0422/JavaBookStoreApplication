@@ -61,7 +61,7 @@ public final class MainLayoutGUI extends JFrame {
         JLabel lblTitle = new JLabel("HỆ THÔNG QUẢN LÝ CỬA HÀNG SÁCH");
         lblTitle.setFont(UIConstants.TITLE_FONT);
         lblTitle.setForeground(UIConstants.WHITE_FONT);
-        lblTitle.setBounds(10, 5, 300, 40);
+        lblTitle.setBounds(10, 5, 450, 40);
 
         ImageIcon minimizeIcon = new ImageIcon(getClass().getResource("/Icon/minimize_icon.png"));
         ImageIcon closeIcon = new ImageIcon(getClass().getResource("/Icon/close_icon.png"));
@@ -88,13 +88,12 @@ public final class MainLayoutGUI extends JFrame {
         
         //================================( PANEL MENU )================================//
         pnlMenu = new JPanel(new BorderLayout());
-        pnlMenu.setBackground(UIConstants.MAIN_BACKGROUND);
         pnlMenu.setPreferredSize(new Dimension(UIConstants.WIDTH_MENU, UIConstants.HEIGHT_MENU));
         
         pnlChucNang = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        btnLogout = new UIButton("menuButton", "ĐĂNG XUẤT", 0, 40, "/Icon/logout_icon.png");
+        pnlChucNang.setBackground(UIConstants.MAIN_BACKGROUND);
+        btnLogout = new UIButton("menuButton", "ĐĂNG XUẤT", 0, 50, "/Icon/logout_icon.png");
         btnLogout.setHorizontalAlignment(SwingConstants.CENTER);
-        
         btnLogout.addActionListener(e -> logout());
          
         pnlMenu.add(pnlChucNang, BorderLayout.CENTER);
@@ -136,14 +135,13 @@ public final class MainLayoutGUI extends JFrame {
                 case 8 -> targetPanel = exportBookPanel;        
                 case 9 -> targetPanel = decentralizationPanel;  
                 case 10 -> targetPanel = statisticsPanel;       
-                default -> targetPanel = null;
+                default -> targetPanel = statisticsPanel;
             }
             button.addActionListener(e -> switchPanel(targetPanel));
         }
         addChucNang();
         //==============================( End Panel Content )===========================//
 
-        
         
         this.getContentPane().add(pnlMenu, BorderLayout.WEST);
         this.getContentPane().add(pnlContent, BorderLayout.CENTER);

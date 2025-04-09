@@ -7,16 +7,16 @@ import Utils.UIButton;
 import Utils.UIConstants;
 import Utils.UIScrollPane;
 import Utils.UITable;
+import Utils.UITextField;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Window;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -24,7 +24,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class SupplierMainContentGUI extends JPanel {
     private UIButton btnAdd, btnDelete, btnEdit;
-    private JTextField txtSearch;
+    private UITextField txtSearch;
     private UITable tblContent;
     private JPanel pnlHeader, pnlContent;
     private DefaultTableModel tableModel;
@@ -37,29 +37,29 @@ public class SupplierMainContentGUI extends JPanel {
         this.setLayout(new BorderLayout(5, 5));
 
         //==============================( PANEL HEADER )================================//
-        pnlHeader = new JPanel();
-        pnlHeader.setLayout(null); 
+        pnlHeader = new JPanel(new BorderLayout());
         pnlHeader.setBackground(UIConstants.MAIN_BACKGROUND);
         pnlHeader.setPreferredSize(new Dimension(this.getWidth(), 50));
 
-        btnAdd = new UIButton("menuButton", "THÊM", 100, 30, "/Icon/them_icon.png");
+        JPanel pnlButton = new JPanel(new FlowLayout(FlowLayout.LEFT,5,5));
+        pnlButton.setBackground(UIConstants.MAIN_BACKGROUND);
+        btnAdd = new UIButton("menuButton", "THÊM", 90, 40, "/Icon/them_icon.png");
         btnAdd.addActionListener(e -> addSupplier());
-        btnDelete = new UIButton("menuButton", "XÓA", 100, 30, "/Icon/xoa_icon.png");
+        btnDelete = new UIButton("menuButton", "XÓA", 90, 40, "/Icon/xoa_icon.png");
         btnDelete.addActionListener(e -> deleteSupplier());
-        btnEdit = new UIButton("menuButton", "SỬA", 100, 30, "/Icon/sua_icon.png");
+        btnEdit = new UIButton("menuButton", "SỬA", 90, 40, "/Icon/sua_icon.png");
         btnEdit.addActionListener(e -> editSupplier());
-        btnAdd.setBounds(5, 5, 90, 40);
-        btnDelete.setBounds(105, 5, 90, 40);
-        btnEdit.setBounds(210, 5, 90, 40);
-            // Tạo ô tìm kiếm
-        int panelWidth = this.getPreferredSize().width; 
-        txtSearch = new JTextField();
-        txtSearch.setBounds(panelWidth - 210, 10, 190, 30);
-            // Thêm tất cả vào pnlHeader
-        pnlHeader.add(btnAdd);
-        pnlHeader.add(btnDelete);
-        pnlHeader.add(btnEdit);
-        pnlHeader.add(txtSearch);
+        pnlButton.add(btnAdd);
+        pnlButton.add(btnDelete);
+        pnlButton.add(btnEdit);
+        
+        JPanel pnlSearchFilter = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,10));
+        pnlSearchFilter.setBackground(UIConstants.MAIN_BACKGROUND);
+        txtSearch = new UITextField(190 ,30);
+        pnlSearchFilter.add(txtSearch);
+
+        pnlHeader.add(pnlButton, BorderLayout.WEST);
+        pnlHeader.add(pnlSearchFilter, BorderLayout.CENTER);
         //==============================( End Panel Header )============================//
 
         
@@ -71,7 +71,7 @@ public class SupplierMainContentGUI extends JPanel {
         pnlContent.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         String[] columnNames = {"MÃ NHÀ CUNG CẤP", "TÊN NHÀ CUNG CẤP", "SỐ ĐIỆN THOẠI", "ĐỊA CHỈ"};
-        tableModel = new DefaultTableModel(columnNames, 0); // ####
+        tableModel = new DefaultTableModel(columnNames, 0); 
         tblContent = new UITable(tableModel);
         UIScrollPane scrollPane = new UIScrollPane(tblContent);
         pnlContent.add(scrollPane, BorderLayout.CENTER);
@@ -85,8 +85,7 @@ public class SupplierMainContentGUI extends JPanel {
     
     private void loadTableData(){
         tableModel.setRowCount(0);
-        ArrayList<NhaCungCapDTO> listNCC = nhaCungCapBUS.getAllNhaCungCap();
-        for(NhaCungCapDTO ncc : listNCC){
+        for(NhaCungCapDTO ncc : nhaCungCapBUS.getAllNhaCungCap()){
             tableModel.addRow(new Object[]{
                 ncc.getMaNCC(),
                 ncc.getTenNCC(),
