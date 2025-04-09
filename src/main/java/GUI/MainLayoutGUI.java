@@ -6,7 +6,6 @@ import GUI.MainContent.*;
 import Utils.UIButton;
 import Utils.UIConstants;
 import java.awt.*;
-import static java.awt.BorderLayout.CENTER;
 import java.util.ArrayList;
 import javax.swing.*;
 
