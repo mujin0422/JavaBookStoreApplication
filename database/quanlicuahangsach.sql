@@ -68,7 +68,8 @@ INSERT INTO NHACUNGCAP (maNCC, tenNCC, diaChi, sdt) VALUES
 (1, N'Nhà Sách Fahasa', N'21 Lý Chính Thắng, Quận 3, TP.HCM', '02838208384'),
 (2, N'Nhà Sách Phương Nam', N'940 Đường 3/2, Quận 11, TP.HCM', '02838622222'),
 (3, N'Công Ty Sách Nhã Nam', N'59 Đặng Thai Mai, Tây Hồ, Hà Nội', '02437151101'),
-(4, N'Tiki Trading', N'52 Út Tịch, Quận Tân Bình, TP.HCM', '19006035');
+(4, N'Tiki Trading', N'52 Út Tịch, Quận Tân Bình, TP.HCM', '19006035'),
+(5, N'Alpha Books', N'20/11 Nguyễn Hữu Cảnh, Phường 19, Quận Bình Thạnh, TP.HCM', '02835126787');
 
 
 CREATE TABLE NHANVIEN (
@@ -99,16 +100,31 @@ CREATE TABLE KHACHHANG (
     trangThaiXoa INT NOT NULL DEFAULT 0
 );
 INSERT INTO KHACHHANG (maKH, tenKH, sdt, email) VALUES
-(1, N'Nguyễn Văn An', '0901234567', 'an.nguyen@gmail.com'),
-(2, N'Trần Thị Bích Ngọc', '0912345678', 'ngoc.tran@gmail.com'),
-(3, N'Lê Văn Cường', '0923456789', 'cuong.le@gmail.com'),
-(4, N'Phạm Minh Tâm', '0934567890', 'tam.pham@gmail.com'),
-(5, N'Đỗ Hoàng Nam', '0945678901', 'nam.do@gmail.com'),
-(6, N'Võ Thanh Thảo', '0956789012', 'thao.vo@gmail.com'),
-(7, N'Huỳnh Nhật Hào', '0967890123', 'hao.huynh@gmail.com'),
-(8, N'Bùi Quỳnh Như', '0978901234', 'nhu.bui@gmail.com'),
-(9, N'Ngô Thị Lan', '0989012345', 'lan.ngo@gmail.com'),
-(10, N'Hoàng Tuấn Kiệt', '0990123456', 'kiet.hoang@gmail.com');
+(1, N'Nguyễn Văn An', '0901234567', 'annguyen@gmail.com'),
+(2, N'Trần Thị Bích Ngọc', '0912345678', 'ngoctran@gmail.com'),
+(3, N'Lê Văn Cường', '0923456789', 'cuongle@gmail.com'),
+(4, N'Phạm Minh Tâm', '0934567890', 'tampham@gmail.com'),
+(5, N'Đỗ Hoàng Nam', '0945678901', 'namdo@gmail.com'),
+(6, N'Võ Thanh Thảo', '0956789012', 'thaovo@gmail.com'),
+(7, N'Huỳnh Nhật Hào', '0967890123', 'haohuynh@gmail.com'),
+(8, N'Bùi Quỳnh Như', '0978901234', 'nhubui@gmail.com'),
+(9, N'Ngô Thị Lan', '0989012345', 'lanngo@gmail.com'),
+(10, N'Hoàng Tuấn Kiệt', '0990123456', 'kiethoang@gmail.com'),
+(11, N'Phan Thị Hồng', '0901111222', 'hongphan@gmail.com'),
+(12, N'Đặng Văn Long', '0912222333', 'longdang@gmail.com'),
+(13, N'Lý Minh Khoa', '0923333444', 'khoaly@gmail.com'),
+(14, N'Tống Thị Mai', '0934444555', 'maitong@gmail.com'),
+(15, N'Tạ Quốc Bảo', '0945555666', 'baota@gmail.com'),
+(16, N'Kiều Ngọc Trinh', '0956666777', 'trinhkieu@gmail.com'),
+(17, N'Mai Thanh Hùng', '0967777888', 'hungmai@gmail.com'),
+(18, N'Trịnh Thị Yến', '0978888999', 'yentrinh@gmail.com'),
+(19, N'Cao Hoàng Phúc', '0989999000', 'phuccao@gmail.com'),
+(20, N'Thái Thị Hương', '0990000111', 'huongthai@gmail.com'),
+(21, N'Lâm Nhật Minh', '0902222333', 'minhlam@gmail.com'),
+(22, N'Châu Mỹ Linh', '0913333444', 'linhchau@gmail.com'),
+(23, N'Trương Văn Hào', '0924444555', 'haotruong@gmail.com'),
+(24, N'Hồ Thị Hạnh', '0935555666', 'hanhho@gmail.com'),
+(25, N'Vương Quốc Tuấn', '0946666777', 'tuanvuong@gmail.com');
 
 
 CREATE TABLE HANHDONG (
@@ -132,7 +148,7 @@ INSERT INTO QUYEN (maQuyen, tenQuyen) VALUES
 (1, N'Quản trị viên (admin)'),
 (2, N'Quản lí'),
 (3, N'Nhân viên bán hàng'),
-(4, N'Kế toán');
+(4, N'Nhân viên kế toán');
 
 
 CREATE TABLE CHUCNANG (
@@ -142,17 +158,15 @@ CREATE TABLE CHUCNANG (
 );
 INSERT INTO CHUCNANG (maCN, tenCN) VALUES
 (1, N'Quản Lí Sách'),
-(2, N'Quản Lí Nhà Xuất Bản'),
-(3, N'Quản Lí Tác Giả'),
-(4, N'Quản Lí Thể Loại'),
-(5, N'Quản Lí Khách Hàng'),
-(6, N'Quản Lí Nhân Viên'),
-(7, N'Quản Lí Tài Khoản'),
-(8, N'Quản Lí Nhà Cung Cấp'),
-(9, N'Quản Lí Nhập Hàng'),
-(10, N'Quản Lí Xuất Hàng'),
-(11, N'Quản Lí Phân Quyền'),
-(12, N'Quản Lí Thống Kê');
+(2, N'Quản Lí Thông Tin Sách'),
+(3, N'Quản Lí Khách Hàng'),
+(4, N'Quản Lí Nhân Viên'),
+(5, N'Quản Lí Tài Khoản'),
+(6, N'Quản Lí Nhà Cung Cấp'),
+(7, N'Quản Lí Nhập Hàng'),
+(8, N'Quản Lí Xuất Hàng'),
+(9, N'Quản Lí Phân Quyền'),
+(10, N'Quản Lí Thống Kê');
 
 
 CREATE TABLE SACH (
@@ -165,26 +179,26 @@ CREATE TABLE SACH (
     FOREIGN KEY (maNXB) REFERENCES NHAXUATBAN(maNXB)
 );
 INSERT INTO SACH (maSach, tenSach, giaSach, soLuongTon, maNXB) VALUES
-(1, N'Tôi thấy hoa vàng trên cỏ xanh', 120000, 0, 1),
-(2, N'Harry Potter và Hòn đá phù thủy', 150000, 0, 2),
-(3, N'Bí mật tư duy triệu phú', 180000, 0, 3),
-(4, N'21 Bài học cho thế kỷ 21', 200000, 0, 4),
-(5, N'Nhà giả kim', 130000, 0, 1),
-(6, N'Nghệ thuật đàm phán', 170000, 0, 1),
-(7, N'Lược sử thời gian', 220000, 0, 1),
-(8, N'Một thoáng ta rực rỡ ở nhân gian', 160000, 0, 1),
-(9, N'Chuyện con mèo dạy hải âu bay', 90000, 0, 2),
-(10, N'Không gia đình', 140000, 0, 3),
-(11, N'Bách khoa thư vũ trụ', 250000, 0, 1),
-(12, N'Khoa học kỳ thú', 180000, 0, 1),
-(13, N'Chinh phục toán học', 190000, 0, 3),
-(14, N'Vũ trụ trong vỏ hạt dẻ', 230000, 0, 1),
-(15, N'Đi tìm lẽ sống', 135000, 0, 4),
-(16, N'Tư duy nhanh và chậm', 210000, 0, 2),
-(17, N'Chiến tranh tiền tệ', 195000, 0, 2),
-(18, N'Văn hóa & Con người', 170000, 0, 2),
-(19, N'Trí tuệ xúc cảm', 165000, 0, 1),
-(20, N'Sống tối giản', 145000, 0, 1);
+(1, N'Tôi thấy hoa vàng trên cỏ xanh', 120000, 50, 1),
+(2, N'Harry Potter và Hòn đá phù thủy', 150000, 80, 2),
+(3, N'Bí mật tư duy triệu phú', 180000, 50, 3),
+(4, N'21 Bài học cho thế kỷ 21', 200000, 50, 4),
+(5, N'Nhà giả kim', 130000, 70, 1),
+(6, N'Nghệ thuật đàm phán', 170000, 50, 1),
+(7, N'Lược sử thời gian', 220000, 60, 1),
+(8, N'Một thoáng ta rực rỡ ở nhân gian', 160000, 50, 1),
+(9, N'Chuyện con mèo dạy hải âu bay', 90000, 50, 2),
+(10, N'Không gia đình', 140000, 50, 3),
+(11, N'Bách khoa thư vũ trụ', 250000, 50, 1),
+(12, N'Khoa học kỳ thú', 180000, 50, 1),
+(13, N'Chinh phục toán học', 190000, 70, 3),
+(14, N'Vũ trụ trong vỏ hạt dẻ', 230000, 50, 1),
+(15, N'Đi tìm lẽ sống', 135000, 75, 4),
+(16, N'Tư duy nhanh và chậm', 210000, 50, 2),
+(17, N'Chiến tranh tiền tệ', 195000, 50, 2),
+(18, N'Văn hóa & Con người', 170000, 70, 2),
+(19, N'Trí tuệ xúc cảm', 165000, 50, 1),
+(20, N'Sống tối giản', 145000, 70, 1);
 
 
 CREATE TABLE PHIEUNHAP (
@@ -197,6 +211,10 @@ CREATE TABLE PHIEUNHAP (
     FOREIGN KEY (maNV) REFERENCES NHANVIEN(maNV),
     FOREIGN KEY (maNCC) REFERENCES NHACUNGCAP(maNCC)
 );
+INSERT INTO PHIEUNHAP (maPN, maNV, maNCC, tongTien, ngayNhap) VALUES
+(1, 3, 3, 171500000, '2025-03-11'),
+(2, 2, 1, 9300000, '2025-03-15'),
+(3, 3, 1, 13475000, '2025-03-28');
 
 CREATE TABLE PHIEUXUAT (
     maPX INT PRIMARY KEY,
@@ -225,11 +243,11 @@ INSERT INTO TAIKHOAN (tenDangNhap, matKhau, maNV, maQuyen) VALUES
 ('admin3', '123456', 3, 1),
 ('admin4', '123456', 4, 1),
 ('admin5', '123456', 5, 1),
-('nhanvien6', '123456', 6, 2), 
-('nhanvien7', '123456', 7, 2), 
-('nhanvien8', '123456', 8, 2), 
-('ketoan9', '123456', 9, 3),    
-('ketoan10', '123456', 10, 3);
+('banhang1', '123456', 6, 3), 
+('banhang2', '123456', 7, 3), 
+('banhang3', '123456', 8, 3), 
+('ketoan1', '123456', 9, 4),    
+('ketoan2', '123456', 10, 4);
 
 
 CREATE TABLE NHOMTHELOAI (
@@ -293,6 +311,34 @@ CREATE TABLE CHITIETPHIEUNHAP (
     FOREIGN KEY (maSach) REFERENCES SACH(maSach),
     FOREIGN KEY (maPN) REFERENCES PHIEUNHAP(maPN)
 );
+INSERT INTO CHITIETPHIEUNHAP (maSach, maPN, giaNhap, soLuong) VALUES
+(1, 1, 6000000, 50),
+(2, 1, 7500000, 50),
+(2, 2, 4500000, 30),
+(3, 1, 9000000, 50),
+(4, 1, 10000000, 50),
+(5, 1, 6500000, 50),
+(5, 2, 2600000, 20),
+(6, 1, 8500000, 50),
+(7, 1, 11000000, 50),
+(7, 2, 2200000, 10),
+(8, 1, 8000000, 50),
+(9, 1, 4500000, 50),
+(10, 1, 7000000, 50),
+(11, 1, 12500000, 50),
+(12, 1, 9000000, 50),
+(13, 1, 9500000, 50),
+(13, 3, 3800000, 20),
+(14, 1, 11500000, 50),
+(15, 1, 6750000, 50),
+(15, 3, 3375000, 25),
+(16, 1, 10500000, 50),
+(17, 1, 9750000, 50),
+(18, 1, 8500000, 50),
+(18, 3, 3400000, 20),
+(19, 1, 8250000, 50),
+(20, 1, 7250000, 50),
+(20, 3, 2900000, 20);
 
 CREATE TABLE CHITIETPHIEUXUAT (
     maSach INT NOT NULL,
@@ -324,9 +370,8 @@ INSERT INTO CHITIETCHUCNANG(maCN, maQuyen, maHD) VALUES
 (7, 1, 'view'), (7, 1, 'add'), (7, 1, 'edit'), (7, 1, 'delete'),
 (8, 1, 'view'), (8, 1, 'add'), (8, 1, 'edit'), (8, 1, 'delete'),
 (9, 1, 'view'), (9, 1, 'add'), (9, 1, 'edit'), (9, 1, 'delete'),
-(10, 1, 'view'), (10, 1, 'add'), (10, 1, 'edit'), (10, 1, 'delete'),
-(11, 1, 'view'), (11, 1, 'add'), (11, 1, 'edit'), (11, 1, 'delete'),
-(12, 1, 'view'), (12, 1, 'add'), (12, 1, 'edit'), (12, 1, 'delete');
+(10, 1, 'view'), (10, 1, 'add'), (10, 1, 'edit'), (10, 1, 'delete');
+
 
 
 

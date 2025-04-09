@@ -100,7 +100,7 @@ public final class LoginGUI extends JFrame {
         passwordPanel.add(lblLockIcon, BorderLayout.WEST);
         passwordPanel.add(txtPassword, BorderLayout.CENTER);
 
-        btnLogin = new UIButton("confirm", "ĐĂNG NHẬP", 160, 35, "/Icon/login_key_icon.png");
+        btnLogin = new UIButton("confirm", "ĐĂNG NHẬP", 160, 35, "/Icon/login_icon.png");
         btnLogin.setBounds(160, 240, 140, 40 );
         btnLogin.addActionListener(e ->login());
 
