@@ -1,14 +1,11 @@
 package DTO;
 
-import java.util.Objects;
-
 public class TacGiaDTO {
     private int maTG;
     private String tenTG;
     private int trangThaiXoa;
 
-    public TacGiaDTO() {
-    }
+    public TacGiaDTO() { }
 
     public TacGiaDTO(int maTG, String tenTG) {
         this.maTG = maTG;

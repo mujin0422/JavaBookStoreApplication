@@ -10,8 +10,7 @@ public class PhieuXuatDTO {
     private Date ngayXuat;
     private int trangThaiXoa;
 
-    public PhieuXuatDTO() {
-    }
+    public PhieuXuatDTO() { }
 
     public PhieuXuatDTO(int maPX, int maNV, int maKH, int tongTien, Date ngayXuat) {
         this.maPX = maPX;

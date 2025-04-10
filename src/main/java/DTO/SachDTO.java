@@ -1,7 +1,5 @@
 package DTO;
 
-import java.util.Objects;
-
 public class SachDTO {
     private int maSach;
     private String tenSach;
@@ -10,8 +8,7 @@ public class SachDTO {
     private int maNXB;
     private int trangThaiXoa;
 
-    public SachDTO() {
-    }
+    public SachDTO() { }
 
     public SachDTO(int maSach, String tenSach, int giaSach, int soLuongTon, int maNXB) {
         this.maSach = maSach;

@@ -5,8 +5,7 @@ public class QuyenDTO {
     private String tenQuyen;
     private int trangThaiXoa;
 
-    public QuyenDTO() {
-    }
+    public QuyenDTO() { }
 
     public QuyenDTO(int maQuyen, String tenQuyen) {
         this.maQuyen = maQuyen;

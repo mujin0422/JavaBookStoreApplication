@@ -19,8 +19,7 @@ public class PhieuNhapDTO {
         this.trangThaiXoa = 0;
     }
 
-    public PhieuNhapDTO() {
-    }
+    public PhieuNhapDTO() { }
 
     public int getMaPN() {
         return maPN;

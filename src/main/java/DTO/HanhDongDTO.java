@@ -11,8 +11,7 @@ public class HanhDongDTO {
         this.trangThaiXoa = 0;
     }
 
-    public HanhDongDTO() {
-    }
+    public HanhDongDTO() { }
  
     public String getMaHD() {
         return maHD;
@@ -36,7 +35,5 @@ public class HanhDongDTO {
 
     public void setTenHD(String tenHD) {
         this.tenHD = tenHD;
-    }
-    
-    
+    } 
 }

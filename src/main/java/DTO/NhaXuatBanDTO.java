@@ -1,14 +1,11 @@
 package DTO;
 
-import java.util.Objects;
-
 public class NhaXuatBanDTO {
     private int maNXB;
     private String tenNXB;
     private int trangThaiXoa;
 
-    public NhaXuatBanDTO() {
-    }
+    public NhaXuatBanDTO() { }
 
     public NhaXuatBanDTO(int maNXB, String tenNXB) {
         this.maNXB = maNXB;

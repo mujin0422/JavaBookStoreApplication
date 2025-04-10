@@ -18,7 +18,6 @@ public class NhaXuatBanDAO {
             ps.setString(2, obj.getTenNXB());
             return ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return 0;
     }
@@ -31,7 +30,6 @@ public class NhaXuatBanDAO {
             ps.setInt(2, obj.getMaNXB());
             return ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return 0;
     }
@@ -43,7 +41,6 @@ public class NhaXuatBanDAO {
             ps.setInt(1, maNXB);
             return ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return 0;
     }
@@ -61,7 +58,6 @@ public class NhaXuatBanDAO {
                 ));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return dsNXB;
     }
@@ -80,9 +76,36 @@ public class NhaXuatBanDAO {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return null;
+    }
+    
+    public String getTenNhaXuatBanById(int maNXB) {
+        String sql = "SELECT tenNXB FROM nhaxuatban WHERE maNXB = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setInt(1, maNXB);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getString("tenNXB");
+            }
+        } catch (SQLException e) {
+        }
+        return null;
+    }
+    
+    public int getMaNxbByTenNxb(String tenNxb){
+        String sql = "SELECT maNXB FROM nhaxuatban WHERE tenNXB = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setString(1, tenNxb);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("maNXB");
+            }
+        } catch (SQLException e) {
+        }
+        return 0;
     }
     
 //    public boolean exists(int maNXB) {

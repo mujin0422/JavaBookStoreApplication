@@ -41,4 +41,8 @@ public class ChiTietPhieuXuatBUS {
         }
         return ketQua;
     }
+    
+    public ArrayList<ChiTietPhieuXuatDTO> getAllChiTietPhieuXuatByMaPx(int maPX){
+        return chiTietPhieuXuatDAO.getAllChiTietPhieuXuatByMaPx(maPX);
+    }
 }

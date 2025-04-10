@@ -29,7 +29,9 @@ public class TheLoaiBUS {
     public boolean deleteTheLoai(int MaTL) {
         return TheLoaiDAO.delete(MaTL) > 0;  
     }
-    
+    public String getTenTheLoaiById(int maTL){
+        return TheLoaiDAO.getTenTheLoaiById(maTL);
+    }
     
     public ArrayList<String> getTheLoaiByMaSach(int maSach) {
         ArrayList<String> danhSachTenTL = new ArrayList<>();
@@ -41,6 +43,10 @@ public class TheLoaiBUS {
             danhSachTenTL.add(tenTL);
         }
         return danhSachTenTL;
+    }
+    
+    public int getMaTlByTenTl(String tenTl){
+        return TheLoaiDAO.getMaTlByTenTl(tenTl);
     }
 }
 

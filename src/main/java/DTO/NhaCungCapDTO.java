@@ -1,8 +1,5 @@
 package DTO;
 
-import java.util.Objects;
-
-
 public class NhaCungCapDTO {
     private int maNCC;
     private String tenNCC;
@@ -10,8 +7,7 @@ public class NhaCungCapDTO {
     private String sdt;
     private int trangThaiXoa;
 
-    public NhaCungCapDTO() {
-    }
+    public NhaCungCapDTO() {}
 
     public NhaCungCapDTO(int maNCC, String tenNCC, String diaChi, String sdt) {
         this.maNCC = maNCC;

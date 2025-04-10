@@ -31,12 +31,11 @@ public class NhaXuatBanBUS {
         return nhaXuatBanDAO.delete(maNXB) > 0;
     }
     
-    public String getTenNXBById(int id){
-        for (NhaXuatBanDTO nxb : nhaXuatBanDAO.getAll()) {
-            if (nxb.getMaNXB() == id) {
-                return nxb.getTenNXB();
-            }
-        }
-        return "khong ton tai";
+    public String getTenNhaXuatBanById(int id){
+        return nhaXuatBanDAO.getTenNhaXuatBanById(id);
+    }
+    
+    public int getMaNxbByTenNxb(String tenNxb){
+        return nhaXuatBanDAO.getMaNxbByTenNxb(tenNxb);
     }
 }

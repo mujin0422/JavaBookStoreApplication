@@ -26,5 +26,8 @@ public class ChiTietPhieuNhapBUS {
     public boolean deleteChiTietPhieuNhap(int maPN, int maSach) {
         return chiTietPhieuNhapDAO.delete(maPN, maSach) > 0;
     }
-
+    
+    public ArrayList<ChiTietPhieuNhapDTO> getAllChiTietPhieuNhapByMaPn(int maPn){
+        return chiTietPhieuNhapDAO.getAllChiTietPhieuNhapByMaPn(maPn);
+    }
 }

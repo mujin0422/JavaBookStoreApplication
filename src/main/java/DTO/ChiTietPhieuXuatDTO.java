@@ -1,6 +1,4 @@
-
 package DTO;
-
 
 public class ChiTietPhieuXuatDTO {
     private int maPX;
@@ -8,10 +6,8 @@ public class ChiTietPhieuXuatDTO {
     private int soLuong;
     private int giaBan;
 
-    public ChiTietPhieuXuatDTO() {
-    }
+    public ChiTietPhieuXuatDTO() {}
 
-    
     public ChiTietPhieuXuatDTO(int maPX, int maSach, int soLuong, int giaBan) {
         this.maPX = maPX;
         this.maSach = maSach;

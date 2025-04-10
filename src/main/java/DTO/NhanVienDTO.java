@@ -1,8 +1,5 @@
 package DTO;
 
-import java.util.Objects;
-
-
 public class NhanVienDTO {
     private int maNV;
     private String tenNV;
@@ -10,8 +7,7 @@ public class NhanVienDTO {
     private String sdt;
     private int trangThaiXoa;
 
-    public NhanVienDTO() {
-    }
+    public NhanVienDTO() { }
 
     public NhanVienDTO(int maNV, String tenNV, String email, String sdt) {
         this.maNV = maNV;

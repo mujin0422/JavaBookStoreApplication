@@ -4,8 +4,7 @@ public class NhomTheLoaiDTO {
     private int maTL;
     private int maSach;
 
-    public NhomTheLoaiDTO() {
-    }
+    public NhomTheLoaiDTO() { }
 
     public NhomTheLoaiDTO(int maTL, int maSach) {
         this.maTL = maTL;

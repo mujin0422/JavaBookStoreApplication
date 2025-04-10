@@ -143,4 +143,19 @@ public class SachDAO {
         return null;
     }
             
+    public String getTenSachByMaSach(int maSach){
+        String sql ="SELECT tenSach FROM sach WHERE maSach =?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, maSach);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("tenSach");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

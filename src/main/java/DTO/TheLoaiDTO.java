@@ -1,14 +1,11 @@
 package DTO;
 
-import java.util.Objects;
-
 public class TheLoaiDTO {
     private int maTL;
     private String tenTL;
     private int trangThaiXoa;
 
-    public TheLoaiDTO() {
-    }
+    public TheLoaiDTO() {}
 
     public TheLoaiDTO(int maTL, String tenTL) {
         this.maTL = maTL;

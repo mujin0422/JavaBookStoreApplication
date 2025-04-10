@@ -39,4 +39,12 @@ public class TacGiaBUS {
         }
         return danhSachTenTG;
     }
+    
+    public int getMaTgByTenTg(String tenTg){
+        return tacGiaDAO.getMaTgByTenTg(tenTg);
+    }
+    
+    public String getTenTacGiaById(int maTG){
+        return tacGiaDAO.getTenTacGiaById(maTG);
+    }
 }

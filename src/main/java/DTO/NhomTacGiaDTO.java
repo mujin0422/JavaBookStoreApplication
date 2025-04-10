@@ -4,8 +4,7 @@ public class NhomTacGiaDTO {
     private int maTG;
     private int maSach;
 
-    public NhomTacGiaDTO() {
-    }
+    public NhomTacGiaDTO() { }
 
     public NhomTacGiaDTO(int maTG, int maSach) {
         this.maTG = maTG;

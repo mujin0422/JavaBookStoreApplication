@@ -1,14 +1,11 @@
 package DTO;
 
-import java.util.Objects;
-
 public class ChucNangDTO {
     private int maCN;
     private String tenCN;
     private int trangThaiXoa;
 
-    public ChucNangDTO() {
-    }
+    public ChucNangDTO() {}
 
     public ChucNangDTO(int maCN, String tenCN) {
         this.maCN = maCN;
@@ -39,6 +36,4 @@ public class ChucNangDTO {
     public void setTrangThaiXoa(int trangThaiXoa) {
         this.trangThaiXoa = trangThaiXoa;
     }
-
-    
 }

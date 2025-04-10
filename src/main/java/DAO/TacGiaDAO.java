@@ -99,25 +99,35 @@ public class TacGiaDAO {
                 danhSachMaTG.add(rs.getInt("maTG"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return danhSachMaTG;
     }
     
     public String getTenTacGiaById(int maTG) {
-        String tenTG = "Không xác định";
         String sql = "SELECT tenTG FROM tacgia WHERE maTG = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)){
             ps.setInt(1, maTG);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                tenTG = rs.getString("tenTG");
+                return rs.getString("tenTG");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return tenTG;
+        return null;
     }
 
+    public int getMaTgByTenTg(String tenTg){
+        String sql = "SELECT maTG FROM tacgia WHERE tenTG = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setString(1, tenTg);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("maTG");
+            }
+        } catch (SQLException e) {
+        }
+        return 0;
+    }
 }

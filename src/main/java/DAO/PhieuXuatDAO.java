@@ -108,6 +108,7 @@ public class PhieuXuatDAO {
                 }
             }
         } catch (SQLException e) {
+            System.out.println("Không tìm thấy phiếu xuất với mã: " + maPX);
             e.printStackTrace();
         }
         return null;

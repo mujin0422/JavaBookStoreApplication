@@ -1,14 +1,12 @@
 package DTO;
 
-
 public class ChiTietPhieuNhapDTO {
     private int maPN;
     private int maSach;
     private int soLuong;
     private int giaNhap;
 
-    public ChiTietPhieuNhapDTO() {
-    }
+    public ChiTietPhieuNhapDTO() {}
 
     public ChiTietPhieuNhapDTO(int maPN, int maSach, int soLuong, int giaNhap) {
         this.maPN = maPN;

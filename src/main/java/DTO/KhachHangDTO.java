@@ -1,8 +1,5 @@
 package DTO;
 
-import java.util.Objects;
-
-
 public class KhachHangDTO {
     private int maKH;
     private String tenKH;
@@ -10,8 +7,7 @@ public class KhachHangDTO {
     private String email;
     private int trangThaiXoa;
 
-    public KhachHangDTO() {
-    }
+    public KhachHangDTO() { }
 
     public KhachHangDTO(int maKH, String tenKH, String sdt, String email) {
         this.maKH = maKH;

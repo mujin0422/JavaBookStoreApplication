@@ -235,7 +235,7 @@ public class BookMainContentGUI extends JPanel {
         SachDTO sach = sachBUS.getSachById(maSach);
         // Lấy thông tin Nhà xuất bản
         NhaXuatBanBUS nhaXuatBanBUS = new NhaXuatBanBUS();
-        String tenNXB = nhaXuatBanBUS.getTenNXBById(sach.getMaNXB());
+        String tenNXB = nhaXuatBanBUS.getTenNhaXuatBanById(sach.getMaNXB());
         // Lấy danh sách tác giả
         TacGiaBUS tacGiaBUS = new TacGiaBUS();
         ArrayList<String> dsTacGia = tacGiaBUS.getTacGiaByMaSach(maSach);

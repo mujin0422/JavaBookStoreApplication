@@ -102,19 +102,33 @@ public class TheLoaiDAO {
         return danhSachMaTL;
     }
     public String getTenTheLoaiById(int maTL) {
-        String tenTL = "Không xác định";
         String sql = "SELECT tenTL FROM theloai WHERE maTL = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)){
             ps.setInt(1, maTL);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                tenTL = rs.getString("tenTL");
+                return rs.getString("tenTL");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return tenTL;
+        return null;
+    }
+    
+    public int getMaTlByTenTl(String tenTl){
+        String sql = "SELECT maTL FROM theloai WHERE tenTL = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)){
+            ps.setString(1, tenTl);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("maTL");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
 }

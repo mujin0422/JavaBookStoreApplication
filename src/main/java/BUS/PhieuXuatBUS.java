@@ -51,4 +51,7 @@ public class PhieuXuatBUS {
         return ketQua;
     }
 
+    public PhieuXuatDTO getById(int maPX){
+        return phieuXuatDAO.getById(maPX);
+    }
 }
