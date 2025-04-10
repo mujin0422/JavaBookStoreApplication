@@ -325,8 +325,8 @@ public class AddAndEditBookGUI extends JDialog {
         if (selectedRow != -1) {
             String selected = (String) tableModelTG.getValueAt(selectedRow, 0);
             String currentText = areaTacGia.getText();
-            if (!currentText.contains(selected + "\n")) {
-                areaTacGia.append(selected);
+            if (!currentText.contains(selected)) {
+                areaTacGia.append(selected + "\n");
             }
         } else {
             JOptionPane.showMessageDialog(null, "Vui lòng chọn một tác giả trong bảng!");
@@ -337,8 +337,8 @@ public class AddAndEditBookGUI extends JDialog {
         if (selectedRow != -1) {
             String selected = (String) tableModelTL.getValueAt(selectedRow, 0);
             String currentText = areaTheLoai.getText();
-            if (!currentText.contains(selected + "\n")) {
-                areaTheLoai.append(selected);
+            if (!currentText.contains(selected)) {
+                areaTheLoai.append(selected + "\n");
             }
         } else {
             JOptionPane.showMessageDialog(null, "Vui lòng chọn một thể loại trong bảng!");

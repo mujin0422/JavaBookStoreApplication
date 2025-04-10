@@ -8,7 +8,6 @@ import Utils.UILabel;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.HeadlessException;
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -16,10 +15,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-/**
- *
- * @author Dell Vostro
- */
 public class AddAndEditSupplierGUI extends JDialog{
     private JTextField txtMaNCC, txtTenNCC, txtDiaChi, txtSDT;
     private UIButton btnAdd, btnSave, btnCancel;
