@@ -8,7 +8,7 @@ import java.sql.*;
 import java.util.Vector;
 
 public class ThongKeSach extends JPanel {
-
+    private JTable tbl;
     private JTable table;
     private DefaultTableModel model;
 
