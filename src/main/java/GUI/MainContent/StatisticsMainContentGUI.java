@@ -3,12 +3,11 @@ package GUI.MainContent;
 import GUI.ThongKeComponent.*;
 import Utils.UIButton;
 import Utils.UIConstants;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import javax.swing.JPanel;
+import javax.swing.*;
+import javax.swing.border.*;
+import java.awt.*;
 
-public class StatisticsMainContentGUI extends JPanel{
+public class StatisticsMainContentGUI extends JPanel {
     private UIButton btnDoanhthu, btnSach, btnKhachHang;
     private JPanel pnlHeader, pnlContent;
     private ThongKeDoanhThu panelTkDoanhThu;
@@ -16,45 +15,114 @@ public class StatisticsMainContentGUI extends JPanel{
     private ThongKeKhachHang panelTkKhachHang;
     
     public StatisticsMainContentGUI() {
-        this.setBackground(UIConstants.SUB_BACKGROUND);
+        this.setBackground(new Color(240, 242, 245)); // Light gray background
         this.setPreferredSize(new Dimension(UIConstants.WIDTH_CONTENT, UIConstants.HEIGHT_CONTENT));
-        this.setLayout(new BorderLayout(5, 5));
+        this.setLayout(new BorderLayout(10, 10));
         
+        initializePanels();
+        setupHeader();
+        setupContent();
+        
+        // Add padding around the main panel
+        this.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        
+        // Initial panel
+        switchPanel(panelTkDoanhThu);
+    }
+    
+    private void initializePanels() {
         panelTkDoanhThu = new ThongKeDoanhThu();
         panelTkKhachHang = new ThongKeKhachHang();
         panelTkSach = new ThongKeSach();
-        pnlHeader = new JPanel(new BorderLayout());
-        pnlHeader.setBackground(UIConstants.MAIN_BACKGROUND);
-        pnlHeader.setPreferredSize(new Dimension(this.getWidth(), 50));
+    }
+    
+    private void setupHeader() {
+        pnlHeader = new JPanel();
+        pnlHeader.setLayout(new BoxLayout(pnlHeader, BoxLayout.Y_AXIS));
+        pnlHeader.setBackground(Color.WHITE);
+        pnlHeader.setBorder(new CompoundBorder(
+            new EmptyBorder(0, 0, 10, 0),
+            new CompoundBorder(
+                new LineBorder(new Color(230, 230, 230), 1),
+                new EmptyBorder(10, 10, 10, 10)
+            )
+        ));
 
-        JPanel pnlButton = new JPanel(new FlowLayout(FlowLayout.LEFT,5,5));
-        pnlButton.setBackground(UIConstants.MAIN_BACKGROUND);
-        btnDoanhthu = new UIButton("menuButton", "DOANH THU", 150, 40);
-        btnKhachHang = new UIButton("menuButton", "KHÁCH HÀNG", 150, 40);
-        btnSach = new UIButton("menuButton", "SÁCH", 150, 40);
-        btnDoanhthu.addActionListener(e -> switchPanel(panelTkDoanhThu));
-        btnKhachHang.addActionListener(e -> switchPanel(panelTkKhachHang));
-        btnSach.addActionListener(e -> switchPanel(panelTkSach));
+        // Title Panel
+        JPanel titlePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        titlePanel.setBackground(Color.WHITE);
+        JLabel titleLabel = new JLabel("THỐNG KÊ");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        titleLabel.setForeground(new Color(51, 51, 51));
+        titlePanel.add(titleLabel);
+
+        // Button Panel
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        buttonPanel.setBackground(Color.WHITE);
         
-        pnlButton.add(btnDoanhthu);
-        pnlButton.add(btnKhachHang);
-        pnlButton.add(btnSach);
-        pnlHeader.add(pnlButton, BorderLayout.WEST);
-        
-        
-        pnlContent = new JPanel(new BorderLayout()); 
-        pnlContent.setBackground(UIConstants.SUB_BACKGROUND);
- 
+        // Create styled buttons
+        btnDoanhthu = createStyledButton("DOANH THU", new Color(41, 128, 185));
+        btnKhachHang = createStyledButton("KHÁCH HÀNG", new Color(46, 204, 113));
+        btnSach = createStyledButton("SÁCH", new Color(155, 89, 182));
+
+        buttonPanel.add(btnDoanhthu);
+        buttonPanel.add(btnKhachHang);
+        buttonPanel.add(btnSach);
+
+        pnlHeader.add(titlePanel);
+        pnlHeader.add(Box.createRigidArea(new Dimension(0, 10)));
+        pnlHeader.add(buttonPanel);
         
         this.add(pnlHeader, BorderLayout.NORTH);
-        this.add(pnlContent, BorderLayout.CENTER);
-        
     }
-     private void switchPanel(JPanel newPanel) {
+    
+    private UIButton createStyledButton(String text, Color color) {
+        UIButton button = new UIButton("menuButton", text, 160, 45);
+        button.setFont(new Font("Arial", Font.BOLD, 13));
+        button.setBackground(color);
+        button.setForeground(Color.WHITE);
+        button.setBorder(new EmptyBorder(8, 15, 8, 15));
+        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        
+        if (text.equals("DOANH THU")) {
+            button.addActionListener(e -> switchPanel(panelTkDoanhThu));
+        } else if (text.equals("KHÁCH HÀNG")) {
+            button.addActionListener(e -> switchPanel(panelTkKhachHang));
+        } else {
+            button.addActionListener(e -> switchPanel(panelTkSach));
+        }
+        
+        return button;
+    }
+    
+    private void setupContent() {
+        pnlContent = new JPanel(new BorderLayout());
+        pnlContent.setBackground(Color.WHITE);
+        pnlContent.setBorder(new CompoundBorder(
+            new LineBorder(new Color(230, 230, 230), 1),
+            new EmptyBorder(20, 20, 20, 20)
+        ));
+        
+        this.add(pnlContent, BorderLayout.CENTER);
+    }
+    
+    private void switchPanel(JPanel newPanel) {
+        // Add fade effect
         pnlContent.removeAll();
+        newPanel.setBackground(Color.WHITE);
         pnlContent.add(newPanel, BorderLayout.CENTER);
         pnlContent.revalidate();
         pnlContent.repaint();
+        
+        // Update button states
+        updateButtonStates(newPanel);
+    }
+    
+    private void updateButtonStates(JPanel activePanel) {
+        Color inactiveColor = new Color(189, 195, 199);
+        
+        btnDoanhthu.setBackground(activePanel == panelTkDoanhThu ? new Color(41, 128, 185) : inactiveColor);
+        btnKhachHang.setBackground(activePanel == panelTkKhachHang ? new Color(46, 204, 113) : inactiveColor);
+        btnSach.setBackground(activePanel == panelTkSach ? new Color(155, 89, 182) : inactiveColor);
     }
 }
-
