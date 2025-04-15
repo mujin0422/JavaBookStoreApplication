@@ -140,3 +140,94 @@ button.addMouseListener(new java.awt.event.MouseAdapter() {
             JOIN phieuxuat px ON kh.maKH = px.maKH
             JOIN chitietphieuxuat ctpx ON px.maPX = ctpx.maPX
             WHERE MONTH(px.ngayXuat) = ? AND YEAR(px.ngayXuat) = ?
+            GROUP BY kh.maKH, kh.tenKH, kh.sdt, px.ngayXuat
+            ORDER BY tongSoLuong DESC
+        """;
+
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/quanlicuahangsach", "root", "");
+             PreparedStatement pst = conn.prepareStatement(query)) {
+
+            pst.setInt(1, thang);
+            pst.setInt(2, nam);
+            ResultSet rs = pst.executeQuery();
+
+            // Cập nhật dữ liệu trong bảng
+            tableModel.setRowCount(0); // Xóa dữ liệu cũ
+            tableModel.setColumnIdentifiers(new Object[]{"Mã KH", "Tên KH", "SĐT", "Ngày mua", "Tổng SL mua"});
+
+            while (rs.next()) {
+                Vector<Object> row = new Vector<>();
+                row.add(rs.getString("maKH"));
+                row.add(rs.getString("tenKH"));
+                row.add(rs.getString("sdt"));
+                row.add(rs.getDate("ngayXuat"));
+                row.add(rs.getInt("tongSoLuong"));
+                tableModel.addRow(row);
+            }
+
+            if (tableModel.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(this, "Không có dữ liệu cho tháng " + thang + " năm " + nam, "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void thongKeKhachMuaNhieu() {
+        String query = """
+            SELECT kh.maKH, kh.tenKH, kh.sdt, SUM(ctpx.soLuong) AS tongSoLuong
+            FROM khachhang kh
+            JOIN phieuxuat px ON kh.maKH = px.maKH
+            JOIN chitietphieuxuat ctpx ON px.maPX = ctpx.maPX
+            GROUP BY kh.maKH, kh.tenKH, kh.sdt
+            ORDER BY tongSoLuong DESC
+            LIMIT 10
+        """;
+
+        try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/quanlicuahangsach", "root", "");
+             PreparedStatement pst = conn.prepareStatement(query);
+             ResultSet rs = pst.executeQuery()) {
+
+            // Cập nhật dữ liệu trong bảng
+            tableModel.setRowCount(0); // Xóa dữ liệu cũ
+            tableModel.setColumnIdentifiers(new Object[]{"STT", "Mã KH", "Tên KH", "SĐT", "Tổng SL mua"});
+
+            int rank = 1;
+            while (rs.next()) {
+                Vector<Object> row = new Vector<>();
+                row.add(rank++);
+                row.add(rs.getString("maKH"));
+                row.add(rs.getString("tenKH"));
+                row.add(rs.getString("sdt"));
+                row.add(rs.getInt("tongSoLuong"));
+                tableModel.addRow(row);
+            }
+
+            if (tableModel.getRowCount() == 0) {
+                JOptionPane.showMessageDialog(this, "Không có dữ liệu khách hàng.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+JOptionPane.showMessageDialog(this, "Lỗi: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public static void main(String[] args) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            ex.printStackTrace();
+        }
+
+        JFrame frame = new JFrame("Thống kê khách hàng");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(800, 600);
+        frame.add(new ThongKeKhachHang());
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+    }
+}
+
