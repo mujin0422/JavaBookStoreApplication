@@ -42,7 +42,7 @@ public class ThongKeDoanhThu extends JPanel {
         add(filterPanel, BorderLayout.NORTH);
 
         model = new DefaultTableModel();
-        model.setColumnIdentifiers(new String[]{"Mã Sách", "Tên Sách", "Mã KH", "Tên KH", "Ngày Xuất", "Số Lượng", "Đơn Giá", "Tổng Tiền"});
+        model.setColumnIdentifiers(new String[]{"Mã Sách", "Tên Sách", "Mã KH", "Tên KH", "Ngày Xuất", "Số Lượng", "Giá Bán", "Tổng Tiền"});
         table = new JTable(model);
         JScrollPane scrollPane = new JScrollPane(table);
         add(scrollPane, BorderLayout.CENTER); // đặt bảng ở giữa
@@ -80,11 +80,11 @@ public class ThongKeDoanhThu extends JPanel {
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/quanlicuahangsach", "root", ""); // chỉnh tên CSDL & mật khẩu đúng
 
             StringBuilder query = new StringBuilder();
-            query.append("SELECT s.maSach, s.tenSach, kh.maKH, kh.tenKH, px.NgayXuat, ctpx.soLuong, ctpx.donGia, ctpx.soLuong * ctpx.donGia AS tongTien ");
+            query.append("SELECT s.maSach, s.tenSach, kh.maKH, kh.tenKH, px.NgayXuat, ctpx.soLuong, ctpx.giaBan, ctpx.soLuong * ctpx.giaBan AS tongTien ");
             query.append("FROM chitietphieuxuat ctpx ");
-            query.append("JOIN phieuxuat px ON ctpx.maPhieuXuat = px.maPhieuXuat ");
+            query.append("JOIN phieuxuat px ON ctpx.maPX = px.maPX ");
             query.append("JOIN sach s ON ctpx.maSach = s.maSach ");
-            query.append("JOIN khachhang kh ON px.maKhachHang = kh.maKH ");
+            query.append("JOIN khachhang kh ON px.maKH = kh.maKH ");
             query.append("WHERE 1=1 ");
 
             if (fromDate != null) query.append("AND px.NgayXuat >= ? ");
@@ -109,7 +109,7 @@ public class ThongKeDoanhThu extends JPanel {
                         rs.getString("tenKH"),
                         rs.getDate("NgayXuat"),
                         rs.getInt("soLuong"),
-                        rs.getDouble("donGia"),
+                        rs.getDouble("giaBan"),
                         rs.getDouble("tongTien")
                 });
             }
