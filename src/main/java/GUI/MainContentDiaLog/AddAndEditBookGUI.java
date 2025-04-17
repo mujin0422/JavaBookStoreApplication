@@ -21,8 +21,6 @@ import Utils.UITextField;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.util.ArrayList;
 
 import javax.swing.*;
@@ -30,7 +28,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class AddAndEditBookGUI extends JDialog {
     private UITextField txtMaSach, txtTenSach, txtGia, txtSoLuongTon;
-    private JComboBox<String> cbMaNXB, cbMaTG, cbMaTL; 
+    private JComboBox<String> cbMaNXB; 
     private JTextArea areaTacGia, areaTheLoai;
     private UIButton btnAdd, btnSave, btnCancel;
     private SachBUS sachBus;

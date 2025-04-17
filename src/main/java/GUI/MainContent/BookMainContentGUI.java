@@ -29,7 +29,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
-public class BookMainContentGUI extends JPanel {
+public class BookMainContentGUI extends JPanel implements ReloadablePanel{
     private UIButton btnAdd, btnDelete, btnEdit, btnView;
     private UITextField txtSearch;
     private JComboBox<String> cbFilter;
@@ -82,8 +82,7 @@ public class BookMainContentGUI extends JPanel {
         
         
         //================================( PANEL CONTENT )=============================//
-        pnlContent = new JPanel();
-        pnlContent.setLayout(new BorderLayout());
+        pnlContent = new JPanel(new BorderLayout());
         pnlContent.setBackground(UIConstants.MAIN_BACKGROUND);
         pnlContent.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
             

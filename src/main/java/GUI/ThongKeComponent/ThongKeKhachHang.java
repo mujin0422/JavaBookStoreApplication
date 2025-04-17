@@ -70,7 +70,7 @@ public class ThongKeKhachHang extends JPanel {
         button.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
 
         // Add mouse listener for hover effect (optional, but makes it more interactive)
-button.addMouseListener(new java.awt.event.MouseAdapter() {
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 button.setBackground(ACTIVE_BUTTON_COLOR.brighter());
                 button.setForeground(Color.WHITE);
@@ -211,7 +211,7 @@ button.addMouseListener(new java.awt.event.MouseAdapter() {
 
         } catch (SQLException e) {
             e.printStackTrace();
-JOptionPane.showMessageDialog(this, "Lỗi: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Lỗi: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
 

@@ -16,16 +16,10 @@ public class PhieuXuatBUS {
     }
 
     public boolean addPhieuXuat(PhieuXuatDTO phieuXuat) {       
-        if (phieuXuat == null || phieuXuat.getTongTien() <= 0 || phieuXuat.getNgayXuat() == null) {
-            return false;
-        }
         return phieuXuatDAO.add(phieuXuat) > 0;
     }
 
     public boolean updatePhieuXuat(PhieuXuatDTO phieuXuat) {
-        if (phieuXuat == null || phieuXuat.getMaPX() <= 0 || phieuXuat.getTongTien() <= 0 || phieuXuat.getNgayXuat() == null) {
-            return false;
-        }
         return phieuXuatDAO.update(phieuXuat) > 0; 
     }
 
@@ -53,5 +47,9 @@ public class PhieuXuatBUS {
 
     public PhieuXuatDTO getById(int maPX){
         return phieuXuatDAO.getById(maPX);
+    }
+    
+    public int countPhieuXuatByMaKh(int maKh){
+        return phieuXuatDAO.countPhieuXuatByMaKh(maKh);
     }
 }

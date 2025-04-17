@@ -20,7 +20,6 @@ public class PhieuXuatDAO {
             ps.setDate(5, new java.sql.Date(obj.getNgayXuat().getTime()));
             return ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return 0;
     }
@@ -36,7 +35,6 @@ public class PhieuXuatDAO {
             ps.setInt(5, obj.getMaPX());
             return ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return 0;
     }
@@ -48,7 +46,6 @@ public class PhieuXuatDAO {
             ps.setInt(1, maPX);
             return ps.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return 0;
     }
@@ -63,7 +60,6 @@ public class PhieuXuatDAO {
                 return rs.getInt(1);  
             }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return 0;  
     }
@@ -86,7 +82,6 @@ public class PhieuXuatDAO {
                 list.add(obj);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return list;
     }
@@ -108,9 +103,22 @@ public class PhieuXuatDAO {
                 }
             }
         } catch (SQLException e) {
-            System.out.println("Không tìm thấy phiếu xuất với mã: " + maPX);
-            e.printStackTrace();
         }
         return null;
+    }
+    
+    public int countPhieuXuatByMaKh(int maKh) {
+        String sql = "SELECT COUNT(*) AS total FROM phieuxuat WHERE maKH = ? AND trangThaiXoa = 0";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, maKh);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("total");
+                }
+            }
+        } catch (SQLException e) {
+        }
+        return 0;
     }
 }

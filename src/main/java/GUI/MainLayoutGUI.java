@@ -135,13 +135,19 @@ public final class MainLayoutGUI extends JFrame {
                 case 8 -> targetPanel = exportBookPanel;        
                 case 9 -> targetPanel = decentralizationPanel;  
                 case 10 -> targetPanel = statisticsPanel;       
-                default -> targetPanel = statisticsPanel;
+                default -> targetPanel = WelcomePanel();
             }
-            button.addActionListener(e -> switchPanel(targetPanel));
+            button.addActionListener(e -> {
+                switchPanel(targetPanel);
+                if (targetPanel instanceof ReloadablePanel reloadablePanel) {
+                    reloadablePanel.loadTableData();
+                }
+            });
         }
         addChucNang();
+        switchPanel(WelcomePanel());
         //==============================( End Panel Content )===========================//
-
+        
         
         this.getContentPane().add(pnlMenu, BorderLayout.WEST);
         this.getContentPane().add(pnlContent, BorderLayout.CENTER);
@@ -165,6 +171,7 @@ public final class MainLayoutGUI extends JFrame {
     private void switchPanel(JPanel newPanel) {
         pnlContent.removeAll();
         pnlContent.add(newPanel, BorderLayout.CENTER);
+        
         pnlContent.revalidate();
         pnlContent.repaint();
     }
@@ -172,6 +179,20 @@ public final class MainLayoutGUI extends JFrame {
     private void logout(){
         this.dispose(); 
         new LoginGUI(); 
+    }
+    
+    private JPanel WelcomePanel() {
+        JPanel panel = new JPanel();
+        panel.setBackground(UIConstants.MAIN_BACKGROUND);
+        panel.setLayout(new GridBagLayout());
+
+        JLabel lblWelcome = new JLabel();
+        lblWelcome.setFont(new Font("Segoe UI", Font.BOLD, 40));
+        lblWelcome.setForeground(UIConstants.BLACK_FONT);
+        lblWelcome.setText("Xin chào, " + taiKhoan.getTenDangNhap() + "!");
+        
+        panel.add(lblWelcome);
+        return panel;
     }
     
 }

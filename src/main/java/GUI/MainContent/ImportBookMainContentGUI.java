@@ -46,7 +46,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
-public class ImportBookMainContentGUI extends JPanel{
+public class ImportBookMainContentGUI extends JPanel implements ReloadablePanel{
     private UIButton btnAdd ,btnView, btnThemVaoPhieu, btnXoaKhoiPhieu, btnSuaSoLuong, btnAddToPN, btnSavePN;
     private UITextField txtSearch, txtSoLuong, txtMaPN, txtMaNV, txtTongTien, txtSearchSach;
     private JComboBox<String> cbMaNCC;
@@ -221,7 +221,7 @@ public class ImportBookMainContentGUI extends JPanel{
     }
     
     
-    private void loadTableData(){
+    public void loadTableData(){
         tableModel.setRowCount(0);
         for(PhieuNhapDTO pn : phieuNhapBUS.getAllPhieuNhap()){
             tableModel.addRow(new Object[]{
