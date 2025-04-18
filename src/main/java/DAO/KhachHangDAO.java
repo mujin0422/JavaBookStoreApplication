@@ -1,11 +1,15 @@
 package DAO;
 import DTO.KhachHangDTO;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.*;
 /**
  *
  * @author Dell Vostro
@@ -125,4 +129,141 @@ public class KhachHangDAO {
         }
         return null; 
     }
+    private static final String URL = "jdbc:mysql://localhost:3306/quanlicuahangsach";
+    private static final String USER = "root";
+    private static final String PASSWORD = "";
+
+    public Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(URL, USER, PASSWORD);
+    }
+
+    public List<Object[]> thongKeKhachHangTheoNgay(Date fromDate, Date toDate) {
+        String sql = """
+            SELECT kh.maKH, kh.tenKH, kh.sdt, px.ngayXuat, SUM(ctpx.soLuong) AS tongSoLuong
+            FROM khachhang kh
+            JOIN phieuxuat px ON kh.maKH = px.maKH
+            JOIN chitietphieuxuat ctpx ON px.maPX = ctpx.maPX
+            WHERE px.ngayXuat BETWEEN ? AND ?
+            GROUP BY kh.maKH, kh.tenKH, kh.sdt, px.ngayXuat
+            ORDER BY tongSoLuong DESC
+        """;
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        List<Object[]> results = new ArrayList<>();
+        try (Connection conn = getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setString(1, sdf.format(fromDate));
+            pst.setString(2, sdf.format(toDate));
+            ResultSet rs = pst.executeQuery();
+
+            while (rs.next()) {
+                results.add(new Object[]{
+                        rs.getString("maKH"),
+                        rs.getString("tenKH"),
+                        rs.getString("sdt"),
+                        rs.getDate("ngayXuat"),
+                        rs.getInt("tongSoLuong")
+                });
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return results;
+    }
+    public List<Object[]> getKhachHangTheoThang(String monthYear) {
+    String sql = """
+        SELECT kh.maKH, kh.tenKH, kh.sdt, SUM(ctpx.soLuong) AS tongSoLuong, SUM(ctpx.soLuong * ctpx.giaBan) AS tongTien
+        FROM khachhang kh
+        JOIN phieuxuat px ON kh.maKH = px.maKH
+        JOIN chitietphieuxuat ctpx ON px.maPX = ctpx.maPX
+        WHERE DATE_FORMAT(px.ngayXuat, '%m-%Y') = ?
+        GROUP BY kh.maKH, kh.tenKH, kh.sdt
+        ORDER BY tongSoLuong DESC
+    """;
+    List<Object[]> results = new ArrayList<>();
+    try (Connection conn = getConnection();
+         PreparedStatement pst = conn.prepareStatement(sql)) {
+
+        pst.setString(1, monthYear);
+        ResultSet rs = pst.executeQuery();
+
+        while (rs.next()) {
+            results.add(new Object[]{
+                    rs.getInt("maKH"),
+                    rs.getString("tenKH"),
+                    rs.getString("sdt"),
+                    rs.getInt("tongSoLuong"),
+                    rs.getDouble("tongTien")
+            });
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return results;
+    }
+
+    public List<Object[]> getTopKhachMuaNhieu() {
+        String sql = """
+            SELECT kh.maKH, kh.tenKH, kh.sdt, SUM(ctpx.soLuong) AS tongSoLuong, SUM(ctpx.soLuong * ctpx.giaBan) AS tongTien
+            FROM khachhang kh
+            JOIN phieuxuat px ON kh.maKH = px.maKH
+            JOIN chitietphieuxuat ctpx ON px.maPX = ctpx.maPX
+            GROUP BY kh.maKH, kh.tenKH, kh.sdt
+            ORDER BY tongSoLuong DESC
+            LIMIT 10
+        """;
+        List<Object[]> results = new ArrayList<>();
+        try (Connection conn = getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql);
+             ResultSet rs = pst.executeQuery()) {
+            while (rs.next()) {
+                results.add(new Object[]{
+                        rs.getInt("maKH"),
+                        rs.getString("tenKH"),
+                        rs.getString("sdt"),
+                        rs.getInt("tongSoLuong"),
+                        rs.getDouble("tongTien")
+                });
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return results;
+    }
+
+
+    public List<Object[]> getDanhSachKhachDaMua() {
+        String sql = """
+            SELECT kh.maKH, kh.tenKH, kh.sdt, px.ngayXuat, SUM(ctpx.soLuong) AS tongSoLuong, SUM(ctpx.soLuong * ctpx.giaBan) AS tongTien
+            FROM khachhang kh
+            JOIN phieuxuat px ON kh.maKH = px.maKH
+            JOIN chitietphieuxuat ctpx ON px.maPX = ctpx.maPX
+            GROUP BY kh.maKH, kh.tenKH, kh.sdt, px.ngayXuat
+            ORDER BY kh.maKH, px.ngayXuat
+        """;
+        List<Object[]> results = new ArrayList<>();
+        try (Connection conn = getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql);
+             ResultSet rs = pst.executeQuery()) {
+            while (rs.next()) {
+                results.add(new Object[]{
+                        rs.getInt("maKH"),
+                        rs.getString("tenKH"),
+                        rs.getString("sdt"),
+                        rs.getDate("ngayXuat"),
+                        rs.getInt("tongSoLuong"),
+                        rs.getDouble("tongTien")
+                });
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return results;
+    }
+
 }
+
+
+
+
