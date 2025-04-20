@@ -92,12 +92,3 @@ this.soLuongXuat = soLuongXuat;
 
 }
 
-SachBUS
-
-package BUS;
-
-import DTO.SachDTO;
-
-import DTO.ThongKeSachDTO;
-
-import DTO.NhaXuatBanDTO;
