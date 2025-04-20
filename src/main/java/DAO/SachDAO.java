@@ -1,12 +1,16 @@
 package DAO;
-
+import DTO.ThongKeSachDTO;
 import DTO.SachDTO;
 import java.sql.Connection;
+import java.sql.Date;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JOptionPane;
 
 public class SachDAO {
 
@@ -158,4 +162,50 @@ public class SachDAO {
         }
         return null;
     }
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/quanlicuahangsach";
+    private static final String DB_USER = "root";
+    private static final String DB_PASSWORD = "";
+
+    // Phương thức lấy thống kê sách
+    public List<ThongKeSachDTO> getThongKeSach(Date ngayBatDau, Date ngayKetThuc) {
+        List<ThongKeSachDTO> resultList = new ArrayList<>();
+        String query = """
+            SELECT s.maSach, s.tenSach, nxb.tenNXB,
+                   IFNULL(SUM(nhap.soLuong), 0) AS soLuongNhap,
+                   IFNULL(SUM(xuat.soLuong), 0) AS soLuongXuat
+            FROM sach s
+            JOIN nhaxuatban nxb ON s.maNXB = nxb.maNXB
+            LEFT JOIN chitietphieunhap nhap ON s.maSach = nhap.maSach
+            LEFT JOIN phieunhap pn ON nhap.maPN = pn.maPN AND pn.ngayNhap BETWEEN ? AND ?
+            LEFT JOIN chitietphieuxuat xuat ON s.maSach = xuat.maSach
+            LEFT JOIN phieuxuat px ON xuat.maPX = px.maPX AND px.ngayXuat BETWEEN ? AND ?
+            GROUP BY s.maSach, s.tenSach, nxb.tenNXB
+            ORDER BY s.tenSach;
+        """;
+
+        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             PreparedStatement pst = conn.prepareStatement(query)) {
+
+            pst.setDate(1, ngayBatDau);
+            pst.setDate(2, ngayKetThuc);
+            pst.setDate(3, ngayBatDau);
+            pst.setDate(4, ngayKetThuc);
+
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                resultList.add(new ThongKeSachDTO(
+                        rs.getInt("maSach"),
+                        rs.getString("tenSach"),
+                        rs.getString("tenNXB"),
+                        rs.getInt("soLuongNhap"),
+                        rs.getInt("soLuongXuat")
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return resultList;
+    }
 }
+
+
