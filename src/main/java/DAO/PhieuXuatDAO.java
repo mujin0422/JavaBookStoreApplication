@@ -129,23 +129,31 @@ public class PhieuXuatDAO {
      private Connection connect() throws SQLException {
         return DriverManager.getConnection("jdbc:mysql://localhost:3306/quanlicuahangsach", "root", "");
     }
-  public List<DoanhThuDTO> getDoanhThuByDateRange(Date fromDate, Date toDate) {
+ public List<DoanhThuDTO> getDoanhThuByDateRange(Date fromDate, Date toDate) {
     List<DoanhThuDTO> doanhThuList = new ArrayList<>();
-    String sql = "SELECT s.maSach, s.tenSach, kh.maKH, kh.tenKH, px.NgayXuat, ctpx.soLuong, ctpx.giaBan, " +
-                 "(ctpx.soLuong * ctpx.giaBan) AS tongTien " +
+    String sql = "SELECT " +
+                 "    px.maPX, " +
+                 "    s.maSach, " +
+                 "    s.tenSach, " +
+                 "    kh.maKH, " +
+                 "    kh.tenKH, " +
+                 "    px.NgayXuat, " +
+                 "    SUM(ctpx.soLuong) AS tongSoLuong, " +
+                 "    ctpx.giaBan, " +
+                 "    SUM( ctpx.giaBan) AS tongTien " +
                  "FROM chitietphieuxuat ctpx " +
                  "JOIN phieuxuat px ON ctpx.maPX = px.maPX " +
                  "JOIN sach s ON ctpx.maSach = s.maSach " +
                  "JOIN khachhang kh ON px.maKH = kh.maKH " +
-                 "WHERE px.NgayXuat BETWEEN ? AND ?";
-    
+                 "WHERE px.NgayXuat BETWEEN ? AND ? " +
+                 "GROUP BY px.maPX, s.maSach, s.tenSach, kh.maKH, kh.tenKH, px.NgayXuat, ctpx.giaBan";
+
     try (Connection conn = connect();
          PreparedStatement stmt = conn.prepareStatement(sql)) {
-        
-        // Set the parameters in the prepared statement
+
         stmt.setDate(1, new java.sql.Date(fromDate.getTime()));
         stmt.setDate(2, new java.sql.Date(toDate.getTime()));
-        
+
         ResultSet rs = stmt.executeQuery();
         while (rs.next()) {
             DoanhThuDTO doanhThu = new DoanhThuDTO();
@@ -154,9 +162,9 @@ public class PhieuXuatDAO {
             doanhThu.setMaKH(rs.getInt("maKH"));
             doanhThu.setTenKH(rs.getString("tenKH"));
             doanhThu.setNgayXuat(rs.getDate("NgayXuat"));
-            doanhThu.setSoLuong(rs.getInt("soLuong"));
+            doanhThu.setSoLuong(rs.getInt("tongSoLuong")); // Use the aggregated total quantity
             doanhThu.setGiaBan(rs.getDouble("giaBan"));
-            doanhThu.setTongTien(rs.getDouble("tongTien"));
+            doanhThu.setTongTien(rs.getDouble("tongTien")); // Use the aggregated total price
             doanhThuList.add(doanhThu);
         }
     } catch (SQLException e) {
