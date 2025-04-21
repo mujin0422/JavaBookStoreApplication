@@ -2,7 +2,10 @@ package BUS;
 
 import DTO.PhieuXuatDTO;
 import DAO.PhieuXuatDAO;
+import DTO.DoanhThuDTO;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 public class PhieuXuatBUS {
     private PhieuXuatDAO phieuXuatDAO;
