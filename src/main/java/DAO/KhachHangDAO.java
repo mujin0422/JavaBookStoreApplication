@@ -173,13 +173,12 @@ public class KhachHangDAO {
     }
     public List<Object[]> getKhachHangTheoThang(String monthYear) {
     String sql = """
-        SELECT kh.maKH, kh.tenKH, kh.sdt, SUM(ctpx.soLuong) AS tongSoLuong, SUM(ctpx.soLuong * ctpx.giaBan) AS tongTien
-        FROM khachhang kh
-        JOIN phieuxuat px ON kh.maKH = px.maKH
-        JOIN chitietphieuxuat ctpx ON px.maPX = ctpx.maPX
-        WHERE DATE_FORMAT(px.ngayXuat, '%m-%Y') = ?
-        GROUP BY kh.maKH, kh.tenKH, kh.sdt
-        ORDER BY tongSoLuong DESC
+       SELECT kh.maKH, kh.tenKH, kh.sdt, px.ngayXuat, SUM(ctpx.soLuong) AS tongSoLuong, SUM(ctpx.giaBan) AS tongTien
+            FROM khachhang kh
+            JOIN phieuxuat px ON kh.maKH = px.maKH
+            JOIN chitietphieuxuat ctpx ON px.maPX = ctpx.maPX
+            GROUP BY kh.maKH, kh.tenKH, kh.sdt, px.ngayXuat
+            ORDER BY kh.maKH, px.ngayXuat
     """;
     List<Object[]> results = new ArrayList<>();
     try (Connection conn = getConnection();
@@ -205,7 +204,7 @@ public class KhachHangDAO {
 
     public List<Object[]> getTopKhachMuaNhieu() {
         String sql = """
-            SELECT kh.maKH, kh.tenKH, kh.sdt, SUM(ctpx.soLuong) AS tongSoLuong, SUM(ctpx.soLuong * ctpx.giaBan) AS tongTien
+            SELECT kh.maKH, kh.tenKH, kh.sdt, SUM(ctpx.soLuong) AS tongSoLuong, SUM(ctpx.giaBan) AS tongTien
             FROM khachhang kh
             JOIN phieuxuat px ON kh.maKH = px.maKH
             JOIN chitietphieuxuat ctpx ON px.maPX = ctpx.maPX
@@ -235,7 +234,7 @@ public class KhachHangDAO {
 
     public List<Object[]> getDanhSachKhachDaMua() {
         String sql = """
-            SELECT kh.maKH, kh.tenKH, kh.sdt, px.ngayXuat, SUM(ctpx.soLuong) AS tongSoLuong, SUM(ctpx.soLuong * ctpx.giaBan) AS tongTien
+            SELECT kh.maKH, kh.tenKH, kh.sdt, px.ngayXuat, SUM(ctpx.soLuong) AS tongSoLuong, SUM(ctpx.giaBan) AS tongTien
             FROM khachhang kh
             JOIN phieuxuat px ON kh.maKH = px.maKH
             JOIN chitietphieuxuat ctpx ON px.maPX = ctpx.maPX
