@@ -168,44 +168,51 @@ public class SachDAO {
 
     // Phương thức lấy thống kê sách
     public List<ThongKeSachDTO> getThongKeSach(Date ngayBatDau, Date ngayKetThuc) {
-        List<ThongKeSachDTO> resultList = new ArrayList<>();
-        String query = """
-            SELECT s.maSach, s.tenSach, nxb.tenNXB,
-                   IFNULL(SUM(nhap.soLuong), 0) AS soLuongNhap,
-                   IFNULL(SUM(xuat.soLuong), 0) AS soLuongXuat
-            FROM sach s
-            JOIN nhaxuatban nxb ON s.maNXB = nxb.maNXB
-            LEFT JOIN chitietphieunhap nhap ON s.maSach = nhap.maSach
-            LEFT JOIN phieunhap pn ON nhap.maPN = pn.maPN AND pn.ngayNhap BETWEEN ? AND ?
-            LEFT JOIN chitietphieuxuat xuat ON s.maSach = xuat.maSach
-            LEFT JOIN phieuxuat px ON xuat.maPX = px.maPX AND px.ngayXuat BETWEEN ? AND ?
-            GROUP BY s.maSach, s.tenSach, nxb.tenNXB
-            ORDER BY s.tenSach;
-        """;
+    List<ThongKeSachDTO> resultList = new ArrayList<>();
+    String query = """
+        SELECT s.maSach, s.tenSach, nxb.tenNXB,
+               COALESCE(tongNhap.soLuongTon, 0) - COALESCE(tongXuat.soLuongXuat, 0) AS soLuongTon,
+               COALESCE(tongXuat.soLuongXuat, 0) AS soLuongXuat
+        FROM sach s
+        JOIN nhaxuatban nxb ON s.maNXB = nxb.maNXB
+        LEFT JOIN (
+            SELECT nhap.maSach, SUM(nhap.soLuong) AS soLuongTon
+            FROM chitietphieunhap nhap
+            JOIN phieunhap pn ON nhap.maPN = pn.maPN
+            GROUP BY nhap.maSach
+        ) AS tongNhap ON s.maSach = tongNhap.maSach
+        LEFT JOIN (
+            SELECT xuat.maSach, SUM(xuat.soLuong) AS soLuongXuat
+            FROM chitietphieuxuat xuat
+            JOIN phieuxuat px ON xuat.maPX = px.maPX
+            WHERE px.ngayXuat BETWEEN ? AND ?
+            GROUP BY xuat.maSach
+        ) AS tongXuat ON s.maSach = tongXuat.maSach
+        ORDER BY s.tenSach;
+    """;
 
-        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-             PreparedStatement pst = conn.prepareStatement(query)) {
+    try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+         PreparedStatement pst = conn.prepareStatement(query)) {
 
-            pst.setDate(1, ngayBatDau);
-            pst.setDate(2, ngayKetThuc);
-            pst.setDate(3, ngayBatDau);
-            pst.setDate(4, ngayKetThuc);
+        // Thiết lập các tham số cho ngày bắt đầu và kết thúc
+        pst.setDate(1, ngayBatDau);
+        pst.setDate(2, ngayKetThuc);
 
-            ResultSet rs = pst.executeQuery();
-            while (rs.next()) {
-                resultList.add(new ThongKeSachDTO(
-                        rs.getInt("maSach"),
-                        rs.getString("tenSach"),
-                        rs.getString("tenNXB"),
-                        rs.getInt("soLuongNhap"),
-                        rs.getInt("soLuongXuat")
-                ));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        // Thực hiện truy vấn và xử lý kết quả
+        ResultSet rs = pst.executeQuery();
+        while (rs.next()) {
+            resultList.add(new ThongKeSachDTO(
+                    rs.getInt("maSach"),
+                    rs.getString("tenSach"),
+                    rs.getString("tenNXB"),
+                    rs.getInt("soLuongTon"),
+                    rs.getInt("soLuongXuat")
+            ));
         }
-        return resultList;
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+    return resultList;
 }
 
 
