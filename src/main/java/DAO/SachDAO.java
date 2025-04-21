@@ -171,7 +171,7 @@ public class SachDAO {
     List<ThongKeSachDTO> resultList = new ArrayList<>();
     String query = """
         SELECT s.maSach, s.tenSach, nxb.tenNXB,
-               COALESCE(tongNhap.soLuongTon, 0) - COALESCE(tongXuat.soLuongXuat, 0) AS soLuongTon,
+               COALESCE(tongNhap.soLuongTon, 0) AS soLuongTon,
                COALESCE(tongXuat.soLuongXuat, 0) AS soLuongXuat
         FROM sach s
         JOIN nhaxuatban nxb ON s.maNXB = nxb.maNXB
@@ -179,13 +179,14 @@ public class SachDAO {
             SELECT nhap.maSach, SUM(nhap.soLuong) AS soLuongTon
             FROM chitietphieunhap nhap
             JOIN phieunhap pn ON nhap.maPN = pn.maPN
+            WHERE pn.ngayNhap BETWEEN ? AND ?  -- Điều kiện cho nhập sách
             GROUP BY nhap.maSach
         ) AS tongNhap ON s.maSach = tongNhap.maSach
         LEFT JOIN (
             SELECT xuat.maSach, SUM(xuat.soLuong) AS soLuongXuat
             FROM chitietphieuxuat xuat
             JOIN phieuxuat px ON xuat.maPX = px.maPX
-            WHERE px.ngayXuat BETWEEN ? AND ?
+            WHERE px.ngayXuat BETWEEN ? AND ?  -- Điều kiện cho xuất sách
             GROUP BY xuat.maSach
         ) AS tongXuat ON s.maSach = tongXuat.maSach
         ORDER BY s.tenSach;
@@ -194,9 +195,11 @@ public class SachDAO {
     try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
          PreparedStatement pst = conn.prepareStatement(query)) {
 
-        // Thiết lập các tham số cho ngày bắt đầu và kết thúc
+        // Thiết lập tham số cho ngày bắt đầu và ngày kết thúc
         pst.setDate(1, ngayBatDau);
         pst.setDate(2, ngayKetThuc);
+        pst.setDate(3, ngayBatDau);
+        pst.setDate(4, ngayKetThuc);
 
         // Thực hiện truy vấn và xử lý kết quả
         ResultSet rs = pst.executeQuery();
