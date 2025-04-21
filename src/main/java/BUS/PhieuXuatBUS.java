@@ -52,4 +52,7 @@ public class PhieuXuatBUS {
     public int countPhieuXuatByMaKh(int maKh){
         return phieuXuatDAO.countPhieuXuatByMaKh(maKh);
     }
+    public List<DoanhThuDTO> getDoanhThuByDateRange(Date fromDate, Date toDate) {
+        return phieuXuatDAO.getDoanhThuByDateRange(fromDate, toDate);
+    }
 }
