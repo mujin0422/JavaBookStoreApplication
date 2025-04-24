@@ -162,6 +162,22 @@ public class SachDAO {
         }
         return null;
     }
+     public int getGiaSachByMaSach(int maSach) {
+        int giaSach = 0;
+        String sql = "SELECT GiaSach FROM Sach WHERE MaSach = ?"; // Adjust table and column names if different
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, maSach);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("giaSach");
+            }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle the exception appropriately in a real application
+        }
+        return giaSach;
+    }
     private static final String DB_URL = "jdbc:mysql://localhost:3306/quanlicuahangsach";
     private static final String DB_USER = "root";
     private static final String DB_PASSWORD = "";
