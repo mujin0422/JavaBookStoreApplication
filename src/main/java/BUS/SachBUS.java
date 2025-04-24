@@ -76,6 +76,9 @@ public class SachBUS {
         }
         return ketQua;
     }
+     public int getGiaSachByMaSach(int maSach) {
+        return sachDAO.getGiaSachByMaSach(maSach);
+    }
 
     public String getTenSachByMaSach(int maSach){
         return sachDAO.getTenSachByMaSach(maSach);
