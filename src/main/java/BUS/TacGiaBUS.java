@@ -27,6 +27,9 @@ public class TacGiaBUS {
         return tacGiaDAO.delete(maTG) > 0;  
     }
     
+    public String getNextMaTg(){
+        return tacGiaDAO.getNextMaTg();
+    }
     
     public ArrayList<String> getTacGiaByMaSach(int maSach) {
         ArrayList<String> danhSachTenTG = new ArrayList<>();

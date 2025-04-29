@@ -7,10 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-/**
- *
- * @author Dell Vostro
- */
+
 public class ChiTietPhieuXuatDAO {
      public int add(ChiTietPhieuXuatDTO obj) {
         String sql = "INSERT INTO chitietphieuxuat(maSach, maPX, soLuong, giaBan) VALUES(?,?,?,?)";

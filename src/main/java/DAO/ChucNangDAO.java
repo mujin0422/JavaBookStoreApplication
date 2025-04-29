@@ -6,10 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-/**
- *
- * @author Dell Vostro
- */
+
 public class ChucNangDAO {
     
     public int add(ChucNangDTO obj) {

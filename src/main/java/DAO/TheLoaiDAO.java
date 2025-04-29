@@ -130,5 +130,19 @@ public class TheLoaiDAO {
         }
         return 0;
     }
-
+    
+    public String getNextMaTl(){
+        String sql = "SELECT MAX(maTL) AS nextID FROM theloai";
+        try (Connection conn = DatabaseConnection.getConnection();
+              PreparedStatement ps = conn.prepareStatement(sql);
+              ResultSet rs = ps.executeQuery()) {
+             if (rs.next()) {
+                 int nextId = rs.getInt("nextID"); 
+                 return String.valueOf(nextId + 1); 
+             }
+         } catch (Exception e) {
+             e.printStackTrace();
+         }
+         return "1"; 
+    }
 }

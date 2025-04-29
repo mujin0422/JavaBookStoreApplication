@@ -5,6 +5,7 @@ import BUS.NhaCungCapBUS;
 import BUS.NhanVienBUS;
 import BUS.PhieuNhapBUS;
 import BUS.SachBUS;
+import BUS.TaiKhoanBUS;
 import DTO.ChiTietPhieuNhapDTO;
 import DTO.NhaCungCapDTO;
 import DTO.NhanVienDTO;
@@ -28,7 +29,6 @@ import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -58,8 +58,10 @@ public class ImportBookMainContentGUI extends JPanel implements ReloadablePanel{
     private SachBUS sachBUS;
     private NhanVienBUS nhanVienBUS;
     private ChiTietPhieuNhapBUS chiTietPhieuNhapBUS;
+    private TaiKhoanBUS taiKhoanBUS;
 
     public ImportBookMainContentGUI(TaiKhoanDTO taiKhoan) {
+        taiKhoanBUS = new TaiKhoanBUS();
         phieuNhapBUS = new PhieuNhapBUS();
         nhanVienBUS = new NhanVienBUS();
         nhaCungCapBUS = new NhaCungCapBUS();
@@ -220,6 +222,11 @@ public class ImportBookMainContentGUI extends JPanel implements ReloadablePanel{
         addSearchFunctionality();
     }
     
+    private void applyPermissions(String username, int maCN) {
+        btnAdd.setVisible(taiKhoanBUS.hasPermission(username, maCN, "add"));
+//        btnEdit.setVisible(taiKhoanBUS.hasPermission(username, maCN, "edit"));
+//        btnDelete.setVisible(taiKhoanBUS.hasPermission(username, maCN, "delete"));
+    }
     
     public void loadTableData(){
         tableModel.setRowCount(0);
@@ -387,21 +394,13 @@ public class ImportBookMainContentGUI extends JPanel implements ReloadablePanel{
     }
     
     private void resetFormInput(){
-        txtMaPN.setText("");
+        txtMaPN.setText(phieuNhapBUS.getNextMaPn());
+        txtMaPN.setEditable(false);
         tableModelForForm.setRowCount(0);
     }
+    
     private boolean checkFormInput(){
         try {
-            String maPnStr = txtMaPN.getText().trim();
-            if (maPnStr.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Mã phiếu nhập không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
-            int maPn= Integer.parseInt(maPnStr);
-            if (maPn <= 0) {
-                JOptionPane.showMessageDialog(this, "Mã phiếu nhập phải là số nguyên dương!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
             if (tblForForm.getRowCount() == 0) {
                 JOptionPane.showMessageDialog(this, "Chưa có sản phẩm nào trong phiếu nhập!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 return false;

@@ -3,34 +3,36 @@ package BUS;
 import DTO.TheLoaiDTO;
 import DAO.TheLoaiDAO;
 import java.util.ArrayList;
-/**
- *
- * @author Thanh tam
- */
+
 public class TheLoaiBUS {
-    private TheLoaiDAO TheLoaiDAO;
+    private TheLoaiDAO theLoaiDAO;
 
     public TheLoaiBUS() {
-        TheLoaiDAO = new TheLoaiDAO();
+        theLoaiDAO = new TheLoaiDAO();
     }
 
     public ArrayList<TheLoaiDTO> getAllTheLoai() {
-        return TheLoaiDAO.getAll();
+        return theLoaiDAO.getAll();
     }
 
     public boolean addTheLoai(TheLoaiDTO TL) {      
-        return TheLoaiDAO.add(TL) > 0;
+        return theLoaiDAO.add(TL) > 0;
     }
 
     public boolean updateTheLoai(TheLoaiDTO TL) {
-        return TheLoaiDAO.update(TL) > 0; 
+        return theLoaiDAO.update(TL) > 0; 
     }
 
     public boolean deleteTheLoai(int MaTL) {
-        return TheLoaiDAO.delete(MaTL) > 0;  
+        return theLoaiDAO.delete(MaTL) > 0;  
     }
+    
+    public String getNextMaTl(){
+        return theLoaiDAO.getNextMaTl();
+    }
+    
     public String getTenTheLoaiById(int maTL){
-        return TheLoaiDAO.getTenTheLoaiById(maTL);
+        return theLoaiDAO.getTenTheLoaiById(maTL);
     }
     
     public ArrayList<String> getTheLoaiByMaSach(int maSach) {
@@ -46,7 +48,7 @@ public class TheLoaiBUS {
     }
     
     public int getMaTlByTenTl(String tenTl){
-        return TheLoaiDAO.getMaTlByTenTl(tenTl);
+        return theLoaiDAO.getMaTlByTenTl(tenTl);
     }
 }
 

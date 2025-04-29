@@ -31,6 +31,10 @@ public class NhaCungCapBUS{
         return nhaCungCapDAO.delete(maNCC) > 0;
     }
     
+    public String getNextMaNcc(){
+        return nhaCungCapDAO.getNextMaNcc();
+    }
+    
     public int getMaNccByTenNcc(String tenNcc){
         return nhaCungCapDAO.getMaNccByTenNCC(tenNcc);
     }

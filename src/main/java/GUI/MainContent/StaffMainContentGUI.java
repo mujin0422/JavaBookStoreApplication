@@ -1,7 +1,9 @@
 package GUI.MainContent;
 
 import BUS.NhanVienBUS;
+import BUS.TaiKhoanBUS;
 import DTO.NhanVienDTO;
+import DTO.TaiKhoanDTO;
 import GUI.MainContentDiaLog.AddAndEditStaffGUI;
 import Utils.UIButton;
 import Utils.UIConstants;
@@ -29,8 +31,10 @@ public class StaffMainContentGUI extends JPanel{
     private JPanel pnlHeader, pnlContent;
     private DefaultTableModel tableModel;
     private NhanVienBUS nhanVienBUS;
+    private TaiKhoanBUS taiKhoanBUS;
 
-    public StaffMainContentGUI() {
+    public StaffMainContentGUI(TaiKhoanDTO taiKhoan) {
+        this.taiKhoanBUS = new TaiKhoanBUS();
         this.nhanVienBUS= new NhanVienBUS();
         this.setBackground(UIConstants.SUB_BACKGROUND);
         this.setPreferredSize(new Dimension(UIConstants.WIDTH_CONTENT, UIConstants.HEIGHT_CONTENT));
@@ -53,6 +57,7 @@ public class StaffMainContentGUI extends JPanel{
         pnlButton.add(btnAdd);
         pnlButton.add(btnDelete);
         pnlButton.add(btnEdit);
+        applyPermissions(taiKhoan.getTenDangNhap(), 4);
 
         JPanel pnlSearchFilter = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,10));
         pnlSearchFilter.setBackground(UIConstants.MAIN_BACKGROUND);
@@ -85,6 +90,12 @@ public class StaffMainContentGUI extends JPanel{
         this.add(pnlContent, BorderLayout.CENTER);
         loadTableData();
         addSearchFunctionality();
+    }
+    
+    private void applyPermissions(String username, int maCN) {
+        btnAdd.setVisible(taiKhoanBUS.hasPermission(username, maCN, "add"));
+        btnEdit.setVisible(taiKhoanBUS.hasPermission(username, maCN, "edit"));
+        btnDelete.setVisible(taiKhoanBUS.hasPermission(username, maCN, "delete"));
     }
     
     private void loadTableData(){

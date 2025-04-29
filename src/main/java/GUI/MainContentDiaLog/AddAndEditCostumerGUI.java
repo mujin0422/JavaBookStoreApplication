@@ -5,13 +5,9 @@ import DTO.KhachHangDTO;
 import Utils.UIButton;
 import Utils.UIConstants;
 import Utils.UILabel;
-
 import javax.swing.*;
 import java.awt.*;
-/**
- *
- * @author Dell Vostro
- */
+
 public class AddAndEditCostumerGUI extends JDialog{
     private JTextField txtMaKH, txtTenKH, txtSDT, txtEmail;
     private UIButton btnAdd, btnSave, btnCancel;
@@ -38,6 +34,8 @@ public class AddAndEditCostumerGUI extends JDialog{
         super(parent, title, true);
         this.khachHangBus = khachHangBus;
         initComponent(type);
+        txtMaKH.setText(khachHangBus.getNextMaKh());
+        txtMaKH.setEnabled(false);
         this.setLocationRelativeTo(parent);
         this.setVisible(true);
     }
@@ -114,10 +112,10 @@ public class AddAndEditCostumerGUI extends JDialog{
             String email = txtEmail.getText().trim();
             KhachHangDTO kh = new KhachHangDTO(maKH, tenKH, soDT, email);
             if(khachHangBus.addKhachHang(kh)){
-                JOptionPane.showMessageDialog(this, "Thêm khach hang thành công!");
+                JOptionPane.showMessageDialog(this, "Thêm khách hàng thành công!");
                 dispose();
             } else {
-                JOptionPane.showMessageDialog(this, "Mã khach hang đã tồn tại hoặc dữ liệu không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Dữ liệu không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
         } catch (HeadlessException | NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Lỗi nhập dữ liệu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
@@ -126,16 +124,6 @@ public class AddAndEditCostumerGUI extends JDialog{
     
     private boolean CheckFormInput() {
         try {
-            String maKHStr = txtMaKH.getText().trim();
-            if (maKHStr.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Mã khách hàng không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
-            int maKH = Integer.parseInt(maKHStr);
-            if (maKH <= 0) {
-                JOptionPane.showMessageDialog(this, "Mã khách hàng phải là số nguyên dương!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
             String tenKH = txtTenKH.getText().trim();
             if (tenKH.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Tên khách hàng không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);

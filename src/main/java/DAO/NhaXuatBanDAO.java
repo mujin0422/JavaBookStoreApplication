@@ -9,7 +9,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class NhaXuatBanDAO {
-
     public int add(NhaXuatBanDTO obj) {
         String sql = "INSERT INTO nhaxuatban (maNXB, tenNXB) VALUES (?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -78,6 +77,21 @@ public class NhaXuatBanDAO {
         } catch (SQLException e) {
         }
         return null;
+    }
+    
+    public String getNextMaNxb() {
+        String sql = "SELECT MAX(maNXB) AS nextID FROM nhaxuatban";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                int nextId = rs.getInt("nextID");
+                return String.valueOf(nextId + 1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "1";
     }
     
     public String getTenNhaXuatBanById(int maNXB) {

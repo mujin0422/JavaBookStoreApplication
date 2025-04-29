@@ -3,9 +3,11 @@ package GUI.MainContent;
 import BUS.NhaXuatBanBUS;
 import BUS.SachBUS;
 import BUS.TacGiaBUS;
+import BUS.TaiKhoanBUS;
 import BUS.TheLoaiBUS;
 import DTO.NhaXuatBanDTO;
 import DTO.SachDTO;
+import DTO.TaiKhoanDTO;
 import GUI.MainContentDiaLog.*;
 import Utils.UIConstants;
 import Utils.UIButton;
@@ -37,8 +39,10 @@ public class BookMainContentGUI extends JPanel implements ReloadablePanel{
     private JPanel pnlHeader, pnlContent;
     private DefaultTableModel tableModel;
     private SachBUS sachBUS;
+    private TaiKhoanBUS taiKhoanBUS;
 
-    public BookMainContentGUI() {
+    public BookMainContentGUI(TaiKhoanDTO taiKhoan) {
+        taiKhoanBUS = new TaiKhoanBUS();
         sachBUS = new SachBUS();
         this.setBackground(UIConstants.SUB_BACKGROUND);
         this.setPreferredSize(new Dimension(UIConstants.WIDTH_CONTENT, UIConstants.HEIGHT_CONTENT));
@@ -63,6 +67,7 @@ public class BookMainContentGUI extends JPanel implements ReloadablePanel{
         pnlButton.add(btnDelete);
         pnlButton.add(btnEdit);
         pnlButton.add(btnView);
+        applyPermissions(taiKhoan.getTenDangNhap(), 1);
 
         JPanel pnlSearchFilter = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,10));
         pnlSearchFilter.setBackground(UIConstants.MAIN_BACKGROUND);
@@ -101,6 +106,12 @@ public class BookMainContentGUI extends JPanel implements ReloadablePanel{
         loadTableData();
     }
 
+    private void applyPermissions(String username, int maCN) {
+        btnAdd.setVisible(taiKhoanBUS.hasPermission(username, maCN, "add"));
+        btnEdit.setVisible(taiKhoanBUS.hasPermission(username, maCN, "edit"));
+        btnDelete.setVisible(taiKhoanBUS.hasPermission(username, maCN, "delete"));
+    }
+    
     public void loadTableData() {
         tableModel.setRowCount(0); 
         for (SachDTO sach : sachBUS.getAllSach()) {

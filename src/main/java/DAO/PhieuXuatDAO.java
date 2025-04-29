@@ -1,10 +1,8 @@
 package DAO;
 
-import static DAO.DatabaseConnection.getConnection;
 import DTO.DoanhThuDTO;
 import DTO.PhieuXuatDTO;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -13,7 +11,6 @@ import java.util.Date;
 import java.util.List;
 
 public class PhieuXuatDAO {
-    
     public int add(PhieuXuatDTO obj) {
         String sql = "INSERT INTO phieuxuat(maPX, maNV, maKH, tongTien, ngayXuat) VALUES (?,?,?,?,?)";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -112,6 +109,21 @@ public class PhieuXuatDAO {
         return null;
     }
     
+    public String getNextMaPx() {
+        String sql = "SELECT MAX(maPX) AS nextID FROM phieuxuat";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                int nextId = rs.getInt("nextID");
+                return String.valueOf(nextId + 1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "1";
+    }
+    
     public int countPhieuXuatByMaKh(int maKh) {
         String sql = "SELECT COUNT(*) AS total FROM phieuxuat WHERE maKH = ? AND trangThaiXoa = 0";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -126,51 +138,48 @@ public class PhieuXuatDAO {
         }
         return 0;
     }
-     private Connection connect() throws SQLException {
-        return DriverManager.getConnection("jdbc:mysql://localhost:3306/quanlicuahangsach", "root", "");
-    }
- public List<DoanhThuDTO> getDoanhThuByDateRange(Date fromDate, Date toDate) {
-    List<DoanhThuDTO> doanhThuList = new ArrayList<>();
-    String sql = "SELECT " +
-                 "    px.maPX, " +
-                 "    s.maSach, " +
-                 "    s.tenSach, " +
-                 "    kh.maKH, " +
-                 "    kh.tenKH, " +
-                 "    px.NgayXuat, " +
-                 "    SUM(ctpx.soLuong) AS tongSoLuong, " +
-                 "    ctpx.giaBan, " +
-                 "    SUM( ctpx.giaBan) AS tongTien " +
-                 "FROM chitietphieuxuat ctpx " +
-                 "JOIN phieuxuat px ON ctpx.maPX = px.maPX " +
-                 "JOIN sach s ON ctpx.maSach = s.maSach " +
-                 "JOIN khachhang kh ON px.maKH = kh.maKH " +
-                 "WHERE px.NgayXuat BETWEEN ? AND ? " +
-                 "GROUP BY px.maPX, s.maSach, s.tenSach, kh.maKH, kh.tenKH, px.NgayXuat, ctpx.giaBan";
+     
+    public List<DoanhThuDTO> getDoanhThuByDateRange(Date fromDate, Date toDate) {
+       List<DoanhThuDTO> doanhThuList = new ArrayList<>();
+       String sql = "SELECT " +
+                    "    px.maPX, " +
+                    "    s.maSach, " +
+                    "    s.tenSach, " +
+                    "    kh.maKH, " +
+                    "    kh.tenKH, " +
+                    "    px.NgayXuat, " +
+                    "    SUM(ctpx.soLuong) AS tongSoLuong, " +
+                    "    ctpx.giaBan, " +
+                    "    SUM( ctpx.giaBan) AS tongTien " +
+                    "FROM chitietphieuxuat ctpx " +
+                    "JOIN phieuxuat px ON ctpx.maPX = px.maPX " +
+                    "JOIN sach s ON ctpx.maSach = s.maSach " +
+                    "JOIN khachhang kh ON px.maKH = kh.maKH " +
+                    "WHERE px.NgayXuat BETWEEN ? AND ? " +
+                    "GROUP BY px.maPX, s.maSach, s.tenSach, kh.maKH, kh.tenKH, px.NgayXuat, ctpx.giaBan";
 
-    try (Connection conn = connect();
-         PreparedStatement stmt = conn.prepareStatement(sql)) {
+       try (Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-        stmt.setDate(1, new java.sql.Date(fromDate.getTime()));
-        stmt.setDate(2, new java.sql.Date(toDate.getTime()));
+           stmt.setDate(1, new java.sql.Date(fromDate.getTime()));
+           stmt.setDate(2, new java.sql.Date(toDate.getTime()));
 
-        ResultSet rs = stmt.executeQuery();
-        while (rs.next()) {
-            DoanhThuDTO doanhThu = new DoanhThuDTO();
-            doanhThu.setMaSach(rs.getInt("maSach"));
-            doanhThu.setTenSach(rs.getString("tenSach"));
-            doanhThu.setMaKH(rs.getInt("maKH"));
-            doanhThu.setTenKH(rs.getString("tenKH"));
-            doanhThu.setNgayXuat(rs.getDate("NgayXuat"));
-            doanhThu.setSoLuong(rs.getInt("tongSoLuong")); // Use the aggregated total quantity
-            doanhThu.setGiaBan(rs.getDouble("giaBan"));
-            doanhThu.setTongTien(rs.getDouble("tongTien")); // Use the aggregated total price
-            doanhThuList.add(doanhThu);
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-    return doanhThuList;
-}
-
+           ResultSet rs = stmt.executeQuery();
+           while (rs.next()) {
+               DoanhThuDTO doanhThu = new DoanhThuDTO();
+               doanhThu.setMaSach(rs.getInt("maSach"));
+               doanhThu.setTenSach(rs.getString("tenSach"));
+               doanhThu.setMaKH(rs.getInt("maKH"));
+               doanhThu.setTenKH(rs.getString("tenKH"));
+               doanhThu.setNgayXuat(rs.getDate("NgayXuat"));
+               doanhThu.setSoLuong(rs.getInt("tongSoLuong")); // Use the aggregated total quantity
+               doanhThu.setGiaBan(rs.getDouble("giaBan"));
+               doanhThu.setTongTien(rs.getDouble("tongTien")); // Use the aggregated total price
+               doanhThuList.add(doanhThu);
+           }
+       } catch (SQLException e) {
+           e.printStackTrace();
+       }
+       return doanhThuList;
+   }
 }

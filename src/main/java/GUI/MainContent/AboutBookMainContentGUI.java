@@ -2,9 +2,11 @@ package GUI.MainContent;
 
 import BUS.NhaXuatBanBUS;
 import BUS.TacGiaBUS;
+import BUS.TaiKhoanBUS;
 import BUS.TheLoaiBUS;
 import DTO.NhaXuatBanDTO;
 import DTO.TacGiaDTO;
+import DTO.TaiKhoanDTO;
 import DTO.TheLoaiDTO;
 import GUI.MainContentDiaLog.AddAndEditAuthorGUI;
 import GUI.MainContentDiaLog.AddAndEditCategoryGUI;
@@ -18,14 +20,19 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
 public class AboutBookMainContentGUI extends JPanel{
+    private UIButton addNXB, addTG, addTL;
+    private UIButton editNXB, editTG, editTL;
+    private UIButton deleteNXB, deleteTG, deleteTL;
     private UIAboutPanel pnlNhaXuatBan, pnlTacGia, pnlTheLoai;
     private UITable tblNhaXuatBan, tblTacGia, tblTheLoai;
     private DefaultTableModel tableModelNXB, tableModelTG, tableModelTL;  
     private NhaXuatBanBUS nxbBus;
     private TacGiaBUS tgBus;
     private TheLoaiBUS tlBus;
+    private TaiKhoanBUS taiKhoanBUS;
     
-    public AboutBookMainContentGUI(){
+    public AboutBookMainContentGUI(TaiKhoanDTO taiKhoan){
+        this.taiKhoanBUS = new TaiKhoanBUS();
         this.setBackground(UIConstants.MAIN_BACKGROUND);
         this.setPreferredSize(new Dimension(UIConstants.WIDTH_CONTENT, UIConstants.HEIGHT_CONTENT));
         this.setLayout(new FlowLayout(FlowLayout.LEADING, 10, 10));
@@ -36,11 +43,11 @@ public class AboutBookMainContentGUI extends JPanel{
         //=============================( PANEL NHA XUAT BAN )===========================//
         nxbBus = new NhaXuatBanBUS();
         pnlNhaXuatBan = new UIAboutPanel("/Icon/NhaXuatBan_icon.png","NHÀ XUẤT BẢN", pnlWidth , pnlHeight);
-        UIButton addNXB = new UIButton("add", "THÊM", 90, 40, "/Icon/them_icon.png");
+        addNXB = new UIButton("add", "THÊM", 90, 40, "/Icon/them_icon.png");
         addNXB.addActionListener(e -> addNhaXuatBan());
-        UIButton deleteNXB = new UIButton("delete", "XÓA", 90, 40, "/Icon/xoa_icon.png");
+        deleteNXB = new UIButton("delete", "XÓA", 90, 40, "/Icon/xoa_icon.png");
         deleteNXB.addActionListener(e -> deleteNhaXuatBan());
-        UIButton editNXB = new UIButton("edit", "SỬA", 90, 40, "/Icon/sua_icon.png");
+        editNXB = new UIButton("edit", "SỬA", 90, 40, "/Icon/sua_icon.png");
         editNXB.addActionListener(e -> editNhaXuatBan());
         pnlNhaXuatBan.addButton(addNXB);
         pnlNhaXuatBan.addButton(deleteNXB);
@@ -60,11 +67,11 @@ public class AboutBookMainContentGUI extends JPanel{
         //================================( PANEL TAC GIA )=============================//
         tgBus = new TacGiaBUS();
         pnlTacGia = new UIAboutPanel("/Icon/TacGia_icon.png","TÁC GIẢ", pnlWidth , pnlHeight);
-        UIButton addTG = new UIButton("add", "THÊM", 90, 40, "/Icon/them_icon.png");
+        addTG = new UIButton("add", "THÊM", 90, 40, "/Icon/them_icon.png");
         addTG.addActionListener(e -> addTacGia());
-        UIButton deleteTG = new UIButton("delete", "XÓA", 90, 40, "/Icon/xoa_icon.png");
+        deleteTG = new UIButton("delete", "XÓA", 90, 40, "/Icon/xoa_icon.png");
         deleteTG.addActionListener(e -> deleteTacGia());
-        UIButton editTG = new UIButton("edit", "SỬA", 90, 40, "/Icon/sua_icon.png");
+        editTG = new UIButton("edit", "SỬA", 90, 40, "/Icon/sua_icon.png");
         editTG.addActionListener(e -> editTacGia());
         pnlTacGia.addButton(addTG);
         pnlTacGia.addButton(deleteTG);
@@ -84,11 +91,11 @@ public class AboutBookMainContentGUI extends JPanel{
         //================================( PANEL THE LOAI )============================//
         tlBus = new TheLoaiBUS();
         pnlTheLoai  = new UIAboutPanel("/Icon/TheLoai_icon.png","THỂ LOẠI", pnlWidth , pnlHeight);
-        UIButton addTL = new UIButton("add", "THÊM", 90, 40, "/Icon/them_icon.png");
+        addTL = new UIButton("add", "THÊM", 90, 40, "/Icon/them_icon.png");
         addTL.addActionListener(e -> addTheLoai());
-        UIButton deleteTL = new UIButton("delete", "XÓA", 90, 40, "/Icon/xoa_icon.png");
+        deleteTL = new UIButton("delete", "XÓA", 90, 40, "/Icon/xoa_icon.png");
         deleteTL.addActionListener(e -> deleteTheLoai());
-        UIButton editTL = new UIButton("edit", "SỬA", 90, 40, "/Icon/sua_icon.png");
+        editTL = new UIButton("edit", "SỬA", 90, 40, "/Icon/sua_icon.png");
         editTL.addActionListener(e -> editTheLoai());
         pnlTheLoai.addButton(addTL);
         pnlTheLoai.addButton(deleteTL);
@@ -102,7 +109,7 @@ public class AboutBookMainContentGUI extends JPanel{
         UIScrollPane scrollTL = new UIScrollPane(tblTheLoai);
         pnlTheLoai.getPnlContent().add(scrollTL, BorderLayout.CENTER);
         //==============================( End Panel The Loai )==========================//
-        
+        applyPermissions(taiKhoan.getTenDangNhap(), 2);
         
 
         this.add(pnlNhaXuatBan);
@@ -114,6 +121,19 @@ public class AboutBookMainContentGUI extends JPanel{
     }
     
     //==================================================================================
+    private void applyPermissions(String username, int maCN) {
+        addNXB.setVisible(taiKhoanBUS.hasPermission(username, maCN, "add"));
+        addTG.setVisible(taiKhoanBUS.hasPermission(username, maCN, "add"));
+        addTL.setVisible(taiKhoanBUS.hasPermission(username, maCN, "add"));
+        editNXB.setVisible(taiKhoanBUS.hasPermission(username, maCN, "edit"));
+        editTG.setVisible(taiKhoanBUS.hasPermission(username, maCN, "edit"));
+        editTL.setVisible(taiKhoanBUS.hasPermission(username, maCN, "edit"));
+        deleteNXB.setVisible(taiKhoanBUS.hasPermission(username, maCN, "delete"));
+        deleteTG.setVisible(taiKhoanBUS.hasPermission(username, maCN, "delete"));
+        deleteTL.setVisible(taiKhoanBUS.hasPermission(username, maCN, "delete"));
+    }
+    
+    
     private void loadTableDataNhaXuatBan(){
         tableModelNXB.setRowCount(0);
         for (NhaXuatBanDTO nxb : nxbBus.getAllNhaXuatBan()) {

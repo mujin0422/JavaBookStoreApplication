@@ -41,6 +41,8 @@ public class AddAndEditSupplierGUI extends JDialog{
         super(parent, title, true);
         this.nccBus = nccBus;
         initComponent(type);
+        txtMaNCC.setText(nccBus.getNextMaNcc());
+        txtMaNCC.setEnabled(false);
         this.setLocationRelativeTo(parent);
         this.setVisible(true);
     }
@@ -121,16 +123,6 @@ public class AddAndEditSupplierGUI extends JDialog{
     
     private boolean CheckFormInput(){
         try {
-            String maNCCStr = txtMaNCC.getText().trim();
-            if (maNCCStr.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Mã NCC không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
-            int maNXB = Integer.parseInt(maNCCStr);
-            if (maNXB < 0) {
-                JOptionPane.showMessageDialog(this, "Mã NCC phải là số nguyên dương!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
             String tenNXB = txtTenNCC.getText().trim();
             if (tenNXB.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Tên NCC không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);

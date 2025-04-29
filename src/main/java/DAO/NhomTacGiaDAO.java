@@ -9,7 +9,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class NhomTacGiaDAO {
-
     public int add(NhomTacGiaDTO obj) {
         String sql = "INSERT INTO nhomtacgia (maTG, maSach) VALUES (?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -35,7 +34,6 @@ public class NhomTacGiaDAO {
         }
         return 0;
     }
-
 
     public int delete(int maTG) {
         String sql = "DELETE FROM nhomtacgia WHERE maTG=?";
@@ -132,8 +130,4 @@ public class NhomTacGiaDAO {
         }
         return list;
     }
-    
-    
-    
-
 }

@@ -33,7 +33,8 @@ public class AddAndEditDecentralizationGUI extends JDialog {
         super(parent, title, true);
         this.quyenBUS = quyenBUS;
         initComponent(type);
-        
+        txtMaQuyen.setText(quyenBUS.getNextMaQuyen());
+        txtMaQuyen.setEnabled(false);
         this.setLocationRelativeTo(parent);
         this.setVisible(true);
     }
@@ -60,7 +61,6 @@ public class AddAndEditDecentralizationGUI extends JDialog {
                         }
                     }
                 }
-            
             }
         }
        this.setLocationRelativeTo(parent);
@@ -211,16 +211,6 @@ public class AddAndEditDecentralizationGUI extends JDialog {
 
     private boolean checkFormInput(){
         try {
-            String maQuyenStr = txtMaQuyen.getText().trim();
-            if (maQuyenStr.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Mã quyền không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
-            int maQuyen = Integer.parseInt(maQuyenStr);
-            if (maQuyen <= 0) {
-                JOptionPane.showMessageDialog(this, "Mã quyền phải là số nguyên dương!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
             String tenSach = txtTenQuyen.getText().trim();
             if (tenSach.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Tên quyên không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);

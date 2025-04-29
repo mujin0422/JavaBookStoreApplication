@@ -5,6 +5,7 @@ import BUS.KhachHangBUS;
 import BUS.NhanVienBUS;
 import BUS.PhieuXuatBUS;
 import BUS.SachBUS;
+import BUS.TaiKhoanBUS;
 import DTO.ChiTietPhieuXuatDTO;
 import DTO.KhachHangDTO;
 import DTO.NhanVienDTO;
@@ -58,8 +59,10 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
     private SachBUS sachBUS;
     private NhanVienBUS nhanVienBUS;
     private ChiTietPhieuXuatBUS chiTietPhieuXuatBUS;
+    private TaiKhoanBUS taiKhoanBUS;
 
     public ExportBookMainContentGUI(TaiKhoanDTO taiKhoan) {
+        taiKhoanBUS = new TaiKhoanBUS();
         phieuXuatBUS = new PhieuXuatBUS();
         nhanVienBUS = new NhanVienBUS();
         khachHangBUS = new KhachHangBUS();
@@ -219,6 +222,12 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
         addSearchFunctionality();
     }
     
+    private void applyPermissions(String username, int maCN) {
+        btnAdd.setVisible(taiKhoanBUS.hasPermission(username, maCN, "add"));
+//        btnEdit.setVisible(taiKhoanBUS.hasPermission(username, maCN, "edit"));
+//        btnDelete.setVisible(taiKhoanBUS.hasPermission(username, maCN, "delete"));
+    }
+    
     public void loadTableData(){
         tableModel.setRowCount(0);
         for(PhieuXuatDTO px : phieuXuatBUS.getAllPhieuXuat()){
@@ -350,61 +359,61 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
     }
     
     private void editSoLuongInFromTableForForm(){
-    int selectedRow = tblForForm.getSelectedRow();
-    if (selectedRow == -1) {
-        JOptionPane.showMessageDialog(this, "Vui lòng chọn một sản phẩm trong phiếu để sửa số lượng", "Thông báo", JOptionPane.WARNING_MESSAGE);
-        return;
-    }
-    Window window = SwingUtilities.getWindowAncestor(this);
-    JDialog dialog = new JDialog((Frame) window, "Sửa Số Lượng", true);
-    dialog.setSize(300, 150);
-    dialog.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 15));
-    UITextField txtSoLuong = new UITextField(50, 30);
-
-    // Lấy số lượng hiện tại để điền trước vào trường văn bản của hộp thoại
-    txtSoLuong.setText(tblForForm.getValueAt(selectedRow, 2).toString());
-
-    dialog.add(new UILabel("Số lượng mới: ", 150, 30));
-    dialog.add(txtSoLuong);
-    UIButton btnSave = new UIButton("add","Lưu", 100, 30);
-    dialog.add(btnSave);
-
-    btnSave.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            String soLuongText = txtSoLuong.getText().trim();
-            if (soLuongText.isEmpty() || !soLuongText.matches("\\d+") || Integer.parseInt(soLuongText) <= 0) {
-                JOptionPane.showMessageDialog(dialog, "Số lượng không hợp lệ", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
-            int newSoLuong = Integer.parseInt(soLuongText);
-            int maSach = Integer.parseInt(tblForForm.getValueAt(selectedRow, 0).toString());
-
-            // Kiểm tra xem số lượng mới có vượt quá số lượng tồn kho không
-            if (newSoLuong > sachBUS.getSoLuongTonSach(maSach)){
-                JOptionPane.showMessageDialog(dialog, "Số lượng sách bán ra không được lớn hơn số lượng sách trong kho", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            // Lấy giá của cuốn sách cho hàng này            
-            int giaSach = sachBUS.getGiaSachByMaSach(maSach); 
-
-            // Tính toán lại tổng cho hàng này
-            int thanhTien = newSoLuong * giaSach;
-
-           // Cập nhật số lượng và tổng giá trong mô hình bảng
-            tableModelForForm.setValueAt(newSoLuong, selectedRow, 2); // Update So Luong column
-            tableModelForForm.setValueAt(thanhTien, selectedRow, 3); // Update Thanh Tien column
-
-            // Tính lại tổng số tiền cho toàn bộ phiếu xuất
-            calcTongTien();
-
-            dialog.dispose();
+        int selectedRow = tblForForm.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn một sản phẩm trong phiếu để sửa số lượng", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
         }
-    });
-    dialog.setLocationRelativeTo(this);
-    dialog.setVisible(true);
-}
+        Window window = SwingUtilities.getWindowAncestor(this);
+        JDialog dialog = new JDialog((Frame) window, "Sửa Số Lượng", true);
+        dialog.setSize(300, 150);
+        dialog.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 15));
+        UITextField txtSoLuong = new UITextField(50, 30);
+
+        // Lấy số lượng hiện tại để điền trước vào trường văn bản của hộp thoại
+        txtSoLuong.setText(tblForForm.getValueAt(selectedRow, 2).toString());
+
+        dialog.add(new UILabel("Số lượng mới: ", 150, 30));
+        dialog.add(txtSoLuong);
+        UIButton btnSave = new UIButton("add","Lưu", 100, 30);
+        dialog.add(btnSave);
+
+        btnSave.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String soLuongText = txtSoLuong.getText().trim();
+                if (soLuongText.isEmpty() || !soLuongText.matches("\\d+") || Integer.parseInt(soLuongText) <= 0) {
+                    JOptionPane.showMessageDialog(dialog, "Số lượng không hợp lệ", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                int newSoLuong = Integer.parseInt(soLuongText);
+                int maSach = Integer.parseInt(tblForForm.getValueAt(selectedRow, 0).toString());
+
+                // Kiểm tra xem số lượng mới có vượt quá số lượng tồn kho không
+                if (newSoLuong > sachBUS.getSoLuongTonSach(maSach)){
+                    JOptionPane.showMessageDialog(dialog, "Số lượng sách bán ra không được lớn hơn số lượng sách trong kho", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+                // Lấy giá của cuốn sách cho hàng này            
+                int giaSach = sachBUS.getGiaSachByMaSach(maSach); 
+
+                // Tính toán lại tổng cho hàng này
+                int thanhTien = newSoLuong * giaSach;
+
+               // Cập nhật số lượng và tổng giá trong mô hình bảng
+                tableModelForForm.setValueAt(newSoLuong, selectedRow, 2); // Update So Luong column
+                tableModelForForm.setValueAt(thanhTien, selectedRow, 3); // Update Thanh Tien column
+
+                // Tính lại tổng số tiền cho toàn bộ phiếu xuất
+                calcTongTien();
+
+                dialog.dispose();
+            }
+        });
+        dialog.setLocationRelativeTo(this);
+        dialog.setVisible(true);
+    }
     
     public Date getCurrentDate() {
         try {
@@ -418,22 +427,13 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
     }
     
     private void resetFormInput(){
-        txtMaPX.setText("");
+        txtMaPX.setText(phieuXuatBUS.getNextMaPx());
+        txtMaPX.setEditable(false);
         tableModelForForm.setRowCount(0);
     }
     
     private boolean checkFormInput(){
         try {
-            String maPxStr = txtMaPX.getText().trim();
-            if (maPxStr.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Mã phiếu xuất không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
-            int maPx = Integer.parseInt(maPxStr);
-            if (maPx <= 0) {
-                JOptionPane.showMessageDialog(this, "Mã phiếu xuất phải là số nguyên dương!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
             if (tblForForm.getRowCount() == 0) {
                 JOptionPane.showMessageDialog(this, "Chưa có sản phẩm nào trong phiếu xuất!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 return false;

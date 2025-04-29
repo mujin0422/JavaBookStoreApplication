@@ -26,6 +26,10 @@ public class QuyenBUS {
     public boolean deleteQuyen(int maQuyen){
         return quyenDAO.delete(maQuyen) > 0;
     }
+    
+    public String getNextMaQuyen(){
+        return quyenDAO.getNextMaQuyen();
+    }
         
     public ArrayList<QuyenDTO> searchQuyen(String keyword){
         if(keyword == null || keyword.trim().isEmpty()) return quyenDAO.getAll(); 

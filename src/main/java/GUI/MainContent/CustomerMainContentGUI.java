@@ -1,7 +1,9 @@
 package GUI.MainContent;
 
 import BUS.KhachHangBUS;
+import BUS.TaiKhoanBUS;
 import DTO.KhachHangDTO;
+import DTO.TaiKhoanDTO;
 import GUI.MainContentDiaLog.AddAndEditCostumerGUI;
 import Utils.UIButton;
 import Utils.UIConstants;
@@ -29,9 +31,11 @@ public class CustomerMainContentGUI extends JPanel{
     private JPanel pnlHeader, pnlContent;
     private DefaultTableModel tableModel;
     private KhachHangBUS khachHangBUS;
+    private TaiKhoanBUS taiKhoanBUS;
     
-    public CustomerMainContentGUI() {
+    public CustomerMainContentGUI(TaiKhoanDTO taiKhoan) {
         this.khachHangBUS = new KhachHangBUS();
+        this.taiKhoanBUS = new TaiKhoanBUS();
         this.setBackground(UIConstants.SUB_BACKGROUND);
         this.setPreferredSize(new Dimension(UIConstants.WIDTH_CONTENT, UIConstants.HEIGHT_CONTENT));
         this.setLayout(new BorderLayout(5, 5));
@@ -52,7 +56,8 @@ public class CustomerMainContentGUI extends JPanel{
         pnlButton.add(btnAdd);
         pnlButton.add(btnDelete);
         pnlButton.add(btnEdit);
-            
+        applyPermissions(taiKhoan.getTenDangNhap(), 3);
+        
         JPanel pnlSearchFilter = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,10));
         pnlSearchFilter.setBackground(UIConstants.MAIN_BACKGROUND);
         txtSearch = new UITextField(190, 30);
@@ -84,6 +89,12 @@ public class CustomerMainContentGUI extends JPanel{
         this.add(pnlContent, BorderLayout.CENTER);
         loadTableData();
         addSearchFunctionality();
+    }
+    
+    private void applyPermissions(String username, int maCN) {
+        btnAdd.setVisible(taiKhoanBUS.hasPermission(username, maCN, "add"));
+        btnEdit.setVisible(taiKhoanBUS.hasPermission(username, maCN, "edit"));
+        btnDelete.setVisible(taiKhoanBUS.hasPermission(username, maCN, "delete"));
     }
     
     private void loadTableData(){

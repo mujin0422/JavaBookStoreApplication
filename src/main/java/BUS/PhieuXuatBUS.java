@@ -30,6 +30,10 @@ public class PhieuXuatBUS {
         return phieuXuatDAO.delete(maPX) > 0;  
     }
     
+    public String getNextMaPx(){
+        return phieuXuatDAO.getNextMaPx();
+    }
+    
     public boolean existsPhieuXuat(int maPX){
         return phieuXuatDAO.exists(maPX) > 0;
     }

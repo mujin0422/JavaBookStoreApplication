@@ -31,6 +31,10 @@ public class NhaXuatBanBUS {
         return nhaXuatBanDAO.delete(maNXB) > 0;
     }
     
+    public String getNextMaNxb(){
+        return nhaXuatBanDAO.getNextMaNxb();
+    }
+    
     public String getTenNhaXuatBanById(int id){
         return nhaXuatBanDAO.getTenNhaXuatBanById(id);
     }

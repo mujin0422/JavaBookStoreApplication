@@ -107,21 +107,20 @@ public final class MainLayoutGUI extends JFrame {
         pnlContent.setBackground(UIConstants.SUB_BACKGROUND);
         
         statisticsPanel = new StatisticsMainContentGUI();
-        bookPanel = new BookMainContentGUI();
-        customerPanel = new CustomerMainContentGUI();
-        staffPanel = new StaffMainContentGUI();
-        aboutBookPanel = new AboutBookMainContentGUI();
-        supplierPanel = new SupplierMainContentGUI();
-        decentralizationPanel = new DecentralizationMainContentGUI();
+        bookPanel = new BookMainContentGUI(taiKhoan);
+        customerPanel = new CustomerMainContentGUI(taiKhoan);
+        staffPanel = new StaffMainContentGUI(taiKhoan);
+        aboutBookPanel = new AboutBookMainContentGUI(taiKhoan);
+        supplierPanel = new SupplierMainContentGUI(taiKhoan);
+        decentralizationPanel = new DecentralizationMainContentGUI(taiKhoan);
         importBookPanel = new ImportBookMainContentGUI(taiKhoan);
         exportBookPanel = new ExportBookMainContentGUI(taiKhoan);
-        accountPanel = new AccountMainContentGUI();
+        accountPanel = new AccountMainContentGUI(taiKhoan);
         
         for (int i = 1; i <= 10; i++) {
             String label = buttonInfo[i - 1][0];
             String iconPath = buttonInfo[i - 1][1];
-            UIButton button = new UIButton("menuButton", label, 180, 40);
-            button.setButtonIcon(iconPath);
+            UIButton button = new UIButton("menuButton", label, 180, 40, iconPath);
             buttons.add(button);
             JPanel targetPanel;
             switch (i) {
@@ -186,13 +185,22 @@ public final class MainLayoutGUI extends JFrame {
         panel.setBackground(UIConstants.MAIN_BACKGROUND);
         panel.setLayout(new GridBagLayout());
 
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(10, 10, 10, 10); 
         JLabel lblWelcome = new JLabel();
         lblWelcome.setFont(new Font("Segoe UI", Font.BOLD, 40));
         lblWelcome.setForeground(UIConstants.BLACK_FONT);
         lblWelcome.setText("Xin chào, " + taiKhoan.getTenDangNhap() + "!");
-        
-        panel.add(lblWelcome);
+        panel.add(lblWelcome, gbc);
+        gbc.gridy++; 
+        JLabel lblMessage = new JLabel();
+        lblMessage.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+        lblMessage.setForeground(UIConstants.BLACK_FONT);
+        lblMessage.setText("Chúc bạn có một ngày làm việc vui vẻ!");
+        panel.add(lblMessage, gbc);
+
         return panel;
     }
-    
 }

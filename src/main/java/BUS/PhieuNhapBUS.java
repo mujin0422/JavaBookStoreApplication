@@ -31,6 +31,10 @@ public class PhieuNhapBUS{
         return phieuNhapDAO.delete(maPN) > 0;
     }
     
+    public String getNextMaPn(){
+        return phieuNhapDAO.getNextMaPn();
+    }
+    
     public boolean existsPhieuNhap(int maPN){
         return phieuNhapDAO.exists(maPN) > 0;
     }

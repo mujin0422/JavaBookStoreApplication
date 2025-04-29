@@ -10,10 +10,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JOptionPane;
 
 public class SachDAO {
-
     public int add(SachDTO obj) {
         String sql = "INSERT INTO sach (maSach, tenSach, giaSach, soLuongTon, maNXB) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -99,6 +97,21 @@ public class SachDAO {
             e.printStackTrace();
         }
         return null;
+    }
+    
+    public String getNextMaSach() {
+        String sql = "SELECT MAX(maSach) AS nextID FROM sach";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                int nextId = rs.getInt("nextID");
+                return String.valueOf(nextId + 1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "1";
     }
     
     public int getSoLuongTonSach(int maSach){

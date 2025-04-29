@@ -10,10 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.*;
-/**
- *
- * @author Dell Vostro
- */
+
 public class KhachHangDAO {
     public int add(KhachHangDTO obj) {
         String sql = "INSERT INTO khachhang(maKH, tenKH, sdt, email) VALUES (?, ?, ?, ?)";
@@ -96,6 +93,21 @@ public class KhachHangDAO {
             e.printStackTrace();
         }
         return null;
+    }
+    
+    public String getNextMaKH() {
+        String sql = "SELECT MAX(maKH) AS nextID FROM khachhang";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                int nextId = rs.getInt("nextID");
+                return String.valueOf(nextId + 1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "1";
     }
     
     public int getMaKhByTenKh(String tenKh) {

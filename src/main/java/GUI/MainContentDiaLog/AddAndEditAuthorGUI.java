@@ -19,14 +19,12 @@ public class AddAndEditAuthorGUI extends JDialog {
         super(parent, title, true);
         this.tgBus = tgBus;
         this.tg = tg;
-        initComponent(type);
-        
+        initComponent(type);    
         if (tg != null) {
             txtMaTG.setText(String.valueOf(tg.getMaTG()));
             txtTenTG.setText(tg.getTenTG());
             txtMaTG.setEnabled(false);
         }
-
         this.setLocationRelativeTo(parent);
         this.setVisible(true);
     }
@@ -35,6 +33,8 @@ public class AddAndEditAuthorGUI extends JDialog {
         super(parent, title, true);
         this.tgBus = tgBus;
         initComponent(type);
+        txtMaTG.setText(tgBus.getNextMaTg());
+        txtMaTG.setEnabled(false);
         this.setLocationRelativeTo(parent);
         this.setVisible(true);
     }
@@ -97,7 +97,7 @@ public class AddAndEditAuthorGUI extends JDialog {
                 JOptionPane.showMessageDialog(this, "Thêm tác giả thành công!");
                 dispose();
             } else {
-                JOptionPane.showMessageDialog(this, "Mã tác giả đã tồn tại hoặc dữ liệu không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Dữ liệu không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Lỗi nhập dữ liệu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
@@ -106,16 +106,6 @@ public class AddAndEditAuthorGUI extends JDialog {
 
     private boolean CheckFormInput() {
         try {
-            String maTGStr = txtMaTG.getText().trim();
-            if (maTGStr.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Mã tác giả không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
-            int maTG = Integer.parseInt(maTGStr);
-            if (maTG < 0) {
-                JOptionPane.showMessageDialog(this, "Mã tác giả phải là số nguyên dương!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
             String tenTG = txtTenTG.getText().trim();
             if (tenTG.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Tên tác giả không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);

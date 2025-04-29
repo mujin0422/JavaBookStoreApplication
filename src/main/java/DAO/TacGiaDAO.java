@@ -75,7 +75,6 @@ public class TacGiaDAO {
                     return new TacGiaDTO(
                         rs.getInt("maTG"),
                         rs.getString("tenTG")
-
                     );
                 }
             }
@@ -85,8 +84,20 @@ public class TacGiaDAO {
         return null;
     }
     
-    
-    
+    public String getNextMaTg() {
+        String sql = "SELECT MAX(maTG) AS nextID FROM tacgia";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                int nextId = rs.getInt("nextID");
+                return String.valueOf(nextId + 1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "1";
+    }
     
     public ArrayList<Integer> getMaTacGiaBySach(int maSach) {
         ArrayList<Integer> danhSachMaTG = new ArrayList<>();

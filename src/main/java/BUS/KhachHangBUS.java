@@ -7,7 +7,7 @@ import java.util.List;
 public class KhachHangBUS {
     private KhachHangDAO khachHangDAO;
    
- public KhachHangBUS() {
+    public KhachHangBUS() {
         khachHangDAO = new KhachHangDAO();
     }
     public ArrayList<KhachHangDTO> getAllKhachHang() {
@@ -22,11 +22,13 @@ public class KhachHangBUS {
     public boolean deleteKhachHang(int maKH) {
         return khachHangDAO.delete(maKH) > 0;
     }
+    public String getNextMaKh(){
+        return khachHangDAO.getNextMaKH();
+    }
     
     public int getMaKhByTenKh(String tenKh){
         return khachHangDAO.getMaKhByTenKh(tenKh);
     }
-    
     public String getTenKhByMaKh(int maKh){
         return khachHangDAO.getTenKhByMaKh(maKh);
     }
@@ -47,10 +49,9 @@ public class KhachHangBUS {
         return ketQua;
     }
     
-     public List<Object[]> getTopKhachMuaNhieu() {
+    public List<Object[]> getTopKhachMuaNhieu() {
         return khachHangDAO.getTopKhachMuaNhieu();
     }
-
     public List<Object[]> getKhachHangTheoNgay(Date fromDate, Date toDate) {
         return khachHangDAO.thongKeKhachHangTheoNgay(fromDate, toDate);
     }
@@ -58,7 +59,7 @@ public class KhachHangBUS {
         return khachHangDAO.getKhachHangTheoThang(monthYear);
     }
     public List<Object[]> getDanhSachKhachDaMua() {
-    return khachHangDAO.getDanhSachKhachDaMua();
+        return khachHangDAO.getDanhSachKhachDaMua();
     }
 }
 

@@ -40,6 +40,10 @@ public class SachBUS {
         return sachDAO.delete(maSach) > 0;  
     }
     
+    public String getNextMaSach(){
+        return sachDAO.getNextMaSach();
+    }
+    
     public int getSoLuongTonSach(int maSach){
         return sachDAO.getSoLuongTonSach(maSach);
     }

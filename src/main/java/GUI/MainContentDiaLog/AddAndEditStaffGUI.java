@@ -15,10 +15,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-/**
- *
- * @author Dell Vostro
- */
 public class AddAndEditStaffGUI extends JDialog{
     private JTextField txtMaNV, txtTenNV, txtEmail, txtSDT;
     private UIButton btnAdd, btnSave, btnCancel;
@@ -45,6 +41,8 @@ public class AddAndEditStaffGUI extends JDialog{
         super(parent, title, true);
         this.nvBus = nvBus;
         initComponent(type);
+        txtMaNV.setText(nvBus.getNextMaNv());
+        txtMaNV.setEnabled(false);
         this.setLocationRelativeTo(parent);
         this.setVisible(true);
     }
@@ -126,16 +124,6 @@ public class AddAndEditStaffGUI extends JDialog{
     
     private boolean CheckFormInput(){
         try {
-            String maNVStr = txtMaNV.getText().trim();
-            if (maNVStr.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Mã nhân viên không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
-            int maNV = Integer.parseInt(maNVStr);
-            if (maNV < 0) {
-                JOptionPane.showMessageDialog(this, "Mã nhân viên phải là số nguyên dương!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
             String tenNV = txtTenNV.getText().trim();
             if (tenNV.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Tên nhân viên không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);

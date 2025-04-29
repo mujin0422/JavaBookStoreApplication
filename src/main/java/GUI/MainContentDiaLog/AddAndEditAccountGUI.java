@@ -21,10 +21,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-/**
- *
- * @author Dell Vostro
- */
 public class AddAndEditAccountGUI extends JDialog{
     private JTextField txtTenDangNhap, txtMatKhau;
     private JComboBox cbMaNV, cbMaQuyen;

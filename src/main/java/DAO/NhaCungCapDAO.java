@@ -9,7 +9,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class NhaCungCapDAO {
-
     public int add(NhaCungCapDTO obj) {
         String sql = "INSERT INTO nhacungcap (maNCC, tenNCC, diaChi, sdt) VALUES (?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -91,6 +90,21 @@ public class NhaCungCapDAO {
             e.printStackTrace();
         }
         return null;
+    }
+    
+    public String getNextMaNcc() {
+        String sql = "SELECT MAX(maNCC) AS nextID FROM nhacungcap";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                int nextId = rs.getInt("nextID");
+                return String.valueOf(nextId + 1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "1";
     }
     
     public int getMaNccByTenNCC(String tenNcc) {

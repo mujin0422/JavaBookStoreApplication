@@ -13,11 +13,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-/**
- *
- * @author Dell Vostro
- */
-
 public class AddAndEditPublisherGUI extends JDialog {
     private JTextField txtMaNXB, txtTenNXB;
     private UIButton btnAdd, btnSave, btnCancel;
@@ -29,19 +24,23 @@ public class AddAndEditPublisherGUI extends JDialog {
         this.nxbBus = nxbBus;
         this.nxb = nxb;
         initComponent(type);
-
         if (nxb != null) {
             txtMaNXB.setText(String.valueOf(nxb.getMaNXB()));
             txtTenNXB.setText(nxb.getTenNXB());
             txtMaNXB.setEnabled(false);
         }
-
         this.setLocationRelativeTo(parent);
         this.setVisible(true);
     }
 
     public AddAndEditPublisherGUI(JFrame parent, NhaXuatBanBUS nxbBus, String title, String type) {
-        this(parent, nxbBus, title, type, null);
+        super(parent, title, true);
+        this.nxbBus = nxbBus;
+        initComponent(type);
+        txtMaNXB.setText(nxbBus.getNextMaNxb());
+        txtMaNXB.setEnabled(false);
+        this.setLocationRelativeTo(parent);
+        this.setVisible(true);
     }
 
     private void initComponent(String type) {
@@ -103,7 +102,7 @@ public class AddAndEditPublisherGUI extends JDialog {
                 JOptionPane.showMessageDialog(this, "Thêm nhà xuất bản thành công!");
                 dispose();
             } else {
-                JOptionPane.showMessageDialog(this, "Mã NXB đã tồn tại hoặc dữ liệu không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Dữ liệu không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Lỗi nhập dữ liệu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
@@ -112,16 +111,6 @@ public class AddAndEditPublisherGUI extends JDialog {
 
     private boolean CheckFormInput() {
         try {
-            String maNXBStr = txtMaNXB.getText().trim();
-            if (maNXBStr.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Mã NXB không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
-            int maNXB = Integer.parseInt(maNXBStr);
-            if (maNXB < 0) {
-                JOptionPane.showMessageDialog(this, "Mã NXB phải là số nguyên dương!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
             String tenNXB = txtTenNXB.getText().trim();
             if (tenNXB.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Tên NXB không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);

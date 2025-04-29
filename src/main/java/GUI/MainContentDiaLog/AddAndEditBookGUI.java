@@ -22,7 +22,6 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.util.ArrayList;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -56,7 +55,7 @@ public class AddAndEditBookGUI extends JDialog {
             }
 
             txtSoLuongTon.setText(String.valueOf(sach.getSoLuongTon()));
-            txtMaSach.setEditable(false);
+            txtMaSach.setEnabled(false);
             areaTheLoai.setText("");
             areaTacGia.setText("");
 
@@ -87,6 +86,8 @@ public class AddAndEditBookGUI extends JDialog {
         super(parent, title, true);
         this.sachBus = sachBus;
         initComponent(type);
+        txtMaSach.setText(sachBus.getNextMaSach());
+        txtMaSach.setEnabled(false);
         this.setLocationRelativeTo(parent);
         this.setVisible(true);
     }
@@ -136,7 +137,7 @@ public class AddAndEditBookGUI extends JDialog {
         inputPanelLeft.add(new UILabel("Số lượng:",120 ,30));
         inputPanelLeft.add(txtSoLuongTon = new UITextField(250,30));
         txtSoLuongTon.setText("0");
-        txtSoLuongTon.setEditable(false);
+        txtSoLuongTon.setEnabled(false);
         
         JPanel inputPanelRight = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         inputPanelRight.setBackground(UIConstants.MAIN_BACKGROUND);
@@ -282,16 +283,6 @@ public class AddAndEditBookGUI extends JDialog {
 
     private boolean CheckFormInput() {
         try {
-            String maSachStr = txtMaSach.getText().trim();
-            if (maSachStr.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Mã sách không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
-            int maSach = Integer.parseInt(maSachStr);
-            if (maSach < 0) {
-                JOptionPane.showMessageDialog(this, "Mã sách phải là số nguyên dương!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
             String tenSach = txtTenSach.getText().trim();
             if (tenSach.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Tên sách không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);

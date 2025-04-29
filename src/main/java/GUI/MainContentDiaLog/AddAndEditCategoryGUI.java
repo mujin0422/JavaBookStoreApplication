@@ -24,19 +24,23 @@ public class AddAndEditCategoryGUI extends JDialog {
         this.tlBus = tlBus;
         this.tl = tl;
         initComponent(type);
-
         if (tl != null) {
             txtMaTL.setText(String.valueOf(tl.getMaTL()));
             txtTenTL.setText(tl.getTenTL());
             txtMaTL.setEnabled(false);
         }
-
         this.setLocationRelativeTo(parent);
         this.setVisible(true);
     }
 
     public AddAndEditCategoryGUI(JFrame parent, TheLoaiBUS tlBus, String title, String type) {
-        this(parent, tlBus, title, type, null);
+        super(parent, title, true);
+        this.tlBus = tlBus;
+        initComponent(type);
+        txtMaTL.setText(tlBus.getNextMaTl());
+        txtMaTL.setEnabled(false);
+        this.setLocationRelativeTo(parent);
+        this.setVisible(true);
     }
 
     private void initComponent(String type) {
@@ -98,7 +102,7 @@ public class AddAndEditCategoryGUI extends JDialog {
                 JOptionPane.showMessageDialog(this, "Thêm thể loại thành công!");
                 dispose();
             } else {
-                JOptionPane.showMessageDialog(this, "Mã thể loại đã tồn tại hoặc dữ liệu không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Dữ liệu không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
         } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(this, "Lỗi nhập dữ liệu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
@@ -107,16 +111,6 @@ public class AddAndEditCategoryGUI extends JDialog {
 
     private boolean validateInput() {
         try {
-            String maTLStr = txtMaTL.getText().trim();
-            if (maTLStr.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Mã thể loại không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
-            int maTL = Integer.parseInt(maTLStr);
-            if (maTL < 0) {
-                JOptionPane.showMessageDialog(this, "Mã thể loại phải là số nguyên dương!", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return false;
-            }
             String tenTL = txtTenTL.getText().trim();
             if (tenTL.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Tên thể loại không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);

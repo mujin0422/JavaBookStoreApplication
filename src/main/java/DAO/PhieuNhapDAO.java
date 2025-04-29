@@ -67,7 +67,6 @@ public class PhieuNhapDAO {
         return 0;  
     }
 
-    
     public ArrayList<PhieuNhapDTO> getAll() {
         ArrayList<PhieuNhapDTO> dspn = new ArrayList<>();
         String sql = "SELECT * FROM phieunhap WHERE trangThaiXoa=0";
@@ -112,4 +111,18 @@ public class PhieuNhapDAO {
         return null;
     }
     
+    public String getNextMaPn() {
+        String sql = "SELECT MAX(maPN) AS nextID FROM phieunhap";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                int nextId = rs.getInt("nextID");
+                return String.valueOf(nextId + 1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "1";
+    }
 }

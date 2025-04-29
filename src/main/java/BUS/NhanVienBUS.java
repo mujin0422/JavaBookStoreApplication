@@ -27,6 +27,10 @@ public class NhanVienBUS {
         return NhanVienDAO.delete(maNV) > 0;  
     }
     
+    public String getNextMaNv(){
+        return NhanVienDAO.getNextMaNv();
+    }
+    
     public NhanVienDTO getCurrentStaffByUserName(String username) {
         return NhanVienDAO.getCurrentStaffByUserName(username);
     }

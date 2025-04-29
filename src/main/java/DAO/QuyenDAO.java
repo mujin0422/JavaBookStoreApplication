@@ -8,12 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-/**
- *
- * @author Dell Vostro
- */
 public class QuyenDAO {
-    
     public int add(QuyenDTO obj){
         String sql = "INSERT INTO quyen (maQuyen , tenQuyen) VALUES (?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -89,5 +84,18 @@ public class QuyenDAO {
         return null;
     }
     
-    
+    public String getNextMaQuyen() {
+        String sql = "SELECT MAX(maQuyen) AS nextID FROM quyen";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                int nextId = rs.getInt("nextID");
+                return String.valueOf(nextId + 1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "1";
+    }
 }

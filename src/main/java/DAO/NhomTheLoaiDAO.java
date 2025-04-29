@@ -9,7 +9,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class NhomTheLoaiDAO {
-
     public int add(NhomTheLoaiDTO obj) {
         String sql = "INSERT INTO nhomtheloai (maTL, maSach) VALUES (?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -76,7 +75,6 @@ public class NhomTheLoaiDAO {
         }
         return 0; 
     }
-
 
     public ArrayList<NhomTheLoaiDTO> getAll() {
         ArrayList<NhomTheLoaiDTO> dsNhomTheLoai = new ArrayList<>();

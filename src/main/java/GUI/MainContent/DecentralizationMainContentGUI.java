@@ -1,7 +1,9 @@
 package GUI.MainContent;
 
 import BUS.QuyenBUS;
+import BUS.TaiKhoanBUS;
 import DTO.QuyenDTO;
+import DTO.TaiKhoanDTO;
 import GUI.MainContentDiaLog.AddAndEditDecentralizationGUI;
 import Utils.UIButton;
 import Utils.UIConstants;
@@ -24,10 +26,11 @@ public class DecentralizationMainContentGUI extends JPanel{
     private JPanel pnlHeader, pnlContent;
     private DefaultTableModel tableModel;
     private QuyenBUS quyenBUS;
+    private TaiKhoanBUS taiKhoanBUS;
 
-    public DecentralizationMainContentGUI() {
+    public DecentralizationMainContentGUI(TaiKhoanDTO taiKhoan) {
         this.quyenBUS = new QuyenBUS();
-     
+        this.taiKhoanBUS = new TaiKhoanBUS();
         this.setBackground(UIConstants.SUB_BACKGROUND);
         this.setPreferredSize(new Dimension(UIConstants.WIDTH_CONTENT, UIConstants.HEIGHT_CONTENT));
         this.setLayout(new BorderLayout(5, 5));
@@ -48,6 +51,7 @@ public class DecentralizationMainContentGUI extends JPanel{
         pnlButton.add(btnAdd);
         pnlButton.add(btnDelete);
         pnlButton.add(btnEdit);
+        applyPermissions(taiKhoan.getTenDangNhap(), 9);
         pnlHeader.add(pnlButton, BorderLayout.WEST);
         //==============================( End Panel Header )============================//
 
@@ -72,6 +76,12 @@ public class DecentralizationMainContentGUI extends JPanel{
         this.add(pnlHeader, BorderLayout.NORTH);
         this.add(pnlContent, BorderLayout.CENTER);
         loadTableData();
+    }
+    
+    private void applyPermissions(String username, int maCN) {
+        btnAdd.setVisible(taiKhoanBUS.hasPermission(username, maCN, "add"));
+        btnEdit.setVisible(taiKhoanBUS.hasPermission(username, maCN, "edit"));
+        btnDelete.setVisible(taiKhoanBUS.hasPermission(username, maCN, "delete"));
     }
     
     private void loadTableData(){
