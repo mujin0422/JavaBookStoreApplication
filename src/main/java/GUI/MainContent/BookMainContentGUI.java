@@ -21,7 +21,6 @@ import java.awt.FlowLayout;
 import java.awt.Window;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -34,7 +33,6 @@ import javax.swing.table.DefaultTableModel;
 public class BookMainContentGUI extends JPanel implements ReloadablePanel{
     private UIButton btnAdd, btnDelete, btnEdit, btnView;
     private UITextField txtSearch;
-    private JComboBox<String> cbFilter;
     private UITable tblContent;
     private JPanel pnlHeader, pnlContent;
     private DefaultTableModel tableModel;
@@ -71,13 +69,7 @@ public class BookMainContentGUI extends JPanel implements ReloadablePanel{
 
         JPanel pnlSearchFilter = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,10));
         pnlSearchFilter.setBackground(UIConstants.MAIN_BACKGROUND);
-        cbFilter = new JComboBox<>();
-        cbFilter.setPreferredSize(new Dimension(150,30));
-        cbFilter.addItem("Tất cả");
-        loadListPublishers();
-        cbFilter.addActionListener(e -> filterBook());
         txtSearch = new UITextField(190,30);
-        pnlSearchFilter.add(cbFilter);
         pnlSearchFilter.add(txtSearch);
 
         pnlHeader.add(pnlButton, BorderLayout.WEST);
@@ -196,42 +188,6 @@ public class BookMainContentGUI extends JPanel implements ReloadablePanel{
                 sachBUS.getTenNxbByMaSach(sach.getMaSach()),
                 sach.getSoLuongTon()
             });
-        }
-    }
-    
-    private void loadListPublishers() {
-        NhaXuatBanBUS nhaXuatBanBUS = new NhaXuatBanBUS();
-        for (NhaXuatBanDTO nxb : nhaXuatBanBUS.getAllNhaXuatBan()) {
-            cbFilter.addItem(nxb.getTenNXB());
-        }
-    }
-
-    private void filterBook() {
-        String selectedPublisher = (String) cbFilter.getSelectedItem();
-        if (selectedPublisher.equals("Tất cả")) {
-            loadTableData(); 
-            return;
-        }
-        NhaXuatBanBUS nhaXuatBanBUS = new NhaXuatBanBUS();
-        int maNXB = 0;
-        for (NhaXuatBanDTO nxb : nhaXuatBanBUS.getAllNhaXuatBan()) {
-            if (nxb.getTenNXB().equals(selectedPublisher)) {
-                maNXB = nxb.getMaNXB();
-                break;
-            }
-        }
-        if (maNXB != 0) {
-            ArrayList<SachDTO> listSach = sachBUS.filterSach(maNXB);
-            tableModel.setRowCount(0); 
-            for (SachDTO sach : listSach) {
-                tableModel.addRow(new Object[]{
-                    sach.getMaSach(),
-                    sach.getTenSach(),
-                    sach.getGiaSach(),
-                    selectedPublisher,
-                    sach.getSoLuongTon()
-                });
-            }
         }
     }
     

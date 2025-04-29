@@ -43,11 +43,11 @@ public class AboutBookMainContentGUI extends JPanel{
         //=============================( PANEL NHA XUAT BAN )===========================//
         nxbBus = new NhaXuatBanBUS();
         pnlNhaXuatBan = new UIAboutPanel("/Icon/NhaXuatBan_icon.png","NHÀ XUẤT BẢN", pnlWidth , pnlHeight);
-        addNXB = new UIButton("add", "THÊM", 90, 40, "/Icon/them_icon.png");
+        addNXB = new UIButton("menuButton", "THÊM", 90, 40, "/Icon/them_icon.png");
         addNXB.addActionListener(e -> addNhaXuatBan());
-        deleteNXB = new UIButton("delete", "XÓA", 90, 40, "/Icon/xoa_icon.png");
+        deleteNXB = new UIButton("menuButton", "XÓA", 90, 40, "/Icon/xoa_icon.png");
         deleteNXB.addActionListener(e -> deleteNhaXuatBan());
-        editNXB = new UIButton("edit", "SỬA", 90, 40, "/Icon/sua_icon.png");
+        editNXB = new UIButton("menuButton", "SỬA", 90, 40, "/Icon/sua_icon.png");
         editNXB.addActionListener(e -> editNhaXuatBan());
         pnlNhaXuatBan.addButton(addNXB);
         pnlNhaXuatBan.addButton(deleteNXB);
@@ -67,11 +67,11 @@ public class AboutBookMainContentGUI extends JPanel{
         //================================( PANEL TAC GIA )=============================//
         tgBus = new TacGiaBUS();
         pnlTacGia = new UIAboutPanel("/Icon/TacGia_icon.png","TÁC GIẢ", pnlWidth , pnlHeight);
-        addTG = new UIButton("add", "THÊM", 90, 40, "/Icon/them_icon.png");
+        addTG = new UIButton("menuButton", "THÊM", 90, 40, "/Icon/them_icon.png");
         addTG.addActionListener(e -> addTacGia());
-        deleteTG = new UIButton("delete", "XÓA", 90, 40, "/Icon/xoa_icon.png");
+        deleteTG = new UIButton("menuButton", "XÓA", 90, 40, "/Icon/xoa_icon.png");
         deleteTG.addActionListener(e -> deleteTacGia());
-        editTG = new UIButton("edit", "SỬA", 90, 40, "/Icon/sua_icon.png");
+        editTG = new UIButton("menuButton", "SỬA", 90, 40, "/Icon/sua_icon.png");
         editTG.addActionListener(e -> editTacGia());
         pnlTacGia.addButton(addTG);
         pnlTacGia.addButton(deleteTG);
@@ -91,11 +91,11 @@ public class AboutBookMainContentGUI extends JPanel{
         //================================( PANEL THE LOAI )============================//
         tlBus = new TheLoaiBUS();
         pnlTheLoai  = new UIAboutPanel("/Icon/TheLoai_icon.png","THỂ LOẠI", pnlWidth , pnlHeight);
-        addTL = new UIButton("add", "THÊM", 90, 40, "/Icon/them_icon.png");
+        addTL = new UIButton("menuButton", "THÊM", 90, 40, "/Icon/them_icon.png");
         addTL.addActionListener(e -> addTheLoai());
-        deleteTL = new UIButton("delete", "XÓA", 90, 40, "/Icon/xoa_icon.png");
+        deleteTL = new UIButton("menuButton", "XÓA", 90, 40, "/Icon/xoa_icon.png");
         deleteTL.addActionListener(e -> deleteTheLoai());
-        editTL = new UIButton("edit", "SỬA", 90, 40, "/Icon/sua_icon.png");
+        editTL = new UIButton("menuButton", "SỬA", 90, 40, "/Icon/sua_icon.png");
         editTL.addActionListener(e -> editTheLoai());
         pnlTheLoai.addButton(addTL);
         pnlTheLoai.addButton(deleteTL);

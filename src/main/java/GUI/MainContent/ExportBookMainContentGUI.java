@@ -106,11 +106,11 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
         pnlFormNorth.setBackground(UIConstants.MAIN_BACKGROUND);
         pnlFormNorth.setPreferredSize(new Dimension(0, 100));
 
-        pnlFormNorth.add(new UILabel("Mã phiếu xuất:", 160, 25));
-        txtMaPX = new UITextField(350,25);
+        pnlFormNorth.add(new UILabel("Mã phiếu xuất:", 120, 25));
+        txtMaPX = new UITextField(370,25);
         pnlFormNorth.add(txtMaPX);
-        pnlFormNorth.add(new UILabel("Nhân viên :", 160, 25));
-        txtMaNV = new UITextField(350, 25);
+        pnlFormNorth.add(new UILabel("Nhân viên :", 120, 25));
+        txtMaNV = new UITextField(370, 25);
         
         NhanVienDTO nhanVien = nhanVienBUS.getCurrentStaffByUserName(taiKhoan.getTenDangNhap());
         if (nhanVien != null) {
@@ -119,9 +119,9 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
         }
         pnlFormNorth.add(txtMaNV);
         
-        pnlFormNorth.add(new UILabel("Khách hàng :", 160, 25));
+        pnlFormNorth.add(new UILabel("Khách hàng :", 120, 25));
         cbMaKH = new JComboBox<>();
-        cbMaKH.setPreferredSize(new Dimension(350, 25));
+        cbMaKH.setPreferredSize(new Dimension(370, 25));
         cbMaKH.setBackground(UIConstants.WHITE_FONT);
         for(KhachHangDTO kh : khachHangBUS.getAllKhachHang()){
             cbMaKH.addItem(kh.getTenKH());
@@ -151,12 +151,12 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
         pnl2.setBorder(BorderFactory.createEmptyBorder(0,10,5,10));
         pnl2.setBackground(UIConstants.MAIN_BACKGROUND);
         JPanel pnlGroupTongTien = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        pnlGroupTongTien.add(new UILabel("Tổng tiền:",80,30));
+        pnlGroupTongTien.add(new UILabel("Tổng thành tiền:",120,30));
         pnlGroupTongTien.setBackground(UIConstants.MAIN_BACKGROUND);
-        txtTongTien = new UITextField(100, 30);
+        txtTongTien = new UITextField(200, 30);
         txtTongTien.setEditable(false); 
         pnlGroupTongTien.add(txtTongTien);
-        btnAddToPX = new UIButton("add", "THÊM", 100, 25);
+        btnAddToPX = new UIButton("add", "XÁC NHẬN", 100, 25);
         btnAddToPX.addActionListener(e -> addPhieuXuat());
         pnl2.add(pnlGroupTongTien, BorderLayout.WEST);
         pnl2.add(btnAddToPX, BorderLayout.EAST);
@@ -220,6 +220,7 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
         this.add(pnlContent, BorderLayout.SOUTH);
         loadTableData();
         addSearchFunctionality();
+        resetFormInput();
     }
     
     private void applyPermissions(String username, int maCN) {
@@ -347,6 +348,7 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
             return;
         }
         tableModelForForm.removeRow(selectedRow);
+        calcTongTien();
     }
     
    private void calcTongTien() {
@@ -369,8 +371,6 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
         dialog.setSize(300, 150);
         dialog.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 15));
         UITextField txtSoLuong = new UITextField(50, 30);
-
-        // Lấy số lượng hiện tại để điền trước vào trường văn bản của hộp thoại
         txtSoLuong.setText(tblForForm.getValueAt(selectedRow, 2).toString());
 
         dialog.add(new UILabel("Số lượng mới: ", 150, 30));
@@ -389,7 +389,6 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
 
                 int newSoLuong = Integer.parseInt(soLuongText);
                 int maSach = Integer.parseInt(tblForForm.getValueAt(selectedRow, 0).toString());
-
                 // Kiểm tra xem số lượng mới có vượt quá số lượng tồn kho không
                 if (newSoLuong > sachBUS.getSoLuongTonSach(maSach)){
                     JOptionPane.showMessageDialog(dialog, "Số lượng sách bán ra không được lớn hơn số lượng sách trong kho", "Lỗi", JOptionPane.ERROR_MESSAGE);
@@ -397,17 +396,13 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
                 }
                 // Lấy giá của cuốn sách cho hàng này            
                 int giaSach = sachBUS.getGiaSachByMaSach(maSach); 
-
                 // Tính toán lại tổng cho hàng này
                 int thanhTien = newSoLuong * giaSach;
-
-               // Cập nhật số lượng và tổng giá trong mô hình bảng
+                // Cập nhật số lượng và tổng giá trong mô hình bảng
                 tableModelForForm.setValueAt(newSoLuong, selectedRow, 2); // Update So Luong column
                 tableModelForForm.setValueAt(thanhTien, selectedRow, 3); // Update Thanh Tien column
-
                 // Tính lại tổng số tiền cho toàn bộ phiếu xuất
                 calcTongTien();
-
                 dialog.dispose();
             }
         });

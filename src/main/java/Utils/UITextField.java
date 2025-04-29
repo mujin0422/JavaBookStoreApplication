@@ -21,7 +21,6 @@ public class UITextField extends JTextField{
         ));
     }
     
-   
     public void setEditable(boolean editable) {
         super.setEditable(editable);
         if (!editable) {
