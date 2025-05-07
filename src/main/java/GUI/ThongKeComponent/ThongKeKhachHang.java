@@ -13,6 +13,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.Date;
+import java.util.Locale;
 
 
 public class ThongKeKhachHang extends JPanel {
@@ -33,13 +34,15 @@ public class ThongKeKhachHang extends JPanel {
         topPanel.setBackground(UIConstants.MAIN_BACKGROUND);
         dateFromPicker = new JDateChooser();
         dateFromPicker.setPreferredSize(new Dimension(150, 30));
+        dateFromPicker.setLocale(new Locale("vi", "VN"));
         dateToPicker = new JDateChooser();
         dateToPicker.setPreferredSize(new Dimension(150, 30));
+        dateToPicker.setLocale(new Locale("vi", "VN"));
         topPanel.add(new UILabel("Từ:",30,30));
         topPanel.add(dateFromPicker);
         topPanel.add(new UILabel("Đến:",35,30));
         topPanel.add(dateToPicker);
-        btnThongKeTheoNgaySubmit = new UIButton("add", "THONG KE", 100,30);
+        btnThongKeTheoNgaySubmit = new UIButton("add", "THỐNG KÊ", 100,30);
         topPanel.add(btnThongKeTheoNgaySubmit);
         add(topPanel, BorderLayout.NORTH);
 

@@ -103,7 +103,7 @@ public class CustomerMainContentGUI extends JPanel{
                 kh.getMaKH(),
                 kh.getTenKH(),
                 kh.getSdt(),
-                kh.getEmail()
+                kh.getEmail(),
             });
         }
     }

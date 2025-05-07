@@ -65,11 +65,24 @@ CREATE TABLE NHACUNGCAP (
     trangThaiXoa INT NOT NULL DEFAULT 0
 );
 INSERT INTO NHACUNGCAP (maNCC, tenNCC, diaChi, sdt) VALUES
-(1, N'Nhà Sách Fahasa', N'21 Lý Chính Thắng, Quận 3, TP.HCM', '02838208384'),
-(2, N'Nhà Sách Phương Nam', N'940 Đường 3/2, Quận 11, TP.HCM', '02838622222'),
-(3, N'Công Ty Sách Nhã Nam', N'59 Đặng Thai Mai, Tây Hồ, Hà Nội', '02437151101'),
-(4, N'Tiki Trading', N'52 Út Tịch, Quận Tân Bình, TP.HCM', '19006035'),
-(5, N'Alpha Books', N'20/11 Nguyễn Hữu Cảnh, Phường 19, Quận Bình Thạnh, TP.HCM', '02835126787');
+(1, 'Nhà Sách Fahasa', '21 Lý Chính Thắng, Quận 3, TP.HCM', '0312345601'),
+(2, 'Nhà Sách Phương Nam', '940 Đường 3/2, Quận 11, TP.HCM', '0312345602'),
+(3, 'Công Ty Sách Nhã Nam', '59 Đặng Thai Mai, Tây Hồ, Hà Nội', '0312345603'),
+(4, 'Tiki Trading', '52 Út Tịch, Quận Tân Bình, TP.HCM', '0312345604'),
+(5, 'Alpha Books', '20/11 Nguyễn Hữu Cảnh, Phường 19, Quận Bình Thạnh, TP.HCM', '0312345605');
+
+
+CREATE TABLE VAITRO (
+	maVT INT PRIMARY KEY,
+	tenVT NVARCHAR(50) NOT NULL,
+	trangThaiXoa INT NOT NULL DEFAULT 0
+);
+INSERT INTO VAITRO (maVT, tenVT) VALUES
+(1, N'Quản trị viên'),
+(2, N'Quản lí'),
+(3, N'Kế toán'),
+(4, N'Nhân viên bán hàng'),
+(5, N'Bảo vệ');
 
 
 CREATE TABLE NHANVIEN (
@@ -77,19 +90,21 @@ CREATE TABLE NHANVIEN (
     tenNV NVARCHAR(50) NOT NULL,
     email VARCHAR(50),
     sdt VARCHAR(15),
-    trangThaiXoa INT NOT NULL DEFAULT 0
+	maVT INT NOT NULL,
+    trangThaiXoa INT NOT NULL DEFAULT 0,
+	FOREIGN KEY (maVT) REFERENCES VAITRO(maVT)
 );
-INSERT INTO NHANVIEN (maNV, tenNV, email, sdt) VALUES
-(1, N'Trần Thị Huỳnh Như', 'nhu@gmail.com', '0123456789'),
-(2, N'Bào Thanh Tâm', 'tam@gmail.com', '0987654321'),
-(3, N'Phạm Đình Duy Thái', 'thai@gmail.com', '0909123456'),
-(4, N'Nguyễn Thị Thùy Trâm', 'tram@gmail.com', '0912345678'),
-(5, N'Nguyễn Ngọc Thúy Vy', 'vy@gmail.com', '0922334455'),
-(6, N'Nguyễn Văn A', 'a@gmail.com', '0934567890'),
-(7, N'Trần Văn B', 'b@gmail.com', '0945678901'),
-(8, N'Lê Thị C', 'c@gmail.com', '0956789012'),
-(9, N'Hoàng Minh D', 'd@gmail.com', '0967890123'),
-(10, N'Đỗ Thanh E', 'e@gmail.com', '0978901234');
+INSERT INTO NHANVIEN (maNV, tenNV, email, sdt, maVT) VALUES
+(1, N'Trần Thị Huỳnh Như', 'nhu@gmail.com', '0123456789', 1),
+(2, N'Bào Thanh Tâm', 'tam@gmail.com', '0987654321', 1),
+(3, N'Phạm Đình Duy Thái', 'thai@gmail.com', '0909123456', 1),
+(4, N'Nguyễn Thị Thùy Trâm', 'tram@gmail.com', '0912345678', 1),
+(5, N'Nguyễn Ngọc Thúy Vy', 'vy@gmail.com', '0922334455', 1),
+(6, N'Nguyễn Văn A', 'a@gmail.com', '0934567890', 4),
+(7, N'Trần Văn B', 'b@gmail.com', '0945678901', 4),
+(8, N'Lê Thị C', 'c@gmail.com', '0956789012', 4),
+(9, N'Hoàng Minh D', 'd@gmail.com', '0967890123', 3),
+(10, N'Đỗ Thanh E', 'e@gmail.com', '0978901234', 3);
 
 
 CREATE TABLE KHACHHANG (
@@ -100,31 +115,41 @@ CREATE TABLE KHACHHANG (
     trangThaiXoa INT NOT NULL DEFAULT 0
 );
 INSERT INTO KHACHHANG (maKH, tenKH, sdt, email) VALUES
-(1, N'Nguyễn Văn An', '0901234567', 'annguyen@gmail.com'),
-(2, N'Trần Thị Bích Ngọc', '0912345678', 'ngoctran@gmail.com'),
-(3, N'Lê Văn Cường', '0923456789', 'cuongle@gmail.com'),
-(4, N'Phạm Minh Tâm', '0934567890', 'tampham@gmail.com'),
-(5, N'Đỗ Hoàng Nam', '0945678901', 'namdo@gmail.com'),
-(6, N'Võ Thanh Thảo', '0956789012', 'thaovo@gmail.com'),
-(7, N'Huỳnh Nhật Hào', '0967890123', 'haohuynh@gmail.com'),
-(8, N'Bùi Quỳnh Như', '0978901234', 'nhubui@gmail.com'),
-(9, N'Ngô Thị Lan', '0989012345', 'lanngo@gmail.com'),
-(10, N'Hoàng Tuấn Kiệt', '0990123456', 'kiethoang@gmail.com'),
-(11, N'Phan Thị Hồng', '0901111222', 'hongphan@gmail.com'),
-(12, N'Đặng Văn Long', '0912222333', 'longdang@gmail.com'),
-(13, N'Lý Minh Khoa', '0923333444', 'khoaly@gmail.com'),
-(14, N'Tống Thị Mai', '0934444555', 'maitong@gmail.com'),
-(15, N'Tạ Quốc Bảo', '0945555666', 'baota@gmail.com'),
-(16, N'Kiều Ngọc Trinh', '0956666777', 'trinhkieu@gmail.com'),
-(17, N'Mai Thanh Hùng', '0967777888', 'hungmai@gmail.com'),
-(18, N'Trịnh Thị Yến', '0978888999', 'yentrinh@gmail.com'),
-(19, N'Cao Hoàng Phúc', '0989999000', 'phuccao@gmail.com'),
-(20, N'Thái Thị Hương', '0990000111', 'huongthai@gmail.com'),
-(21, N'Lâm Nhật Minh', '0902222333', 'minhlam@gmail.com'),
-(22, N'Châu Mỹ Linh', '0913333444', 'linhchau@gmail.com'),
-(23, N'Trương Văn Hào', '0924444555', 'haotruong@gmail.com'),
-(24, N'Hồ Thị Hạnh', '0935555666', 'hanhho@gmail.com'),
-(25, N'Vương Quốc Tuấn', '0946666777', 'tuanvuong@gmail.com');
+(1, 'Nguyễn Văn An', '0912345601', 'annguyen@gmail.com'),
+(2, 'Trần Thị Bích Ngọc', '0912345602', 'ngoctran@gmail.com'),
+(3, 'Lê Văn Cường', '0912345603', 'cuongle@gmail.com'),
+(4, 'Phạm Minh Tâm', '0912345604', 'tampham@gmail.com'),
+(5, 'Đỗ Hoàng Nam', '0912345605', 'namdo@gmail.com'),
+(6, 'Võ Thanh Thảo', '0912345606', 'thaovothanh@gmail.com'),
+(7, 'Huỳnh Nhật Hào', '0912345607', 'haohuynh@gmail.com'),
+(8, 'Bùi Quỳnh Như', '0912345608', 'nhubui@gmail.com'),
+(9, 'Ngô Thị Lan', '0912345609', 'lan001ngo@gmail.com'),
+(10, 'Hoàng Tuấn Kiệt', '0912345610', 'kiethoang@gmail.com'),
+(11, 'Phan Thị Hồng', '0912345611', 'hongphan@gmail.com'),
+(12, 'Đặng Văn Long', '0912345612', 'longdang@gmail.com'),
+(13, 'Lý Minh Khoa', '0912345613', 'khoaly010101@gmail.com'),
+(14, 'Tống Thị Mai', '0912345614', 'maitong@gmail.com'),
+(15, 'Tạ Hoàng Quốc Bảo', '0912345615', 'baota@gmail.com'),
+(16, 'Kiều Ngọc Trinh', '0912345616', 'trinhkieu@gmail.com'),
+(17, 'Mai Thanh Hùng', '0912345617', 'hungmai@gmail.com'),
+(18, 'Trịnh Thị Yến', '0912345618', 'yentrinh@gmail.com'),
+(19, 'Cao Hoàng Phúc', '0912345619', 'phuccao@gmail.com'),
+(20, 'Thái Thị Hương', '0912345620', 'huongthai@gmail.com'),
+(21, 'Lâm Nhật Minh', '0912345621', 'minhlam@gmail.com'),
+(22, 'Châu Mỹ Linh', '0912345622', 'linhchau@gmail.com'),
+(23, 'Trương Văn Hào', '0912345623', 'haotruong@gmail.com'),
+(24, 'Hồ Thị Hồng Hạnh', '0912345624', 'hanhho@gmail.com'),
+(25, 'Vương Quốc Tuấn', '0912345625', 'tuanvuong@gmail.com'),
+(26, 'Phạm Văn Thuận', '0912345626', 'thuanVan@gmail.com'),
+(27, 'Ngô Lê Thanh Quyền', '0912345627', 'ngoquyen@gmail.com'),
+(28, 'Gia Cát Lượng', '0912345628', 'luongGia@gmail.com'),
+(29, 'Hoàng Anh Huy', '0912345629', 'huyhoang@gmail.com'),
+(30, 'Nguyễn Thiên Phú', '0912345630', 'phunguyen2222@gmail.com'),
+(31, 'Lê Văn Nhất', '0912345631', 'toilanhat@gmail.com'),
+(32, 'Nguyễn Hữu Minh Quân', '0912345632', 'ikkkkku666@gmail.com'),
+(33, 'Trần Anh Khoa', '0912345633', 'khoaanhtran@gmail.com'),
+(34, 'Nguyễn Thị Ngọc Ngà', '0912345634', 'ngocNGA@gmail.com'),
+(35, 'Bùi Ngọc Thanh', '0912345635', 'Ngocthanh2222@gmail.com');
 
 
 CREATE TABLE HANHDONG (
@@ -198,7 +223,12 @@ INSERT INTO SACH (maSach, tenSach, giaSach, soLuongTon, maNXB) VALUES
 (17, N'Chiến tranh tiền tệ', 195000, 50, 2),
 (18, N'Văn hóa & Con người', 170000, 70, 2),
 (19, N'Trí tuệ xúc cảm', 165000, 50, 1),
-(20, N'Sống tối giản', 145000, 70, 1);
+(20, N'Sống tối giản', 145000, 70, 1),
+(21, 'Doraemon - Tập 1', 21000, 0, 2),
+(22, 'Doraemon - Tập 2', 21000, 0, 2),
+(23, 'Doraemon - Tập 3', 21000, 0, 2),
+(24, 'Doraemon - Tập 4', 21000, 0, 2),
+(25, 'Doraemon - Tập 5', 21000, 0, 2);
 
 
 CREATE TABLE PHIEUNHAP (

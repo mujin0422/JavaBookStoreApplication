@@ -2,6 +2,7 @@ package GUI.MainContent;
 
 import BUS.NhanVienBUS;
 import BUS.TaiKhoanBUS;
+import BUS.VaiTroBUS;
 import DTO.NhanVienDTO;
 import DTO.TaiKhoanDTO;
 import GUI.MainContentDiaLog.AddAndEditStaffGUI;
@@ -31,11 +32,13 @@ public class StaffMainContentGUI extends JPanel{
     private JPanel pnlHeader, pnlContent;
     private DefaultTableModel tableModel;
     private NhanVienBUS nhanVienBUS;
+    private VaiTroBUS vaiTroBUS;
     private TaiKhoanBUS taiKhoanBUS;
 
     public StaffMainContentGUI(TaiKhoanDTO taiKhoan) {
         this.taiKhoanBUS = new TaiKhoanBUS();
         this.nhanVienBUS= new NhanVienBUS();
+        this.vaiTroBUS = new VaiTroBUS();
         this.setBackground(UIConstants.SUB_BACKGROUND);
         this.setPreferredSize(new Dimension(UIConstants.WIDTH_CONTENT, UIConstants.HEIGHT_CONTENT));
         this.setLayout(new BorderLayout(5, 5));
@@ -76,7 +79,7 @@ public class StaffMainContentGUI extends JPanel{
         pnlContent.setBackground(UIConstants.MAIN_BACKGROUND);
         pnlContent.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        String[] columnNames = {"MÃ NHÂN VIÊN", "TÊN NHÂN VIÊN", "EMAIL", "SỐ ĐIỆN THOẠI"};
+        String[] columnNames = {"MÃ NHÂN VIÊN", "TÊN NHÂN VIÊN", "EMAIL", "SỐ ĐIỆN THOẠI", "VAI TRÒ"};
         tableModel = new DefaultTableModel(columnNames, 0); 
         tblContent = new UITable(tableModel);
         
@@ -105,7 +108,8 @@ public class StaffMainContentGUI extends JPanel{
                 nhanvien.getMaNV(),
                 nhanvien.getTenNV(),
                 nhanvien.getEmail(),
-                nhanvien.getSdt()             
+                nhanvien.getSdt(),    
+                vaiTroBUS.getTenVtByMaVt(nhanvien.getMaVT())
             });
         }
     }

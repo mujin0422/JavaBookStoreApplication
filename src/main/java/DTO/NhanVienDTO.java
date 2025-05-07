@@ -5,16 +5,26 @@ public class NhanVienDTO {
     private String tenNV;
     private String email;
     private String sdt;
+    private int maVT;
     private int trangThaiXoa;
 
     public NhanVienDTO() { }
 
-    public NhanVienDTO(int maNV, String tenNV, String email, String sdt) {
+    public NhanVienDTO(int maNV, String tenNV, String email, String sdt, int maVT) {
         this.maNV = maNV;
         this.tenNV = tenNV;
         this.email = email;
         this.sdt = sdt;
+        this.maVT = maVT;
         this.trangThaiXoa = 0;
+    }
+
+    public int getMaVT() {
+        return maVT;
+    }
+
+    public void setMaVT(int maVT) {
+        this.maVT = maVT;
     }
 
     public int getMaNV() {

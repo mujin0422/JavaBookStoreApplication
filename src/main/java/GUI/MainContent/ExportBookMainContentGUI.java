@@ -115,10 +115,12 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
         pnlFormNorth.add(new UILabel("SĐT khách hàng:", 125, 25));
         txtSdtKH = new UITextField(380,25);
         pnlFormNorth.add(txtSdtKH);
+        
         pnlFormNorth.add(new UILabel("Tên khách hàng:", 125, 25));
         txtTenKH = new UITextField(380,25);
         pnlFormNorth.add(txtTenKH);
         txtTenKH.setEditable(false);
+        
             //CENTER
         String[] columns = {"MÃ SÁCH", "TÊN SÁCH", "SỐ LƯỢNG", "THÀNH TIỀN"};
         tableModelForForm = new DefaultTableModel(columns, 0);

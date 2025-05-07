@@ -43,7 +43,7 @@ public class ThongKeSach extends JPanel {
         dateChooserKetThuc.setLocale(new Locale("vi", "VN"));
         headerPanel.add(dateChooserKetThuc);
 
-        UIButton btnThongKe = new UIButton("add","THONG KE", 100, 30);
+        UIButton btnThongKe = new UIButton("add","THỐNG KÊ", 100, 30);
         btnThongKe.addActionListener(e -> loadData());
         headerPanel.add(btnThongKe);
 

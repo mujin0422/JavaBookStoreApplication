@@ -33,15 +33,12 @@ public class NhanVienBUS {
     public NhanVienDTO getCurrentStaffByUserName(String username) {
         return NhanVienDAO.getCurrentStaffByUserName(username);
     }
-    
     public int getMaNvByTenNv(String tenNv){
         return NhanVienDAO.getMaNvByTenNv(tenNv);
     }
-    
     public String getTenNvByMaNv(int maNv){
         return NhanVienDAO.getTenNvByMaNv(maNv);
     }
-    
     public ArrayList<NhanVienDTO> searchNhanVien(String keyword) {
         if (keyword == null || keyword.trim().isEmpty()) {
             return NhanVienDAO.getAll();
@@ -57,7 +54,6 @@ public class NhanVienBUS {
         }
         return ketQua;
     }
-    
     public ArrayList<NhanVienDTO> getAllNvNotExistsTk(){
         return NhanVienDAO.getAllNvNotExistsTk();
     }

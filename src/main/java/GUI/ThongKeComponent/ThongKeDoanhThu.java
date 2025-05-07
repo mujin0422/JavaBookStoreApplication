@@ -14,6 +14,7 @@ import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import javax.swing.border.EmptyBorder;
 
 public class ThongKeDoanhThu extends JPanel {
@@ -39,12 +40,12 @@ public class ThongKeDoanhThu extends JPanel {
         UILabel lblFromDate = new UILabel("Từ:",30,30);
         dateFrom = new JDateChooser();
         dateFrom.setPreferredSize(new Dimension(150, 30));
-
+        dateFrom.setLocale(new Locale("vi", "VN"));
         UILabel lblToDate = new UILabel("Đến:",35,30);
         dateTo = new JDateChooser();
         dateTo.setPreferredSize(new Dimension(150, 30));
-
-        UIButton btnLocThang = new UIButton("add", "THONG KE", 100, 30);
+        dateTo.setLocale(new Locale("vi", "VN"));
+        UIButton btnLocThang = new UIButton("add", "THỐNG KÊ", 100, 30);
         btnLocThang.addActionListener(e -> loadDataTheoKhoangThoiGian());
 
         filterPanel.add(lblFromDate);

@@ -10,13 +10,14 @@ import java.util.ArrayList;
 
 public class NhanVienDAO {
     public int add(NhanVienDTO obj) {
-        String sql = "INSERT INTO nhanvien (maNV, tenNV, email, sdt) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO nhanvien (maNV, tenNV, email, sdt, maVT) VALUES (?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, obj.getMaNV());
             ps.setString(2, obj.getTenNV());
             ps.setString(3, obj.getEmail());
             ps.setString(4, obj.getSdt());
+            ps.setInt(5, obj.getMaVT());
             return ps.executeUpdate(); 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -25,13 +26,14 @@ public class NhanVienDAO {
     }
 
     public int update(NhanVienDTO obj) {
-        String sql = "UPDATE nhanvien SET  tenNV=?, email=?, sdt=? WHERE maNV=?";
+        String sql = "UPDATE nhanvien SET  tenNV=?, email=?, sdt=?, maVT=? WHERE maNV=?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, obj.getTenNV());
             ps.setString(2, obj.getEmail());
             ps.setString(3, obj.getSdt());
-            ps.setInt(4, obj.getMaNV());
+            ps.setInt(4, obj.getMaVT());
+            ps.setInt(5, obj.getMaNV());
             return ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -62,7 +64,8 @@ public class NhanVienDAO {
                     rs.getInt("maNV"),
                     rs.getString("tenNV"),
                     rs.getString("email"),
-                    rs.getString("sdt")
+                    rs.getString("sdt"),
+                    rs.getInt("maVT")
                 ));
             }
         } catch (SQLException e) {
@@ -82,7 +85,8 @@ public class NhanVienDAO {
                         rs.getInt("maNV"),
                         rs.getString("tenNV"),
                         rs.getString("email"),
-                        rs.getString("sdt")
+                        rs.getString("sdt"),
+                        rs.getInt("maVT")
                     );
                 }
             }
@@ -151,7 +155,8 @@ public class NhanVienDAO {
                         rs.getInt("maNV"),
                         rs.getString("tenNV"),
                         rs.getString("email"),
-                        rs.getString("sdt")
+                        rs.getString("sdt"),
+                        rs.getInt("maVT")
                     );
                 }
             }
@@ -175,11 +180,11 @@ public class NhanVienDAO {
                     rs.getInt("maNV"),
                     rs.getString("tenNV"),
                     rs.getString("email"),
-                    rs.getString("sdt")
+                    rs.getString("sdt"),
+                    rs.getInt("maVT")
                 );
                 list.add(nv);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }

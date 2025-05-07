@@ -1,25 +1,33 @@
 package GUI.MainContentDiaLog;
 
 import BUS.NhanVienBUS;
+import BUS.VaiTroBUS;
 import DTO.NhanVienDTO;
+import DTO.VaiTroDTO;
 import Utils.UIButton;
 import Utils.UIConstants;
 import Utils.UILabel;
 import Utils.UITextField;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class AddAndEditStaffGUI extends JDialog{
-    private UITextField txtMaNV, txtTenNV, txtEmail, txtSDT;
+    private UITextField txtMaNV, txtTenNV, txtEmail, txtSDT, txtVaiTro;
+    private JComboBox cbMaVT;
     private UIButton btnAdd, btnSave, btnCancel;
     private NhanVienBUS nvBus;
     private NhanVienDTO nv;
+    private VaiTroBUS vtBus;
     
     public AddAndEditStaffGUI(JFrame parent, NhanVienBUS nvBus, String title, String type, NhanVienDTO nv) {
         super(parent, title, true);
@@ -32,6 +40,8 @@ public class AddAndEditStaffGUI extends JDialog{
             txtEmail.setText(nv.getEmail());
             txtSDT.setText(nv.getSdt());
             txtMaNV.setEditable(false);
+            cbMaVT.setSelectedItem(nv.getMaVT());
+            txtVaiTro.setText(vtBus.getTenVtByMaVt(nv.getMaVT()));
         }
         this.setLocationRelativeTo(parent);
         this.setVisible(true);
@@ -50,8 +60,9 @@ public class AddAndEditStaffGUI extends JDialog{
     private void initComponent(String type){
         this.setSize(400, 300);
         this.setLayout(new BorderLayout());
+        vtBus = new VaiTroBUS();
 
-        JPanel inputPanel = new JPanel(new GridLayout(4, 2, 10, 10));
+        JPanel inputPanel = new JPanel(new GridLayout(5, 2, 10, 10));
         inputPanel.setBackground(UIConstants.MAIN_BACKGROUND);
         inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));    
         inputPanel.add(new UILabel("Mã nhân viên:"));
@@ -60,8 +71,31 @@ public class AddAndEditStaffGUI extends JDialog{
         inputPanel.add(txtTenNV = new UITextField(0,0)); 
         inputPanel.add(new UILabel("Email:"));
         inputPanel.add(txtEmail = new UITextField(0,0));
-        inputPanel.add(new UILabel("Số điện thọại"));
+        inputPanel.add(new UILabel("Số điện thọại:"));
         inputPanel.add(txtSDT = new UITextField(0,0));
+        inputPanel.add(new UILabel("Vai Trò:"));
+        JPanel groupVT = new JPanel(new BorderLayout(5,0));
+        cbMaVT = new JComboBox();
+        cbMaVT.setPreferredSize(new Dimension(40,0));
+        cbMaVT.removeAllItems(); 
+        for (VaiTroDTO vt : vtBus.getAllVaiTro()) {
+            cbMaVT.addItem(vt.getMaVT()); 
+        }
+        cbMaVT.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Integer selectedMaVT = (Integer) cbMaVT.getSelectedItem();
+                if (selectedMaVT != null) {
+                    String tenVT = vtBus.getTenVtByMaVt(selectedMaVT);
+                    txtVaiTro.setText(tenVT);
+                }
+            }
+        });
+        txtVaiTro = new UITextField(0, 0);
+        txtVaiTro.setEditable(false);
+        groupVT.add(txtVaiTro , BorderLayout.CENTER);
+        groupVT.add(cbMaVT, BorderLayout.EAST);
+        inputPanel.add(groupVT);
         
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 10));
         btnPanel.setBackground(UIConstants.MAIN_BACKGROUND);
@@ -87,7 +121,8 @@ public class AddAndEditStaffGUI extends JDialog{
             String tenNV = txtTenNV.getText().trim();
             String email = txtEmail.getText().trim();
             String sdt = txtSDT.getText().trim();
-            NhanVienDTO nv = new NhanVienDTO(maNV, tenNV, email, sdt);
+            int maVT = Integer.parseInt(cbMaVT.getSelectedItem().toString());
+            NhanVienDTO nv = new NhanVienDTO(maNV, tenNV, email, sdt, maVT);
             if(nvBus.addNhanVien(nv)){
                 JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công!");
                 dispose();
@@ -106,7 +141,8 @@ public class AddAndEditStaffGUI extends JDialog{
             String tenNV = txtTenNV.getText().trim();
             String email = txtEmail.getText().trim();
             String sdt = txtSDT.getText().trim();
-            NhanVienDTO nv = new NhanVienDTO(maNV, tenNV, email, sdt);
+            int maVT = Integer.parseInt(cbMaVT.getSelectedItem().toString());
+            NhanVienDTO nv = new NhanVienDTO(maNV, tenNV, email, sdt, maVT);
             if(nvBus.updateNhanVien(nv)){
                 JOptionPane.showMessageDialog(this, "Cập nhật nhân viên thành công!");
                 dispose();
@@ -137,6 +173,11 @@ public class AddAndEditStaffGUI extends JDialog{
             }
             if (!sdt.matches("0\\d{9}")) {
                 JOptionPane.showMessageDialog(this, "Số điện thoại phải có 10 chữ số!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+            String vaiTro = txtVaiTro.getText().trim();
+            if(vaiTro.isEmpty()){
+                JOptionPane.showMessageDialog(this, "Vui lòng chọn vai trò!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
         } catch (NumberFormatException e) {

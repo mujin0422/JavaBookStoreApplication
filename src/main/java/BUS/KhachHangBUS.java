@@ -59,6 +59,8 @@ public class KhachHangBUS {
     public ArrayList<ThongKeKhachHangDTO> thongKeKhachHangTheoNgay(Date fromDate, Date toDate) {
         return khachHangDAO.thongKeKhachHangTheoNgay(fromDate, toDate);
     }
+    
+
 }
 
 
