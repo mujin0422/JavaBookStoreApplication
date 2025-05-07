@@ -5,7 +5,6 @@ import javax.swing.JPanel;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Image;
-import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -24,7 +23,7 @@ public final class UIAboutPanel extends JPanel {
         pnlIcon_Text = new JPanel(new BorderLayout());
         pnlIcon_Text.setBackground(UIConstants.MAIN_BUTTON);
         pnlIcon_Text.setPreferredSize(new Dimension(width *15/100, height));
-            // Icon
+            
         int iconWidth = pnlIcon_Text.getPreferredSize().width;
         int iconHeight = iconWidth;
         JLabel lblIcon = new JLabel();
@@ -32,7 +31,7 @@ public final class UIAboutPanel extends JPanel {
         ImageIcon icon = new ImageIcon(getClass().getResource(iconUrl));
         Image scaleIcon = icon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_SMOOTH);
         lblIcon.setIcon(new ImageIcon(scaleIcon));
-            // Text
+            
         JLabel lblText = new JLabel(text, JLabel.CENTER);
         lblText.setBackground(UIConstants.MAIN_BUTTON);
         lblText.setFont(UIConstants.TITLE_FONT);
@@ -41,8 +40,6 @@ public final class UIAboutPanel extends JPanel {
         pnlIcon_Text.add(lblIcon,BorderLayout.CENTER);
         pnlIcon_Text.add(lblText,BorderLayout.SOUTH);
         //========================( End Panel Icon And Text )===========================//
-        
-        
         
         //==============================( PANEL BUTTON )================================//
         pnlButton = new JPanel();
@@ -64,7 +61,6 @@ public final class UIAboutPanel extends JPanel {
     public void addButton(UIButton button) {
         pnlButton.add(button);
     }
-
     public JPanel getPnlContent() {
         return pnlContent;
     }

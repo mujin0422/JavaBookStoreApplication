@@ -14,19 +14,18 @@ public class TheLoaiBUS {
     public ArrayList<TheLoaiDTO> getAllTheLoai() {
         return theLoaiDAO.getAll();
     }
-
+    public TheLoaiDTO getById(int id) {
+        return theLoaiDAO.getById(id);
+    }
     public boolean addTheLoai(TheLoaiDTO TL) {      
         return theLoaiDAO.add(TL) > 0;
     }
-
     public boolean updateTheLoai(TheLoaiDTO TL) {
         return theLoaiDAO.update(TL) > 0; 
     }
-
     public boolean deleteTheLoai(int MaTL) {
         return theLoaiDAO.delete(MaTL) > 0;  
     }
-    
     public String getNextMaTl(){
         return theLoaiDAO.getNextMaTl();
     }

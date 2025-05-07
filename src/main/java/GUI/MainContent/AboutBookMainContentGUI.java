@@ -152,9 +152,7 @@ public class AboutBookMainContentGUI extends JPanel{
             return;
         }
         int maNXB = Integer.parseInt(tableModelNXB.getValueAt(selectedRow, 0).toString());
-        String tenNXB = tableModelNXB.getValueAt(selectedRow, 1).toString();
-
-        NhaXuatBanDTO nxb = new NhaXuatBanDTO(maNXB, tenNXB);
+        NhaXuatBanDTO nxb = nxbBus.getById(maNXB);
         Window window = SwingUtilities.getWindowAncestor(this);
         new AddAndEditPublisherGUI((JFrame) window, nxbBus, "Sửa Nhà Xuất Bản", "save", nxb);
         loadTableDataNhaXuatBan();
@@ -196,9 +194,7 @@ public class AboutBookMainContentGUI extends JPanel{
             return;
         }
         int maTG = Integer.parseInt(tableModelTG.getValueAt(selectedRow, 0).toString());
-        String tenTG = tableModelTG.getValueAt(selectedRow, 1).toString();
-
-        TacGiaDTO tg = new TacGiaDTO(maTG, tenTG);
+        TacGiaDTO tg = tgBus.getById(maTG);
         Window window = SwingUtilities.getWindowAncestor(this);
         new AddAndEditAuthorGUI((JFrame) window, tgBus, "Sửa thông tin tác giả", "save", tg);
         loadTableDataTacGia(); 
@@ -209,14 +205,14 @@ public class AboutBookMainContentGUI extends JPanel{
             JOptionPane.showMessageDialog(this, "Vui lòng chọn một tác giả để xóa!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa cuốn sách này không?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+        int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xóa tác giả này không?", "Xác nhận", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             int maSach = Integer.parseInt(tableModelTG.getValueAt(selectedRow, 0).toString());
             if (tgBus.deleteTacGia(maSach)) { 
-                JOptionPane.showMessageDialog(this, "Xóa sách thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Xóa tác giả thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 loadTableDataTacGia();
             } else {
-                JOptionPane.showMessageDialog(this, "Xóa sách thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Xóa tác giả thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -240,9 +236,7 @@ public class AboutBookMainContentGUI extends JPanel{
             return;
         }
         int maTL = Integer.parseInt(tableModelTL.getValueAt(selectedRow, 0).toString());
-        String tenTL = tableModelTL.getValueAt(selectedRow, 1).toString();
-
-        TheLoaiDTO tl = new TheLoaiDTO(maTL, tenTL);
+        TheLoaiDTO tl = tlBus.getById(maTL);
         Window window = SwingUtilities.getWindowAncestor(this);
         new AddAndEditCategoryGUI((JFrame) window, tlBus, "Sửa thông tin thể loại", "save", tl);
         loadTableDataTheLoai();

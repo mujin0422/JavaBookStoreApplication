@@ -160,6 +160,31 @@ public class NhanVienDAO {
         }
         return null;
     }
+    
+    public ArrayList<NhanVienDTO> getAllNvNotExistsTk() {
+        ArrayList<NhanVienDTO> list = new ArrayList<>();
+        String sql = "SELECT nv.* FROM nhanvien nv " +
+                     "LEFT JOIN taikhoan tk ON nv.maNV = tk.maNV " +
+                     "WHERE tk.maNV IS NULL";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                NhanVienDTO nv = new NhanVienDTO(
+                    rs.getInt("maNV"),
+                    rs.getString("tenNV"),
+                    rs.getString("email"),
+                    rs.getString("sdt")
+                );
+                list.add(nv);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 }
 
     

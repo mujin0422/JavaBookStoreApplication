@@ -35,7 +35,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -48,9 +47,8 @@ import javax.swing.table.DefaultTableModel;
 
 
 public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
-    private UIButton btnAdd, btnView, btnThemVaoPhieu, btnXoaKhoiPhieu, btnSuaSoLuong, btnAddToPX, btnSavePX;
-    private UITextField txtSearch, txtSoLuong, txtMaPX, txtMaNV, txtTongTien ,txtSearchSach;
-    private JComboBox<String> cbMaKH;
+    private UIButton btnAdd, btnView, btnThemVaoPhieu, btnXoaKhoiPhieu, btnSuaSoLuong, btnAddToPX;
+    private UITextField txtSoLuong, txtMaPX, txtTenNV, txtSdtKH ,txtTenKH, txtTongTien ,txtSearchSach;
     private UITable tblContent, tblForProduct , tblForForm;
     private JPanel pnlHeader, pnlContent, pnlForm, pnlProduct;
     private DefaultTableModel tableModel, tableModelForProduct, tableModelForForm;
@@ -86,14 +84,9 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
         btnView.addActionListener(e -> viewChiTietPhieuXuat());
         pnlButton.add(btnAdd);
         pnlButton.add(btnView);
+        applyPermissions(taiKhoan.getTenDangNhap(), 8);
         
-        JPanel pnlSearchFilter = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,10));
-        pnlSearchFilter.setBackground(UIConstants.MAIN_BACKGROUND);
-        txtSearch = new UITextField(190,30);
-        pnlSearchFilter.add(txtSearch);
-
-        pnlHeader.add(pnlButton, BorderLayout.WEST);
-        pnlHeader.add(pnlSearchFilter, BorderLayout.CENTER);
+        pnlHeader.add(pnlButton, BorderLayout.CENTER);
         //==============================( End Panel Header )============================//
         
         
@@ -104,29 +97,28 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
         JPanel pnlFormNorth = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
         pnlFormNorth.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
         pnlFormNorth.setBackground(UIConstants.MAIN_BACKGROUND);
-        pnlFormNorth.setPreferredSize(new Dimension(0, 100));
+        pnlFormNorth.setPreferredSize(new Dimension(0, 130));
 
-        pnlFormNorth.add(new UILabel("Mã phiếu xuất:", 120, 25));
-        txtMaPX = new UITextField(370,25);
+        pnlFormNorth.add(new UILabel("Mã phiếu xuất:", 125, 25));
+        txtMaPX = new UITextField(380,25);
         pnlFormNorth.add(txtMaPX);
-        pnlFormNorth.add(new UILabel("Nhân viên :", 120, 25));
-        txtMaNV = new UITextField(370, 25);
         
+        pnlFormNorth.add(new UILabel("Nhân viên:", 125, 25));
+        txtTenNV = new UITextField(380, 25);
         NhanVienDTO nhanVien = nhanVienBUS.getCurrentStaffByUserName(taiKhoan.getTenDangNhap());
         if (nhanVien != null) {
-            txtMaNV.setText(nhanVien.getTenNV()); 
-            txtMaNV.setEditable(false); 
+            txtTenNV.setText(nhanVien.getTenNV()); 
+            txtTenNV.setEditable(false); 
         }
-        pnlFormNorth.add(txtMaNV);
+        pnlFormNorth.add(txtTenNV);
         
-        pnlFormNorth.add(new UILabel("Khách hàng :", 120, 25));
-        cbMaKH = new JComboBox<>();
-        cbMaKH.setPreferredSize(new Dimension(370, 25));
-        cbMaKH.setBackground(UIConstants.WHITE_FONT);
-        for(KhachHangDTO kh : khachHangBUS.getAllKhachHang()){
-            cbMaKH.addItem(kh.getTenKH());
-        }
-        pnlFormNorth.add(cbMaKH);
+        pnlFormNorth.add(new UILabel("SĐT khách hàng:", 125, 25));
+        txtSdtKH = new UITextField(380,25);
+        pnlFormNorth.add(txtSdtKH);
+        pnlFormNorth.add(new UILabel("Tên khách hàng:", 125, 25));
+        txtTenKH = new UITextField(380,25);
+        pnlFormNorth.add(txtTenKH);
+        txtTenKH.setEditable(false);
             //CENTER
         String[] columns = {"MÃ SÁCH", "TÊN SÁCH", "SỐ LƯỢNG", "THÀNH TIỀN"};
         tableModelForForm = new DefaultTableModel(columns, 0);
@@ -219,7 +211,7 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
         this.add(pnlProduct, BorderLayout.EAST);
         this.add(pnlContent, BorderLayout.SOUTH);
         loadTableData();
-        addSearchFunctionality();
+        addDocumentListener();
         resetFormInput();
     }
     
@@ -257,7 +249,6 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
             JOptionPane.showMessageDialog(this, "Vui lòng chọn một phiếu xuất để xem chi tiết.", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
-
         int maPX = Integer.parseInt(tblContent.getValueAt(selectedRow, 0).toString());
         PhieuXuatDTO px = phieuXuatBUS.getById(maPX);
 
@@ -429,6 +420,11 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
     
     private boolean checkFormInput(){
         try {
+            String tenKH = txtTenKH.getText().trim();
+            if (tenKH.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Chưa tồn tại khách hàng !", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
             if (tblForForm.getRowCount() == 0) {
                 JOptionPane.showMessageDialog(this, "Chưa có sản phẩm nào trong phiếu xuất!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 return false;
@@ -443,15 +439,12 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
     private void addPhieuXuat(){
         if(!checkFormInput()) return;
         int maPX = Integer.parseInt(txtMaPX.getText().trim());
-        int maNV = nhanVienBUS.getMaNvByTenNv(txtMaNV.getText().trim());
-        int maNCC = khachHangBUS.getMaKhByTenKh(cbMaKH.getSelectedItem().toString());
+        int maNV = nhanVienBUS.getMaNvByTenNv(txtTenNV.getText().trim());
+        int maKH = khachHangBUS.getKhBySDT(txtSdtKH.getText().trim()).getMaKH();
         int tongTien = Integer.parseInt(txtTongTien.getText().trim());
         Date ngayXuat = getCurrentDate();
-        if (phieuXuatBUS.existsPhieuXuat(maPX)) {
-            JOptionPane.showMessageDialog(this, "Mã phiếu xuất đã tồn tại", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-        PhieuXuatDTO phieuXuat = new PhieuXuatDTO(maPX, maNV, maNCC, tongTien, ngayXuat);
+
+        PhieuXuatDTO phieuXuat = new PhieuXuatDTO(maPX, maNV, maKH, tongTien, ngayXuat);
         if (phieuXuatBUS.addPhieuXuat(phieuXuat)) {
             tableModelForForm = (DefaultTableModel) tblForForm.getModel();
             for (int i = 0; i < tableModelForForm.getRowCount(); i++) {
@@ -488,7 +481,7 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
         }
     }
     
-    private void addSearchFunctionality() {
+    private void addDocumentListener() {
         txtSearchSach.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) { searchBook(); }
@@ -497,8 +490,15 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
             @Override
             public void changedUpdate(DocumentEvent e) { searchBook(); }
         });
+        txtSdtKH.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) { loadTenKhachHangFromSDT(); }
+            @Override
+            public void removeUpdate(DocumentEvent e) { loadTenKhachHangFromSDT(); }
+            @Override
+            public void changedUpdate(DocumentEvent e) { loadTenKhachHangFromSDT(); }
+        });
     }
-    
     private void searchBook() {
         String keyword = txtSearchSach.getText().trim().toLowerCase();
         tableModelForProduct.setRowCount(0); 
@@ -511,5 +511,15 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
                 sach.getSoLuongTon()
             });
         }
+    }
+    private void loadTenKhachHangFromSDT() {
+        String sdt = txtSdtKH.getText().trim();
+        if (!sdt.matches("0\\d{9}")) {
+            txtTenKH.setText("");
+            return;
+        }
+        KhachHangDTO khachHang = khachHangBUS.getKhBySDT(sdt);
+        if (khachHang != null) 
+            txtTenKH.setText(khachHang.getTenKH());
     }
 }

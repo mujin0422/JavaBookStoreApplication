@@ -84,7 +84,6 @@ public class CustomerMainContentGUI extends JPanel{
         //===============================( End Panel Content )===========================//
 
         
-        
         this.add(pnlHeader, BorderLayout.NORTH);
         this.add(pnlContent, BorderLayout.CENTER);
         loadTableData();
@@ -118,34 +117,30 @@ public class CustomerMainContentGUI extends JPanel{
     private void editCustomer(){
         int selectedRow = tblContent.getSelectedRow();
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn một khach hang để chỉnh sửa!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn một khách hàng để chỉnh sửa!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
         int maKH = Integer.parseInt(tableModel.getValueAt(selectedRow, 0).toString());
-        String tenKh = tableModel.getValueAt(selectedRow, 1).toString();
-        String sdt = tableModel.getValueAt(selectedRow, 2).toString();
-        String email = tableModel.getValueAt(selectedRow, 3).toString();
-        KhachHangDTO kh = new KhachHangDTO(maKH, tenKh, sdt, email);
-        
+        KhachHangDTO kh = khachHangBUS.getById(maKH);
         Window window = SwingUtilities.getWindowAncestor(this);
-        new AddAndEditCostumerGUI((JFrame) window, khachHangBUS, "Chinh sua khách hàng", "save", kh);
+        new AddAndEditCostumerGUI((JFrame) window, khachHangBUS, "Chỉnh sửa khách hàng", "save", kh);
         loadTableData();
     }
     
     private void deleteCustomer(){
         int selectedRow = tblContent.getSelectedRow();
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn một khach hang để xoa!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn một khách hàng để xoa!", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
-        int confirm = JOptionPane.showConfirmDialog(this, "Ban co chac chan khong", "Xác nhận", JOptionPane.YES_NO_OPTION);
+        int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn không", "Xác nhận", JOptionPane.YES_NO_OPTION);
         if (confirm == JOptionPane.YES_OPTION) {
             int maKH = Integer.parseInt(tableModel.getValueAt(selectedRow, 0).toString());
             if (khachHangBUS.deleteKhachHang(maKH)) { 
-                JOptionPane.showMessageDialog(this, "Xóa khach hang thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Xóa khách hàng thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                 loadTableData();
             } else {
-                JOptionPane.showMessageDialog(this, "Xóa khach hang thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Xóa khách hàng thất bại!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
         }
     }

@@ -5,12 +5,18 @@ import DTO.TacGiaDTO;
 import Utils.UIButton;
 import Utils.UIConstants;
 import Utils.UILabel;
-
-import javax.swing.*;
-import java.awt.*;
+import Utils.UITextField;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import javax.swing.BorderFactory;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 public class AddAndEditAuthorGUI extends JDialog {
-    private JTextField txtMaTG, txtTenTG;
+    private UITextField txtMaTG, txtTenTG;
     private UIButton btnAdd, btnSave, btnCancel;
     private TacGiaBUS tgBus;
     private TacGiaDTO tg;
@@ -23,7 +29,7 @@ public class AddAndEditAuthorGUI extends JDialog {
         if (tg != null) {
             txtMaTG.setText(String.valueOf(tg.getMaTG()));
             txtTenTG.setText(tg.getTenTG());
-            txtMaTG.setEnabled(false);
+            txtMaTG.setEditable(false);
         }
         this.setLocationRelativeTo(parent);
         this.setVisible(true);
@@ -34,24 +40,24 @@ public class AddAndEditAuthorGUI extends JDialog {
         this.tgBus = tgBus;
         initComponent(type);
         txtMaTG.setText(tgBus.getNextMaTg());
-        txtMaTG.setEnabled(false);
+        txtMaTG.setEditable(false);
         this.setLocationRelativeTo(parent);
         this.setVisible(true);
     }
 
     private void initComponent(String type) {
-        this.setSize(400, 200);
+        this.setSize(350, 180);
         this.setLayout(new BorderLayout());
         
         JPanel inputPanel = new JPanel(new GridLayout(2, 2, 10, 10));
         inputPanel.setBackground(UIConstants.MAIN_BACKGROUND);
         inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         inputPanel.add(new UILabel("Mã tác giả:"));
-        inputPanel.add(txtMaTG = new JTextField());
+        inputPanel.add(txtMaTG = new UITextField(0,0));
         inputPanel.add(new UILabel("Tên tác giả:"));
-        inputPanel.add(txtTenTG = new JTextField());
+        inputPanel.add(txtTenTG = new UITextField(0,0));
 
-        JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
+        JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         btnPanel.setBackground(UIConstants.MAIN_BACKGROUND);
         btnAdd = new UIButton("add", "THÊM", 90, 35);
         btnSave = new UIButton("confirm", "LƯU", 90, 35);

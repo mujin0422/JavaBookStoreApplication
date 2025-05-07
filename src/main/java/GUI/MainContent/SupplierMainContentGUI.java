@@ -119,10 +119,7 @@ public class SupplierMainContentGUI extends JPanel {
             return;
         }
         int maNcc = Integer.parseInt(tableModel.getValueAt(selectedRow, 0).toString());
-        String tenNcc = tableModel.getValueAt(selectedRow, 1).toString();
-        String sdt = tableModel.getValueAt(selectedRow, 2).toString();
-        String diaChi = tableModel.getValueAt(selectedRow, 3).toString();
-        NhaCungCapDTO ncc = new NhaCungCapDTO(maNcc, tenNcc, diaChi, sdt);
+        NhaCungCapDTO ncc = nhaCungCapBUS.getById(maNcc);
         Window window = SwingUtilities.getWindowAncestor(this);
         new AddAndEditSupplierGUI((JFrame) window, nhaCungCapBUS, "Chỉnh sửa nhà cung cấp", "save", ncc);
         loadTableData();

@@ -1,7 +1,7 @@
 package DAO;
 import DTO.KhachHangDTO;
+import DTO.ThongKeKhachHangDTO;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,7 +9,6 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.*;
 
 public class KhachHangDAO {
     public int add(KhachHangDTO obj) {
@@ -26,7 +25,6 @@ public class KhachHangDAO {
         }
         return 0;
     }
-
     public int update(KhachHangDTO obj) {
         String sql = "UPDATE khachhang SET tenKH=?, sdt=?, email=? WHERE maKH=?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -41,7 +39,6 @@ public class KhachHangDAO {
         }
         return 0;
     }
-
     public int delete(int maKH) {
         String sql = "UPDATE khachhang SET trangThaiXoa=1 WHERE maKH=?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -53,7 +50,6 @@ public class KhachHangDAO {
         }
         return 0;
     }
-
     public ArrayList<KhachHangDTO> getAll() {
         ArrayList<KhachHangDTO> dsKhachHang = new ArrayList<>();
         String sql = "SELECT * FROM khachhang WHERE trangThaiXoa=0";
@@ -73,7 +69,6 @@ public class KhachHangDAO {
         }
         return dsKhachHang;
     }
-
     public KhachHangDTO getById(int maKH) {
         String sql = "SELECT * FROM khachhang WHERE maKH=?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -94,7 +89,6 @@ public class KhachHangDAO {
         }
         return null;
     }
-    
     public String getNextMaKH() {
         String sql = "SELECT MAX(maKH) AS nextID FROM khachhang";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -109,21 +103,39 @@ public class KhachHangDAO {
         }
         return "1";
     }
-    
-    public int getMaKhByTenKh(String tenKh) {
-        String sql = "SELECT maKH FROM khachhang WHERE tenKH=?";
+    public boolean existsSDT(String sdt) {
+        String query = "SELECT COUNT(*) FROM khachhang WHERE sdt = ?";
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, tenKh); 
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt("maKH"); 
-                }
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, sdt);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0; 
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return 0; 
+        return false;
+    }
+    
+    public KhachHangDTO getKhBySDT(String sdt) {
+        String query = "SELECT * FROM khachhang WHERE sdt = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, sdt);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return new KhachHangDTO(
+                    rs.getInt("maKH"),
+                    rs.getString("tenKH"),
+                    rs.getString("sdt"),
+                    rs.getString("email")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public String getTenKhByMaKh(int maKh) {
@@ -141,138 +153,37 @@ public class KhachHangDAO {
         }
         return null; 
     }
-    private static final String URL = "jdbc:mysql://localhost:3306/quanlicuahangsach";
-    private static final String USER = "root";
-    private static final String PASSWORD = "";
-
-    public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
-    }
-
-    public List<Object[]> thongKeKhachHangTheoNgay(Date fromDate, Date toDate) {
+    
+    public ArrayList<ThongKeKhachHangDTO> thongKeKhachHangTheoNgay(Date fromDate, Date toDate) {
+        ArrayList<ThongKeKhachHangDTO> list = new ArrayList<>();
         String sql = """
-            SELECT kh.maKH, kh.tenKH, kh.sdt, px.ngayXuat, SUM(ctpx.soLuong) AS tongSoLuong
+            SELECT kh.maKH, kh.tenKH, COUNT(px.maPX) AS soLanMua, SUM(px.tongTien) AS tongTienDaMua
             FROM khachhang kh
             JOIN phieuxuat px ON kh.maKH = px.maKH
-            JOIN chitietphieuxuat ctpx ON px.maPX = ctpx.maPX
             WHERE px.ngayXuat BETWEEN ? AND ?
-            GROUP BY kh.maKH, kh.tenKH, kh.sdt, px.ngayXuat
-            ORDER BY tongSoLuong DESC
+            GROUP BY kh.maKH, kh.tenKH
+            ORDER BY tongTienDaMua DESC
         """;
-
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        List<Object[]> results = new ArrayList<>();
-        try (Connection conn = getConnection();
+        try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pst = conn.prepareStatement(sql)) {
-
             pst.setString(1, sdf.format(fromDate));
             pst.setString(2, sdf.format(toDate));
             ResultSet rs = pst.executeQuery();
 
             while (rs.next()) {
-                results.add(new Object[]{
-                        rs.getString("maKH"),
-                        rs.getString("tenKH"),
-                        rs.getString("sdt"),
-                        rs.getDate("ngayXuat"),
-                        rs.getInt("tongSoLuong")
-                });
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return results;
-    }
-    public List<Object[]> getKhachHangTheoThang(String monthYear) {
-    String sql = """
-       SELECT kh.maKH, kh.tenKH, kh.sdt, px.ngayXuat, SUM(ctpx.soLuong) AS tongSoLuong, SUM(ctpx.giaBan) AS tongTien
-            FROM khachhang kh
-            JOIN phieuxuat px ON kh.maKH = px.maKH
-            JOIN chitietphieuxuat ctpx ON px.maPX = ctpx.maPX
-            GROUP BY kh.maKH, kh.tenKH, kh.sdt, px.ngayXuat
-            ORDER BY kh.maKH, px.ngayXuat
-    """;
-    List<Object[]> results = new ArrayList<>();
-    try (Connection conn = getConnection();
-         PreparedStatement pst = conn.prepareStatement(sql)) {
-
-        pst.setString(1, monthYear);
-        ResultSet rs = pst.executeQuery();
-
-        while (rs.next()) {
-            results.add(new Object[]{
-                    rs.getInt("maKH"),
-                    rs.getString("tenKH"),
-                    rs.getString("sdt"),
-                    rs.getInt("tongSoLuong"),
-                    rs.getDouble("tongTien")
-            });
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-    return results;
-    }
-
-    public List<Object[]> getTopKhachMuaNhieu() {
-        String sql = """
-            SELECT kh.maKH, kh.tenKH, kh.sdt, SUM(ctpx.soLuong) AS tongSoLuong, SUM(ctpx.giaBan) AS tongTien
-            FROM khachhang kh
-            JOIN phieuxuat px ON kh.maKH = px.maKH
-            JOIN chitietphieuxuat ctpx ON px.maPX = ctpx.maPX
-            GROUP BY kh.maKH, kh.tenKH, kh.sdt
-            ORDER BY tongSoLuong DESC
-            LIMIT 10
-        """;
-        List<Object[]> results = new ArrayList<>();
-        try (Connection conn = getConnection();
-             PreparedStatement pst = conn.prepareStatement(sql);
-             ResultSet rs = pst.executeQuery()) {
-            while (rs.next()) {
-                results.add(new Object[]{
+                list.add(new ThongKeKhachHangDTO(
                         rs.getInt("maKH"),
                         rs.getString("tenKH"),
-                        rs.getString("sdt"),
-                        rs.getInt("tongSoLuong"),
-                        rs.getDouble("tongTien")
-                });
+                        rs.getInt("soLanMua"),
+                        rs.getDouble("tongTienDaMua")
+                ));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return results;
+        return list;
     }
-
-
-    public List<Object[]> getDanhSachKhachDaMua() {
-        String sql = """
-            SELECT kh.maKH, kh.tenKH, kh.sdt, px.ngayXuat, SUM(ctpx.soLuong) AS tongSoLuong, SUM(ctpx.giaBan) AS tongTien
-            FROM khachhang kh
-            JOIN phieuxuat px ON kh.maKH = px.maKH
-            JOIN chitietphieuxuat ctpx ON px.maPX = ctpx.maPX
-            GROUP BY kh.maKH, kh.tenKH, kh.sdt, px.ngayXuat
-            ORDER BY kh.maKH, px.ngayXuat
-        """;
-        List<Object[]> results = new ArrayList<>();
-        try (Connection conn = getConnection();
-             PreparedStatement pst = conn.prepareStatement(sql);
-             ResultSet rs = pst.executeQuery()) {
-            while (rs.next()) {
-                results.add(new Object[]{
-                        rs.getInt("maKH"),
-                        rs.getString("tenKH"),
-                        rs.getString("sdt"),
-                        rs.getDate("ngayXuat"),
-                        rs.getInt("tongSoLuong"),
-                        rs.getDouble("tongTien")
-                });
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return results;
-    }
-
 }
 
 

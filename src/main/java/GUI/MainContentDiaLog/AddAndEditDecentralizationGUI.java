@@ -12,9 +12,18 @@ import Utils.UIButton;
 import Utils.UIConstants;
 import Utils.UILabel;
 import Utils.UITextField;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.util.ArrayList;
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.JCheckBox;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 public class AddAndEditDecentralizationGUI extends JDialog {
     private UITextField txtMaQuyen, txtTenQuyen;
@@ -34,7 +43,7 @@ public class AddAndEditDecentralizationGUI extends JDialog {
         this.quyenBUS = quyenBUS;
         initComponent(type);
         txtMaQuyen.setText(quyenBUS.getNextMaQuyen());
-        txtMaQuyen.setEnabled(false);
+        txtMaQuyen.setEditable(false);
         this.setLocationRelativeTo(parent);
         this.setVisible(true);
     }
@@ -47,7 +56,7 @@ public class AddAndEditDecentralizationGUI extends JDialog {
         if (quyen != null) {
             txtMaQuyen.setText(String.valueOf(quyen.getMaQuyen()));
             txtTenQuyen.setText(quyen.getTenQuyen());
-            txtMaQuyen.setEnabled(false);
+            txtMaQuyen.setEditable(false);
             
             ArrayList<ChiTietChucNangDTO> dsCTCN = chiTietChucNangBUS.getChiTietChucNangByMaQuyen(quyen.getMaQuyen());
             for (int i = 0; i < rowCkc; i++) {
@@ -63,7 +72,7 @@ public class AddAndEditDecentralizationGUI extends JDialog {
                 }
             }
         }
-       this.setLocationRelativeTo(parent);
+        this.setLocationRelativeTo(parent);
         this.setVisible(true);
     }
 
@@ -207,7 +216,6 @@ public class AddAndEditDecentralizationGUI extends JDialog {
             JOptionPane.showMessageDialog(this, "Lỗi nhập dữ liệu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
-
 
     private boolean checkFormInput(){
         try {

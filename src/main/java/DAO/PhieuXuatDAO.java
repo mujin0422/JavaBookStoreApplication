@@ -1,6 +1,5 @@
 package DAO;
 
-import DTO.DoanhThuDTO;
 import DTO.PhieuXuatDTO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class PhieuXuatDAO {
     public int add(PhieuXuatDTO obj) {
@@ -50,20 +48,6 @@ public class PhieuXuatDAO {
         } catch (SQLException e) {
         }
         return 0;
-    }
-    
-    public int exists(int maPX) {
-        String sql = "SELECT COUNT(*) FROM phieuxuat WHERE maPX=?";
-        try (Connection conn = DatabaseConnection.getConnection(); 
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, maPX);  
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1);  
-            }
-        } catch (SQLException e) {
-        }
-        return 0;  
     }
 
     public ArrayList<PhieuXuatDTO> getAll() {
@@ -138,48 +122,20 @@ public class PhieuXuatDAO {
         }
         return 0;
     }
-     
-    public List<DoanhThuDTO> getDoanhThuByDateRange(Date fromDate, Date toDate) {
-       List<DoanhThuDTO> doanhThuList = new ArrayList<>();
-       String sql = "SELECT " +
-                    "    px.maPX, " +
-                    "    s.maSach, " +
-                    "    s.tenSach, " +
-                    "    kh.maKH, " +
-                    "    kh.tenKH, " +
-                    "    px.NgayXuat, " +
-                    "    SUM(ctpx.soLuong) AS tongSoLuong, " +
-                    "    ctpx.giaBan, " +
-                    "    SUM( ctpx.giaBan) AS tongTien " +
-                    "FROM chitietphieuxuat ctpx " +
-                    "JOIN phieuxuat px ON ctpx.maPX = px.maPX " +
-                    "JOIN sach s ON ctpx.maSach = s.maSach " +
-                    "JOIN khachhang kh ON px.maKH = kh.maKH " +
-                    "WHERE px.NgayXuat BETWEEN ? AND ? " +
-                    "GROUP BY px.maPX, s.maSach, s.tenSach, kh.maKH, kh.tenKH, px.NgayXuat, ctpx.giaBan";
-
-       try (Connection conn = DatabaseConnection.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-           stmt.setDate(1, new java.sql.Date(fromDate.getTime()));
-           stmt.setDate(2, new java.sql.Date(toDate.getTime()));
-
-           ResultSet rs = stmt.executeQuery();
-           while (rs.next()) {
-               DoanhThuDTO doanhThu = new DoanhThuDTO();
-               doanhThu.setMaSach(rs.getInt("maSach"));
-               doanhThu.setTenSach(rs.getString("tenSach"));
-               doanhThu.setMaKH(rs.getInt("maKH"));
-               doanhThu.setTenKH(rs.getString("tenKH"));
-               doanhThu.setNgayXuat(rs.getDate("NgayXuat"));
-               doanhThu.setSoLuong(rs.getInt("tongSoLuong")); // Use the aggregated total quantity
-               doanhThu.setGiaBan(rs.getDouble("giaBan"));
-               doanhThu.setTongTien(rs.getDouble("tongTien")); // Use the aggregated total price
-               doanhThuList.add(doanhThu);
-           }
-       } catch (SQLException e) {
-           e.printStackTrace();
-       }
-       return doanhThuList;
-   }
+    
+    public double getTongTienTheoNgay(Date ngay) {
+        double tongTien = 0;
+        String sql = "SELECT SUM(tongTien) AS tongTien FROM phieuxuat WHERE DATE(ngayXuat) = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setDate(1, new java.sql.Date(ngay.getTime()));
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                tongTien = rs.getDouble("tongTien");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tongTien;
+    }
 }

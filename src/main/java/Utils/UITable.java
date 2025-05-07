@@ -27,23 +27,23 @@ public class UITable extends JTable {
     }
 
     private void applyLeftPadding() {
-    DefaultTableCellRenderer paddedRenderer = new DefaultTableCellRenderer() {
-        @Override
-        public java.awt.Component getTableCellRendererComponent(
-                JTable table, Object value, boolean isSelected,
-                boolean hasFocus, int row, int column) {
-            java.awt.Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+        DefaultTableCellRenderer paddedRenderer = new DefaultTableCellRenderer() {
+            @Override
+            public java.awt.Component getTableCellRendererComponent(
+                    JTable table, Object value, boolean isSelected,
+                    boolean hasFocus, int row, int column) {
+                java.awt.Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-            if (c instanceof javax.swing.JLabel label) {
-                label.setHorizontalAlignment(LEFT);
-                label.setBorder(new EmptyBorder(0, 5, 0, 0)); 
+                if (c instanceof javax.swing.JLabel label) {
+                    label.setHorizontalAlignment(LEFT);
+                    label.setBorder(new EmptyBorder(0, 5, 0, 0)); 
+                }
+                return c;
             }
-            return c;
+        };
+        for (int i = 0; i < this.getColumnModel().getColumnCount(); i++) {
+            this.getColumnModel().getColumn(i).setCellRenderer(paddedRenderer);
         }
-    };
-    for (int i = 0; i < this.getColumnModel().getColumnCount(); i++) {
-        this.getColumnModel().getColumn(i).setCellRenderer(paddedRenderer);
     }
-}
 
 }

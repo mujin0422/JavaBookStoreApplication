@@ -14,23 +14,18 @@ public class NhaXuatBanBUS {
     public ArrayList<NhaXuatBanDTO> getAllNhaXuatBan() {
         return nhaXuatBanDAO.getAll();
     }
-
-    public NhaXuatBanDTO getNhaXuatBanById(int id) {
+    public NhaXuatBanDTO getById(int id) {
         return nhaXuatBanDAO.getById(id);
     }
-
     public boolean addNhaXuatBan(NhaXuatBanDTO nxb) {
         return nhaXuatBanDAO.add(nxb) > 0;
     }
-
     public boolean updateNhaXuatBan(NhaXuatBanDTO nxb) {
         return nhaXuatBanDAO.update(nxb) > 0;
     }
-
     public boolean deleteNhaXuatBan(int maNXB) {
         return nhaXuatBanDAO.delete(maNXB) > 0;
     }
-    
     public String getNextMaNxb(){
         return nhaXuatBanDAO.getNextMaNxb();
     }

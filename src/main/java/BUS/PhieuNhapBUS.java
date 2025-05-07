@@ -3,6 +3,7 @@ package BUS;
 import DTO.PhieuNhapDTO;
 import DAO.PhieuNhapDAO;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class PhieuNhapBUS{
     private PhieuNhapDAO phieuNhapDAO;
@@ -34,10 +35,6 @@ public class PhieuNhapBUS{
     public String getNextMaPn(){
         return phieuNhapDAO.getNextMaPn();
     }
-    
-    public boolean existsPhieuNhap(int maPN){
-        return phieuNhapDAO.exists(maPN) > 0;
-    }
 
     public ArrayList<PhieuNhapDTO> searchPhieuNhap(String keyword){
         if (keyword == null || keyword.trim().isEmpty()) {
@@ -51,5 +48,9 @@ public class PhieuNhapBUS{
             }
         }
         return ketQua;
+    }
+    
+    public double getTongTienTheoNgay(Date ngay) {
+        return phieuNhapDAO.getTongTienTheoNgay(ngay);
     }
 }

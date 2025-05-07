@@ -55,7 +55,7 @@ public class AddAndEditBookGUI extends JDialog {
             }
 
             txtSoLuongTon.setText(String.valueOf(sach.getSoLuongTon()));
-            txtMaSach.setEnabled(false);
+            txtMaSach.setEditable(false);
             areaTheLoai.setText("");
             areaTacGia.setText("");
 
@@ -87,7 +87,7 @@ public class AddAndEditBookGUI extends JDialog {
         this.sachBus = sachBus;
         initComponent(type);
         txtMaSach.setText(sachBus.getNextMaSach());
-        txtMaSach.setEnabled(false);
+        txtMaSach.setEditable(false);
         this.setLocationRelativeTo(parent);
         this.setVisible(true);
     }
@@ -137,7 +137,7 @@ public class AddAndEditBookGUI extends JDialog {
         inputPanelLeft.add(new UILabel("Số lượng:",120 ,30));
         inputPanelLeft.add(txtSoLuongTon = new UITextField(250,30));
         txtSoLuongTon.setText("0");
-        txtSoLuongTon.setEnabled(false);
+        txtSoLuongTon.setEditable(false);
         
         JPanel inputPanelRight = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         inputPanelRight.setBackground(UIConstants.MAIN_BACKGROUND);

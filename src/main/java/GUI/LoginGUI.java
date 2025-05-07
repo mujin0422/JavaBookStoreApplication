@@ -5,6 +5,7 @@ import DTO.TaiKhoanDTO;
 import java.awt.*;
 import javax.swing.*;
 import Utils.UIButton;
+import Utils.UIConstants;
 
 public final class LoginGUI extends JFrame {
     private JTextField txtAccount;
@@ -24,18 +25,18 @@ public final class LoginGUI extends JFrame {
     public void initComponent() {
         this.setTitle("ĐĂNG NHẬP VÀO HỆ THỐNG");
         this.setSize(new Dimension(800, 400));
-        this.getContentPane().setBackground(Color.LIGHT_GRAY);
+        this.getContentPane().setBackground(UIConstants.SUB_BACKGROUND);
         this.getContentPane().setLayout(new BorderLayout(5, 5));
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //==============================( PANEL LEFT )==================================//
         pnlLeft = new JPanel(new BorderLayout());
-        pnlLeft.setBackground(Color.GRAY);
+        pnlLeft.setBackground(UIConstants.MAIN_BACKGROUND);
         pnlLeft.setPreferredSize(new Dimension(300, 0));
         this.getContentPane().add(pnlLeft, BorderLayout.WEST);
 
         JLabel lblStoreName = new JLabel("BOOKSTORE");
-        lblStoreName.setFont(new Font("Roboto", Font.BOLD, 24));
+        lblStoreName.setFont(new Font("Roboto", Font.BOLD, 30));
         lblStoreName.setHorizontalAlignment(SwingConstants.CENTER);
         lblStoreName.setPreferredSize(new Dimension(300, 100));
 
@@ -52,7 +53,7 @@ public final class LoginGUI extends JFrame {
         //=============================( PANEL CENTER )=================================//
         pnlCenter = new JPanel();
         pnlCenter.setLayout(null);
-        pnlCenter.setBackground(Color.LIGHT_GRAY);
+        pnlCenter.setBackground(UIConstants.MAIN_BACKGROUND);
         this.getContentPane().add(pnlCenter, BorderLayout.CENTER);
 
         lblTitle = new JLabel("ĐĂNG NHẬP VÀO HỆ THỐNG");

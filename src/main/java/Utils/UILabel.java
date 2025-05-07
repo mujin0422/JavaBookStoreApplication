@@ -2,14 +2,12 @@ package Utils;
 
 import javax.swing.JLabel;
 import java.awt.Dimension;
-import java.awt.Font;
 
 public class UILabel extends JLabel {
     
     public UILabel(String text, int width, int height) {
         initComponent(text, width, height);
     }
-    
     public UILabel(String text) {
         initComponent(text, 100, 35);
     }

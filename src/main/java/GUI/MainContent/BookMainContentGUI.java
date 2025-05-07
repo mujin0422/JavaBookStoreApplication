@@ -5,7 +5,6 @@ import BUS.SachBUS;
 import BUS.TacGiaBUS;
 import BUS.TaiKhoanBUS;
 import BUS.TheLoaiBUS;
-import DTO.NhaXuatBanDTO;
 import DTO.SachDTO;
 import DTO.TaiKhoanDTO;
 import GUI.MainContentDiaLog.*;
@@ -130,25 +129,11 @@ public class BookMainContentGUI extends JPanel implements ReloadablePanel{
             return;
         }
         int maSach = Integer.parseInt(tableModel.getValueAt(selectedRow, 0).toString());
-        String tenSach = tableModel.getValueAt(selectedRow, 1).toString();
-        int giaSach = Integer.parseInt(tableModel.getValueAt(selectedRow, 2).toString());
-        String tenNXB = tableModel.getValueAt(selectedRow, 3).toString(); 
-        int soLuongTon = Integer.parseInt(tableModel.getValueAt(selectedRow, 4).toString());
-
-        int maNXB = 0;
-        NhaXuatBanBUS nhaXuatBanBUS = new NhaXuatBanBUS();
-        for (NhaXuatBanDTO nxb : nhaXuatBanBUS.getAllNhaXuatBan()) {
-            if (nxb.getTenNXB().equals(tenNXB)) {
-                maNXB = nxb.getMaNXB();
-                break;
-            }
-        }
-        SachDTO sach = new SachDTO(maSach, tenSach, giaSach, soLuongTon, maNXB);
+        SachDTO sach = sachBUS.getById(maSach);
         Window window = SwingUtilities.getWindowAncestor(this);
         new AddAndEditBookGUI((JFrame) window, sachBUS, "Chỉnh sửa sách", "save", sach);
         loadTableData();
     }
-
     
     private void deleteBook() {
         int selectedRow = tblContent.getSelectedRow();
@@ -198,7 +183,7 @@ public class BookMainContentGUI extends JPanel implements ReloadablePanel{
             return;
         }
         int maSach = Integer.parseInt(tableModel.getValueAt(selectedRow, 0).toString());
-        SachDTO sach = sachBUS.getSachById(maSach);
+        SachDTO sach = sachBUS.getById(maSach);
         // Lấy thông tin Nhà xuất bản
         NhaXuatBanBUS nhaXuatBanBUS = new NhaXuatBanBUS();
         String tenNXB = nhaXuatBanBUS.getTenNhaXuatBanById(sach.getMaNXB());

@@ -3,13 +3,11 @@ import DTO.ThongKeSachDTO;
 import DTO.SachDTO;
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 
 public class SachDAO {
     public int add(SachDTO obj) {
@@ -177,7 +175,7 @@ public class SachDAO {
     }
      public int getGiaSachByMaSach(int maSach) {
         int giaSach = 0;
-        String sql = "SELECT GiaSach FROM Sach WHERE MaSach = ?"; // Adjust table and column names if different
+        String sql = "SELECT giaSach FROM sach WHERE maSach = ?"; 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, maSach);
@@ -187,65 +185,47 @@ public class SachDAO {
             }
             }
         } catch (SQLException e) {
-            e.printStackTrace(); // Handle the exception appropriately in a real application
+            e.printStackTrace(); 
         }
         return giaSach;
     }
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/quanlicuahangsach";
-    private static final String DB_USER = "root";
-    private static final String DB_PASSWORD = "";
 
-    // Phương thức lấy thống kê sách
-    public List<ThongKeSachDTO> getThongKeSach(Date ngayBatDau, Date ngayKetThuc) {
-    List<ThongKeSachDTO> resultList = new ArrayList<>();
-    String query = """
-        SELECT s.maSach, s.tenSach, nxb.tenNXB,
-               COALESCE(tongNhap.soLuongTon, 0) AS soLuongTon,
-               COALESCE(tongXuat.soLuongXuat, 0) AS soLuongXuat
-        FROM sach s
-        JOIN nhaxuatban nxb ON s.maNXB = nxb.maNXB
-        LEFT JOIN (
-            SELECT nhap.maSach, SUM(nhap.soLuong) AS soLuongTon
-            FROM chitietphieunhap nhap
-            JOIN phieunhap pn ON nhap.maPN = pn.maPN
-            WHERE pn.ngayNhap BETWEEN ? AND ?  -- Điều kiện cho nhập sách
-            GROUP BY nhap.maSach
-        ) AS tongNhap ON s.maSach = tongNhap.maSach
-        LEFT JOIN (
-            SELECT xuat.maSach, SUM(xuat.soLuong) AS soLuongXuat
-            FROM chitietphieuxuat xuat
-            JOIN phieuxuat px ON xuat.maPX = px.maPX
-            WHERE px.ngayXuat BETWEEN ? AND ?  -- Điều kiện cho xuất sách
-            GROUP BY xuat.maSach
-        ) AS tongXuat ON s.maSach = tongXuat.maSach
-        ORDER BY s.tenSach;
-    """;
+    public ArrayList<ThongKeSachDTO> getThongKeSach(Date ngayBatDau, Date ngayKetThuc) {
+        ArrayList<ThongKeSachDTO> resultList = new ArrayList<>();
+        String query = "SELECT s.maSach, s.tenSach, SUM(ctpn.soLuong) AS soLuongNhap, SUM(ctpx.soLuong) AS soLuongXuat "
+                + "FROM sach s "
+                + "LEFT JOIN chitietphieunhap ctpn ON s.maSach = ctpn.maSach "
+                + "LEFT JOIN chitietphieuxuat ctpx ON s.maSach = ctpx.maSach "
+                + "LEFT JOIN phieunhap pn ON pn.maPN = ctpn.maPN AND pn.ngayNhap BETWEEN ? AND ? "
+                + "LEFT JOIN phieuxuat px ON px.maPX = ctpx.maPX AND px.ngayXuat BETWEEN ? AND ? "
+                + "GROUP BY s.maSach, s.tenSach "
+                + "ORDER BY soLuongXuat DESC";
 
-    try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-         PreparedStatement pst = conn.prepareStatement(query)) {
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pst = conn.prepareStatement(query)) {
 
-        // Thiết lập tham số cho ngày bắt đầu và ngày kết thúc
-        pst.setDate(1, ngayBatDau);
-        pst.setDate(2, ngayKetThuc);
-        pst.setDate(3, ngayBatDau);
-        pst.setDate(4, ngayKetThuc);
+            pst.setDate(1, ngayBatDau);
+            pst.setDate(2, ngayKetThuc);
+            pst.setDate(3, ngayBatDau);
+            pst.setDate(4, ngayKetThuc);
 
-        // Thực hiện truy vấn và xử lý kết quả
-        ResultSet rs = pst.executeQuery();
-        while (rs.next()) {
-            resultList.add(new ThongKeSachDTO(
-                    rs.getInt("maSach"),
-                    rs.getString("tenSach"),
-                    rs.getString("tenNXB"),
-                    rs.getInt("soLuongTon"),
-                    rs.getInt("soLuongXuat")
-            ));
+            ResultSet rs = pst.executeQuery();
+            while (rs.next()) {
+                int soLuongNhap = rs.getInt("soLuongNhap");
+                int soLuongXuat = rs.getInt("soLuongXuat");
+                resultList.add(new ThongKeSachDTO(
+                        rs.getInt("maSach"),
+                        rs.getString("tenSach"),
+                        soLuongNhap,
+                        soLuongXuat,
+                        soLuongNhap - soLuongXuat
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return resultList;
     }
-    return resultList;
-}
 }
 
 

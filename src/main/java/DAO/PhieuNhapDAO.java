@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class PhieuNhapDAO {
     public int add(PhieuNhapDTO obj) {
@@ -50,21 +51,6 @@ public class PhieuNhapDAO {
             e.printStackTrace();
         }
         return 0;
-    }
-
-    public int exists(int maPN) {
-        String sql = "SELECT COUNT(*) FROM phieunhap WHERE maPN = ?";
-        try (Connection conn = DatabaseConnection.getConnection(); 
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, maPN);  
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1);  
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;  
     }
 
     public ArrayList<PhieuNhapDTO> getAll() {
@@ -125,4 +111,21 @@ public class PhieuNhapDAO {
         }
         return "1";
     }
+    
+    public double getTongTienTheoNgay(Date ngay) {
+        double tongTien = 0;
+        String sql = "SELECT SUM(tongTien) AS tongTien FROM phieunhap WHERE DATE(ngayNhap) = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setDate(1, new java.sql.Date(ngay.getTime()));
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                tongTien = rs.getDouble("tongTien");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tongTien;
+    }
+
 }

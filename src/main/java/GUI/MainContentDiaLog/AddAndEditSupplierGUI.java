@@ -5,6 +5,7 @@ import DTO.NhaCungCapDTO;
 import Utils.UIButton;
 import Utils.UIConstants;
 import Utils.UILabel;
+import Utils.UITextField;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -13,10 +14,9 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 public class AddAndEditSupplierGUI extends JDialog{
-    private JTextField txtMaNCC, txtTenNCC, txtDiaChi, txtSDT;
+    private UITextField txtMaNCC, txtTenNCC, txtDiaChi, txtSDT;
     private UIButton btnAdd, btnSave, btnCancel;
     private NhaCungCapBUS nccBus;
     private NhaCungCapDTO ncc;
@@ -31,7 +31,7 @@ public class AddAndEditSupplierGUI extends JDialog{
             txtTenNCC.setText(ncc.getTenNCC());
             txtDiaChi.setText(ncc.getDiaChi());
             txtSDT.setText(ncc.getSdt());
-            txtMaNCC.setEnabled(false);
+            txtMaNCC.setEditable(false);
         }
         this.setLocationRelativeTo(parent);
         this.setVisible(true);
@@ -42,13 +42,13 @@ public class AddAndEditSupplierGUI extends JDialog{
         this.nccBus = nccBus;
         initComponent(type);
         txtMaNCC.setText(nccBus.getNextMaNcc());
-        txtMaNCC.setEnabled(false);
+        txtMaNCC.setEditable(false);
         this.setLocationRelativeTo(parent);
         this.setVisible(true);
     }
     
     private void initComponent(String type){
-        this.setSize(400, 300);
+        this.setSize(400, 250);
         this.setLayout(new BorderLayout());
 
         JPanel inputPanel = new JPanel(new GridLayout(4, 2, 10, 10));
@@ -56,16 +56,13 @@ public class AddAndEditSupplierGUI extends JDialog{
         inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
         inputPanel.add(new UILabel("Mã nhà cung cấp:"));
-        inputPanel.add(txtMaNCC = new JTextField());
-        
+        inputPanel.add(txtMaNCC = new UITextField(0,0));  
         inputPanel.add(new UILabel("Tên nhà cung cấp:"));
-        inputPanel.add(txtTenNCC = new JTextField());
-        
+        inputPanel.add(txtTenNCC = new UITextField(0,0));    
         inputPanel.add(new UILabel("Địa chỉ:"));
-        inputPanel.add(txtDiaChi = new JTextField());
-        
+        inputPanel.add(txtDiaChi = new UITextField(0,0));
         inputPanel.add(new UILabel("Số điện thọại"));
-        inputPanel.add(txtSDT = new JTextField());
+        inputPanel.add(txtSDT = new UITextField(0,0));
         
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 10));
         btnPanel.setBackground(UIConstants.MAIN_BACKGROUND);
@@ -138,8 +135,8 @@ public class AddAndEditSupplierGUI extends JDialog{
                 JOptionPane.showMessageDialog(this, "Số điện thoại không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
-            if (!sdt.matches("\\d{10,11}")) {
-                JOptionPane.showMessageDialog(this, "Số điện thoại phải có từ 10 đến 11 chữ số!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            if (!sdt.matches("0\\d{9}")) {
+                JOptionPane.showMessageDialog(this, "Số điện thoại phải có 10 chữ số!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
         } catch (NumberFormatException e) {

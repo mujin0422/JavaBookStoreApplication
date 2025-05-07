@@ -5,6 +5,7 @@ import DTO.NhanVienDTO;
 import Utils.UIButton;
 import Utils.UIConstants;
 import Utils.UILabel;
+import Utils.UITextField;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -13,10 +14,9 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 public class AddAndEditStaffGUI extends JDialog{
-    private JTextField txtMaNV, txtTenNV, txtEmail, txtSDT;
+    private UITextField txtMaNV, txtTenNV, txtEmail, txtSDT;
     private UIButton btnAdd, btnSave, btnCancel;
     private NhanVienBUS nvBus;
     private NhanVienDTO nv;
@@ -31,7 +31,7 @@ public class AddAndEditStaffGUI extends JDialog{
             txtTenNV.setText(nv.getTenNV());
             txtEmail.setText(nv.getEmail());
             txtSDT.setText(nv.getSdt());
-            txtMaNV.setEnabled(false);
+            txtMaNV.setEditable(false);
         }
         this.setLocationRelativeTo(parent);
         this.setVisible(true);
@@ -42,7 +42,7 @@ public class AddAndEditStaffGUI extends JDialog{
         this.nvBus = nvBus;
         initComponent(type);
         txtMaNV.setText(nvBus.getNextMaNv());
-        txtMaNV.setEnabled(false);
+        txtMaNV.setEditable(false);
         this.setLocationRelativeTo(parent);
         this.setVisible(true);
     }
@@ -53,19 +53,15 @@ public class AddAndEditStaffGUI extends JDialog{
 
         JPanel inputPanel = new JPanel(new GridLayout(4, 2, 10, 10));
         inputPanel.setBackground(UIConstants.MAIN_BACKGROUND);
-        inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        
+        inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));    
         inputPanel.add(new UILabel("Mã nhân viên:"));
-        inputPanel.add(txtMaNV = new JTextField());
-        
+        inputPanel.add(txtMaNV = new UITextField(0,0));  
         inputPanel.add(new UILabel("Tên nhân viên:"));
-        inputPanel.add(txtTenNV = new JTextField());
-        
+        inputPanel.add(txtTenNV = new UITextField(0,0)); 
         inputPanel.add(new UILabel("Email:"));
-        inputPanel.add(txtEmail = new JTextField());
-        
+        inputPanel.add(txtEmail = new UITextField(0,0));
         inputPanel.add(new UILabel("Số điện thọại"));
-        inputPanel.add(txtSDT = new JTextField());
+        inputPanel.add(txtSDT = new UITextField(0,0));
         
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 10));
         btnPanel.setBackground(UIConstants.MAIN_BACKGROUND);
@@ -139,8 +135,8 @@ public class AddAndEditStaffGUI extends JDialog{
                 JOptionPane.showMessageDialog(this, "Số điện thoại không được để trống!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
-            if (!sdt.matches("\\d{10,11}")) {
-                JOptionPane.showMessageDialog(this, "Số điện thoại phải có từ 10 đến 11 chữ số!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            if (!sdt.matches("0\\d{9}")) {
+                JOptionPane.showMessageDialog(this, "Số điện thoại phải có 10 chữ số!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 return false;
             }
         } catch (NumberFormatException e) {

@@ -47,8 +47,8 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 
 public class ImportBookMainContentGUI extends JPanel implements ReloadablePanel{
-    private UIButton btnAdd ,btnView, btnThemVaoPhieu, btnXoaKhoiPhieu, btnSuaSoLuong, btnAddToPN, btnSavePN;
-    private UITextField txtSearch, txtSoLuong, txtMaPN, txtMaNV, txtTongTien, txtSearchSach;
+    private UIButton btnAdd ,btnView, btnThemVaoPhieu, btnXoaKhoiPhieu, btnSuaSoLuong, btnAddToPN;
+    private UITextField txtSoLuong, txtMaPN, txtMaNV, txtTongTien, txtSearchSach;
     private JComboBox<String> cbMaNCC;
     private UITable tblContent, tblForProduct , tblForForm;
     private JPanel pnlHeader, pnlContent, pnlForm, pnlProduct;
@@ -85,14 +85,9 @@ public class ImportBookMainContentGUI extends JPanel implements ReloadablePanel{
         btnView.addActionListener(e -> viewChiTietPhieuNhap());
         pnlButton.add(btnAdd);
         pnlButton.add(btnView);
-        
-        JPanel pnlSearchFilter = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,10));
-        pnlSearchFilter.setBackground(UIConstants.MAIN_BACKGROUND);
-        txtSearch = new UITextField(190,30);
-        pnlSearchFilter.add(txtSearch);
+        applyPermissions(taiKhoan.getTenDangNhap(), 7);
 
         pnlHeader.add(pnlButton, BorderLayout.WEST);
-        pnlHeader.add(pnlSearchFilter, BorderLayout.CENTER);
         //==============================( End Panel Header )============================//
         
         
@@ -257,7 +252,6 @@ public class ImportBookMainContentGUI extends JPanel implements ReloadablePanel{
             JOptionPane.showMessageDialog(this, "Vui lòng chọn một phiếu nhập để xem chi tiết.", "Thông báo", JOptionPane.WARNING_MESSAGE);
             return;
         }
-
         int maPN = Integer.parseInt(tblContent.getValueAt(selectedRow, 0).toString());
         PhieuNhapDTO pn = phieuNhapBUS.getById(maPN);
 
@@ -427,10 +421,6 @@ public class ImportBookMainContentGUI extends JPanel implements ReloadablePanel{
             int maNCC = nhaCungCapBUS.getMaNccByTenNcc(cbMaNCC.getSelectedItem().toString());
             int tongTien = Integer.parseInt(txtTongTien.getText().trim());
             Date ngayNhap = getCurrentDate();
-            if (phieuNhapBUS.existsPhieuNhap(maPN)) {
-                JOptionPane.showMessageDialog(this, "Mã phiếu nhập đã tồn tại", "Lỗi", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
             PhieuNhapDTO phieuNhap = new PhieuNhapDTO(maPN, maNV, maNCC, tongTien, ngayNhap);
             if (!phieuNhapBUS.addPhieuNhap(phieuNhap)) {
                 JOptionPane.showMessageDialog(this, "Thêm phiếu nhập thất bại", "Lỗi", JOptionPane.ERROR_MESSAGE);

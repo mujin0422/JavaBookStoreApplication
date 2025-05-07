@@ -8,11 +8,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-/**
- *
- * @author Dell Vostro
- */
-
 public class ChiTietChucNangDAO {
     
     public int add(ChiTietChucNangDTO obj) {

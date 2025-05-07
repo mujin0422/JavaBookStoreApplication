@@ -14,23 +14,18 @@ public class NhaCungCapBUS{
     public ArrayList<NhaCungCapDTO> getAllNhaCungCap(){
         return nhaCungCapDAO.getAll();
     }
-
-    public NhaCungCapDTO getNhaCungCapById(int id){
+    public NhaCungCapDTO getById(int id){
         return nhaCungCapDAO.getById(id);
     }
-
     public boolean addNhaCungCap(NhaCungCapDTO ncc){
         return nhaCungCapDAO.add(ncc) > 0;
     }
-
     public boolean updateNhaCungCap(NhaCungCapDTO ncc){
         return nhaCungCapDAO.update(ncc) > 0;
     }
-
     public boolean deleteNhaCungCap(int maNCC){
         return nhaCungCapDAO.delete(maNCC) > 0;
     }
-    
     public String getNextMaNcc(){
         return nhaCungCapDAO.getNextMaNcc();
     }

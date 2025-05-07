@@ -2,10 +2,8 @@ package BUS;
 
 import DTO.PhieuXuatDTO;
 import DAO.PhieuXuatDAO;
-import DTO.DoanhThuDTO;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public class PhieuXuatBUS {
     private PhieuXuatDAO phieuXuatDAO;
@@ -33,11 +31,7 @@ public class PhieuXuatBUS {
     public String getNextMaPx(){
         return phieuXuatDAO.getNextMaPx();
     }
-    
-    public boolean existsPhieuXuat(int maPX){
-        return phieuXuatDAO.exists(maPX) > 0;
-    }
-    
+
     public ArrayList<PhieuXuatDTO> searchPhieuXuat(String keyword) {
         if (keyword == null || keyword.trim().isEmpty()) {
             return phieuXuatDAO.getAll();
@@ -59,7 +53,7 @@ public class PhieuXuatBUS {
     public int countPhieuXuatByMaKh(int maKh){
         return phieuXuatDAO.countPhieuXuatByMaKh(maKh);
     }
-    public List<DoanhThuDTO> getDoanhThuByDateRange(Date fromDate, Date toDate) {
-        return phieuXuatDAO.getDoanhThuByDateRange(fromDate, toDate);
+    public double getTongTienTheoNgay(Date ngay) {
+        return phieuXuatDAO.getTongTienTheoNgay(ngay);
     }
 }

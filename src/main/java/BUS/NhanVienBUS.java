@@ -14,19 +14,18 @@ public class NhanVienBUS {
     public ArrayList<NhanVienDTO> getAllNhanVien() {
         return NhanVienDAO.getAll();
     }
-
+    public NhanVienDTO getById(int id) {
+        return NhanVienDAO.getById(id);
+    }
     public boolean addNhanVien(NhanVienDTO nhanVien) {       
         return NhanVienDAO.add(nhanVien) > 0;
     }
-
     public boolean updateNhanVien(NhanVienDTO nhanVien) {
         return NhanVienDAO.update(nhanVien) > 0; 
     }
-
     public boolean deleteNhanVien(int maNV) {
         return NhanVienDAO.delete(maNV) > 0;  
     }
-    
     public String getNextMaNv(){
         return NhanVienDAO.getNextMaNv();
     }
@@ -57,5 +56,9 @@ public class NhanVienBUS {
             }
         }
         return ketQua;
+    }
+    
+    public ArrayList<NhanVienDTO> getAllNvNotExistsTk(){
+        return NhanVienDAO.getAllNvNotExistsTk();
     }
 }

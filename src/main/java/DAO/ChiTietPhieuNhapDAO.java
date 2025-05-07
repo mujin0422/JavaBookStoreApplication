@@ -8,10 +8,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-/**
- *
- * @author Dell Vostro
- */
 public class ChiTietPhieuNhapDAO {
     public int add(ChiTietPhieuNhapDTO obj) {
         String sql = "INSERT INTO chitietphieunhap(maSach, maPN, giaNhap, soLuong) VALUES(?,?,?,?)";

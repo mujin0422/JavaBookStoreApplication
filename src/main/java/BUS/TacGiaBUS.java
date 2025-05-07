@@ -14,19 +14,18 @@ public class TacGiaBUS {
     public ArrayList<TacGiaDTO> getAllTacGia() {
         return tacGiaDAO.getAll();
     }
-
+    public TacGiaDTO getById(int id){
+        return tacGiaDAO.getById(id);
+    }
     public boolean addTacGia(TacGiaDTO TG) {       
         return tacGiaDAO.add(TG) > 0;
     }
-
     public boolean updateTacGia(TacGiaDTO TG) {
         return tacGiaDAO.update(TG) > 0; 
     }
-
     public boolean deleteTacGia(int maTG) {
         return tacGiaDAO.delete(maTG) > 0;  
     }
-    
     public String getNextMaTg(){
         return tacGiaDAO.getNextMaTg();
     }

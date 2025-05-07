@@ -9,27 +9,26 @@ import DTO.TaiKhoanDTO;
 import Utils.UIButton;
 import Utils.UIConstants;
 import Utils.UILabel;
+import Utils.UITextField;
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.util.HashMap;
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 public class AddAndEditAccountGUI extends JDialog{
-    private JTextField txtTenDangNhap, txtMatKhau;
+    private UITextField txtTenDangNhap, txtMatKhau;
     private JComboBox cbMaNV, cbMaQuyen;
     private UIButton btnAdd, btnSave, btnCancel;
     private TaiKhoanBUS tkBus;
+    private NhanVienBUS nvBus;
+    private QuyenBUS quyenBus;
     private TaiKhoanDTO tk;
 
-    private HashMap<String,Integer> nvMap, quyenMap;
-    
     public AddAndEditAccountGUI(JFrame parent, TaiKhoanBUS tkBus, String title, String type, TaiKhoanDTO tk) {
         super(parent, title, true);
         this.tkBus = tkBus;
@@ -38,19 +37,15 @@ public class AddAndEditAccountGUI extends JDialog{
         if (tk != null) {
             txtTenDangNhap.setText(tk.getTenDangNhap());
             txtMatKhau.setText(tk.getMatKhau());
-            for (String tenNV : nvMap.keySet()) {
-                if (nvMap.get(tenNV) == tk.getMaNV()) {
-                    cbMaNV.setSelectedItem(tenNV);
-                    break;
-                }
+            
+            String tenNv = nvBus.getTenNvByMaNv(tk.getMaNV());
+            if (tenNv != null) {
+                cbMaNV.setSelectedItem(tenNv);
             }
-            for (String tenQuyen : quyenMap.keySet()) {
-                if (quyenMap.get(tenQuyen) == tk.getMaQuyen()) {
-                    cbMaQuyen.setSelectedItem(tenQuyen);
-                    break;
-                }
+            String tenQuyen = quyenBus.getTenQuyenByMaQuyen(tk.getMaQuyen());
+            if (tenQuyen != null) {
+                cbMaQuyen.setSelectedItem(tenQuyen);
             }
-
         }
         this.setLocationRelativeTo(parent);
         this.setVisible(true);
@@ -65,44 +60,43 @@ public class AddAndEditAccountGUI extends JDialog{
     }
 
     private void initComponent(String type) {
-        this.setSize(450, 300);
+        this.nvBus = new NhanVienBUS();
+        this.quyenBus = new QuyenBUS();
+        this.setSize(450, 280);
         this.setLayout(new BorderLayout());
         
         JPanel inputPanel = new JPanel(new GridLayout(4, 2, 10, 10));
-        inputPanel.setBackground(UIConstants.MAIN_BUTTON);
+        inputPanel.setBackground(UIConstants.MAIN_BACKGROUND);
         inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
         inputPanel.add(new UILabel("Tên đăng nhập:"));
-        inputPanel.add(txtTenDangNhap = new JTextField());
-        
+        inputPanel.add(txtTenDangNhap = new UITextField(0,0));
         inputPanel.add(new UILabel("Mật khẩu:"));
-        inputPanel.add(txtMatKhau = new JTextField());
-        
+        inputPanel.add(txtMatKhau = new UITextField(0,0));
         inputPanel.add(new UILabel("Nhân viên:"));
         cbMaNV = new JComboBox<>();
         cbMaNV.setBackground(UIConstants.WHITE_FONT);
-        nvMap = new HashMap<>();  
-        NhanVienBUS nhanVienBus = new NhanVienBUS();
-        for(NhanVienDTO nv : nhanVienBus.getAllNhanVien()){
-            cbMaNV.addItem(nv.getTenNV());
-            nvMap.put(nv.getTenNV(),nv.getMaNV());
+        if(type.equals("add")) {
+            for(NhanVienDTO nv : nvBus.getAllNvNotExistsTk()) {
+                cbMaNV.addItem(nv.getTenNV());
+            }
+        } else {
+            for(NhanVienDTO nv : nvBus.getAllNhanVien()) {
+                cbMaNV.addItem(nv.getTenNV());
+            }
         }
         inputPanel.add(cbMaNV);
-        
         inputPanel.add(new UILabel("Nhóm Quyền:"));
         cbMaQuyen = new JComboBox<>();
         cbMaQuyen.setBackground(UIConstants.WHITE_FONT);
-        quyenMap = new HashMap<>(); 
-        QuyenBUS quyenBus = new QuyenBUS();
         for(QuyenDTO quyen : quyenBus.getAllQuyen()){
             cbMaQuyen.addItem(quyen.getTenQuyen());
-            quyenMap.put(quyen.getTenQuyen(),quyen.getMaQuyen());
         }
         inputPanel.add(cbMaQuyen);
         
         
         JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
-        btnPanel.setBackground(UIConstants.MAIN_BUTTON);
+        btnPanel.setBackground(UIConstants.MAIN_BACKGROUND);
         btnAdd = new UIButton("add", "THÊM", 90, 35);
         btnSave = new UIButton("confirm", "LƯU", 90, 35);
         btnCancel = new UIButton("cancel", "HỦY", 90, 35);
@@ -125,8 +119,8 @@ public class AddAndEditAccountGUI extends JDialog{
         try {
             String tenDangNhap = txtTenDangNhap.getText().trim();
             String matKhau = txtMatKhau.getText().trim();
-            int maNV = nvMap.get(cbMaNV.getSelectedItem().toString());
-            int maQuyen = quyenMap.get(cbMaQuyen.getSelectedItem().toString());
+            int maNV = nvBus.getMaNvByTenNv(cbMaNV.getSelectedItem().toString());
+            int maQuyen = quyenBus.getMaQuyenByTenQuyen(cbMaQuyen.getSelectedItem().toString());
             TaiKhoanDTO tk = new TaiKhoanDTO(tenDangNhap, matKhau, maNV, maQuyen);
             if (tkBus.addTaiKhoan(tk)) {
                 JOptionPane.showMessageDialog(this, "Thêm tài khoản thành công!");
@@ -144,8 +138,8 @@ public class AddAndEditAccountGUI extends JDialog{
         try {
             String tenDangNhap = txtTenDangNhap.getText().trim();
             String matKhau = txtMatKhau.getText().trim();
-            int maNV = nvMap.get(cbMaNV.getSelectedItem().toString());
-            int maQuyen = quyenMap.get(cbMaQuyen.getSelectedItem().toString());
+            int maNV = nvBus.getMaNvByTenNv(cbMaNV.getSelectedItem().toString());
+            int maQuyen = quyenBus.getMaQuyenByTenQuyen(cbMaQuyen.getSelectedItem().toString());
             TaiKhoanDTO tk = new TaiKhoanDTO(tenDangNhap, matKhau, maNV, maQuyen);
             if (tkBus.updateTaiKhoan(tk)) {
                 JOptionPane.showMessageDialog(this, "Cập thật tài khoản thành công!");

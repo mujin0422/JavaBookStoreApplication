@@ -5,16 +5,18 @@ import DTO.NhaXuatBanDTO;
 import Utils.UIButton;
 import Utils.UIConstants;
 import Utils.UILabel;
-import java.awt.*;
+import Utils.UITextField;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 public class AddAndEditPublisherGUI extends JDialog {
-    private JTextField txtMaNXB, txtTenNXB;
+    private UITextField txtMaNXB, txtTenNXB;
     private UIButton btnAdd, btnSave, btnCancel;
     private NhaXuatBanBUS nxbBus;
     private NhaXuatBanDTO nxb;
@@ -27,7 +29,7 @@ public class AddAndEditPublisherGUI extends JDialog {
         if (nxb != null) {
             txtMaNXB.setText(String.valueOf(nxb.getMaNXB()));
             txtTenNXB.setText(nxb.getTenNXB());
-            txtMaNXB.setEnabled(false);
+            txtMaNXB.setEditable(false);
         }
         this.setLocationRelativeTo(parent);
         this.setVisible(true);
@@ -38,31 +40,33 @@ public class AddAndEditPublisherGUI extends JDialog {
         this.nxbBus = nxbBus;
         initComponent(type);
         txtMaNXB.setText(nxbBus.getNextMaNxb());
-        txtMaNXB.setEnabled(false);
+        txtMaNXB.setEditable(false);
         this.setLocationRelativeTo(parent);
         this.setVisible(true);
     }
 
     private void initComponent(String type) {
-        this.setSize(400, 200);
+        this.setSize(350, 180);
         this.setLayout(new BorderLayout());
 
         JPanel inputPanel = new JPanel(new GridLayout(2, 2, 10, 10));
         inputPanel.setBackground(UIConstants.MAIN_BACKGROUND);
         inputPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        inputPanel.add(new UILabel("Mã NXB:"));
-        inputPanel.add(txtMaNXB = new JTextField());
-        inputPanel.add(new UILabel("Tên NXB:"));
-        inputPanel.add(txtTenNXB = new JTextField());
+        inputPanel.add(new UILabel("Mã nhà xuất bản:"));
+        inputPanel.add(txtMaNXB = new UITextField(0,0));
+        inputPanel.add(new UILabel("Tên nhà xuất bản:"));
+        inputPanel.add(txtTenNXB = new UITextField(0,0));
 
-        JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 20, 10));
+        JPanel btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         btnPanel.setBackground(UIConstants.MAIN_BACKGROUND);
         btnAdd = new UIButton("add", "THÊM", 90, 35);
         btnSave = new UIButton("confirm", "LƯU", 90, 35);
         btnCancel = new UIButton("cancel", "HỦY", 90, 35);
 
-        if ("add".equals(type)) btnPanel.add(btnAdd);
-        if ("save".equals(type)) btnPanel.add(btnSave);
+        switch (type) {
+            case "add" -> btnPanel.add(btnAdd);
+            case "save" -> btnPanel.add(btnSave);
+        }
         btnPanel.add(btnCancel);
 
         this.add(inputPanel, BorderLayout.CENTER);

@@ -1,9 +1,10 @@
 package BUS;
 import DAO.KhachHangDAO;
 import DTO.KhachHangDTO;
+import DTO.ThongKeKhachHangDTO;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+
 public class KhachHangBUS {
     private KhachHangDAO khachHangDAO;
    
@@ -12,6 +13,9 @@ public class KhachHangBUS {
     }
     public ArrayList<KhachHangDTO> getAllKhachHang() {
         return khachHangDAO.getAll();
+    }
+    public KhachHangDTO getById(int maKh){
+        return khachHangDAO.getById(maKh);
     }
     public boolean addKhachHang(KhachHangDTO khachHang) {
         return khachHangDAO.add(khachHang) > 0;
@@ -25,11 +29,14 @@ public class KhachHangBUS {
     public String getNextMaKh(){
         return khachHangDAO.getNextMaKH();
     }
-    
-    public int getMaKhByTenKh(String tenKh){
-        return khachHangDAO.getMaKhByTenKh(tenKh);
+    public boolean existsSDT(String std) {
+        return khachHangDAO.existsSDT(std);
     }
-    public String getTenKhByMaKh(int maKh){
+    
+    public KhachHangDTO getKhBySDT(String sdt) {
+        return khachHangDAO.getKhBySDT(sdt);
+    }
+    public String getTenKhByMaKh(int maKh) {
         return khachHangDAO.getTenKhByMaKh(maKh);
     }
 
@@ -49,17 +56,8 @@ public class KhachHangBUS {
         return ketQua;
     }
     
-    public List<Object[]> getTopKhachMuaNhieu() {
-        return khachHangDAO.getTopKhachMuaNhieu();
-    }
-    public List<Object[]> getKhachHangTheoNgay(Date fromDate, Date toDate) {
+    public ArrayList<ThongKeKhachHangDTO> thongKeKhachHangTheoNgay(Date fromDate, Date toDate) {
         return khachHangDAO.thongKeKhachHangTheoNgay(fromDate, toDate);
-    }
-    public List<Object[]> getKhachHangTheoThang(String monthYear) { 
-        return khachHangDAO.getKhachHangTheoThang(monthYear);
-    }
-    public List<Object[]> getDanhSachKhachDaMua() {
-        return khachHangDAO.getDanhSachKhachDaMua();
     }
 }
 
