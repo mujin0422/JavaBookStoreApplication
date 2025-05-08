@@ -3,7 +3,6 @@ import DTO.SachDTO;
 import DAO.SachDAO;
 import DTO.ThongKeSachDTO;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class SachBUS {
     private SachDAO sachDAO;
@@ -31,14 +30,8 @@ public class SachBUS {
         return sachDAO.getNextMaSach();
     }
     
-    public int getSoLuongTonSach(int maSach){
-        return sachDAO.getSoLuongTonSach(maSach);
-    }
     public boolean updateSoLuongTonSach(int maSach, int soLuongTon){
         return sachDAO.updateSoLuongTonSach(maSach, soLuongTon) > 0;
-    }
-    public String getTenNxbByMaSach(int maSach){
-        return sachDAO.getTenNxbByMaSach(maSach);
     }
     
     public ArrayList<SachDTO> searchSach(String keyword) {
@@ -56,23 +49,7 @@ public class SachBUS {
         }
         return ketQua;
     }
-    public ArrayList<SachDTO> filterSach(int maNXB) {
-        ArrayList<SachDTO> ketQua = new ArrayList<>();
-        for (SachDTO sach : sachDAO.getAll()) {
-            if (sach.getMaNXB() == maNXB) {
-                ketQua.add(sach);
-            }
-        }
-        return ketQua;
-    }
     
-     public int getGiaSachByMaSach(int maSach) {
-        return sachDAO.getGiaSachByMaSach(maSach);
-    }
-
-    public String getTenSachByMaSach(int maSach){
-        return sachDAO.getTenSachByMaSach(maSach);
-    }
     public ArrayList<ThongKeSachDTO> getThongKeSach(java.sql.Date ngayBatDau, java.sql.Date ngayKetThuc) {
         return sachDAO.getThongKeSach(ngayBatDau, ngayKetThuc);
     }

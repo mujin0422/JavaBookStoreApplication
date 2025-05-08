@@ -36,11 +36,13 @@ public class BookMainContentGUI extends JPanel implements ReloadablePanel{
     private JPanel pnlHeader, pnlContent;
     private DefaultTableModel tableModel;
     private SachBUS sachBUS;
+    private NhaXuatBanBUS nhaXuatBanBUS;
     private TaiKhoanBUS taiKhoanBUS;
 
     public BookMainContentGUI(TaiKhoanDTO taiKhoan) {
         taiKhoanBUS = new TaiKhoanBUS();
         sachBUS = new SachBUS();
+        nhaXuatBanBUS = new NhaXuatBanBUS();
         this.setBackground(UIConstants.SUB_BACKGROUND);
         this.setPreferredSize(new Dimension(UIConstants.WIDTH_CONTENT, UIConstants.HEIGHT_CONTENT));
         this.setLayout(new BorderLayout(5, 5));
@@ -110,7 +112,7 @@ public class BookMainContentGUI extends JPanel implements ReloadablePanel{
                 sach.getMaSach(),
                 sach.getTenSach(),
                 sach.getGiaSach(),
-                sachBUS.getTenNxbByMaSach(sach.getMaSach()),
+                nhaXuatBanBUS.getById(sachBUS.getById(sach.getMaSach()).getMaNXB()).getTenNXB(),
                 sach.getSoLuongTon()
             });
         }
@@ -170,7 +172,7 @@ public class BookMainContentGUI extends JPanel implements ReloadablePanel{
                 sach.getMaSach(),
                 sach.getTenSach(),
                 sach.getGiaSach(),
-                sachBUS.getTenNxbByMaSach(sach.getMaSach()),
+                nhaXuatBanBUS.getById(sachBUS.getById(sach.getMaSach()).getMaNXB()).getTenNXB(),
                 sach.getSoLuongTon()
             });
         }

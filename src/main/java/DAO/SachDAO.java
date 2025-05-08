@@ -112,22 +112,6 @@ public class SachDAO {
         return "1";
     }
     
-    public int getSoLuongTonSach(int maSach){
-        String sql = "SELECT soLuongTon FROM sach WHERE maSach=?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, maSach);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt("soLuongTon");
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return -1;
-    }
-    
     public int updateSoLuongTonSach(int maSach, int soLuongTon) {
         String sql = "UPDATE sach SET soLuongTon = ? WHERE maSach = ?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -140,66 +124,28 @@ public class SachDAO {
         }
         return 0;
     }
-    
-    public String getTenNxbByMaSach(int maSach){
-        String sql = "SELECT tenNXB FROM sach sch "
-                + "JOIN nhaxuatban nxb WHERE sch.maNXB=nxb.maNXB AND maSach=?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, maSach);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getString("tenNXB");
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-            
-    public String getTenSachByMaSach(int maSach){
-        String sql ="SELECT tenSach FROM sach WHERE maSach =?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, maSach);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getString("tenSach");
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-     public int getGiaSachByMaSach(int maSach) {
-        int giaSach = 0;
-        String sql = "SELECT giaSach FROM sach WHERE maSach = ?"; 
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, maSach);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getInt("giaSach");
-            }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace(); 
-        }
-        return giaSach;
-    }
 
     public ArrayList<ThongKeSachDTO> getThongKeSach(Date ngayBatDau, Date ngayKetThuc) {
         ArrayList<ThongKeSachDTO> resultList = new ArrayList<>();
-        String query = "SELECT s.maSach, s.tenSach, SUM(ctpn.soLuong) AS soLuongNhap, SUM(ctpx.soLuong) AS soLuongXuat "
-                + "FROM sach s "
-                + "LEFT JOIN chitietphieunhap ctpn ON s.maSach = ctpn.maSach "
-                + "LEFT JOIN chitietphieuxuat ctpx ON s.maSach = ctpx.maSach "
-                + "LEFT JOIN phieunhap pn ON pn.maPN = ctpn.maPN AND pn.ngayNhap BETWEEN ? AND ? "
-                + "LEFT JOIN phieuxuat px ON px.maPX = ctpx.maPX AND px.ngayXuat BETWEEN ? AND ? "
-                + "GROUP BY s.maSach, s.tenSach "
-                + "ORDER BY soLuongXuat DESC";
+        String query = "SELECT s.maSach, s.tenSach, " +
+                        "       COALESCE(nhap.soLuongNhap, 0) AS soLuongNhap, " +
+                        "       COALESCE(xuat.soLuongXuat, 0) AS soLuongXuat " +
+                        "FROM sach s " +
+                        "LEFT JOIN ( " +
+                        "    SELECT ctpn.maSach, SUM(ctpn.soLuong) AS soLuongNhap " +
+                        "    FROM chitietphieunhap ctpn " +
+                        "    JOIN phieunhap pn ON ctpn.maPN = pn.maPN " +
+                        "    WHERE pn.ngayNhap BETWEEN ? AND ? " +
+                        "    GROUP BY ctpn.maSach " +
+                        ") nhap ON s.maSach = nhap.maSach " +
+                        "LEFT JOIN ( " +
+                        "    SELECT ctpx.maSach, SUM(ctpx.soLuong) AS soLuongXuat " +
+                        "    FROM chitietphieuxuat ctpx " +
+                        "    JOIN phieuxuat px ON ctpx.maPX = px.maPX " +
+                        "    WHERE px.ngayXuat BETWEEN ? AND ? " +
+                        "    GROUP BY ctpx.maSach " +
+                        ") xuat ON s.maSach = xuat.maSach " +
+                        "ORDER BY soLuongXuat DESC";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pst = conn.prepareStatement(query)) {

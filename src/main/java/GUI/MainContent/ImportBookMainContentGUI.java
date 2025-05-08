@@ -280,7 +280,7 @@ public class ImportBookMainContentGUI extends JPanel implements ReloadablePanel{
         panelChiTiet.add(lblHeader);
 
         for (ChiTietPhieuNhapDTO ct : chiTietPhieuNhapBUS.getAllChiTietPhieuNhapByMaPn(maPN)) {
-            UILabel lblRow = new UILabel(String.format("%-40s %-10s %-15s", sachBUS.getTenSachByMaSach(ct.getMaSach()), ct.getSoLuong(),ct.getGiaNhap()), 600, 25);
+            UILabel lblRow = new UILabel(String.format("%-40s %-10s %-15s", sachBUS.getById(ct.getMaSach()).getTenSach(), ct.getSoLuong(),ct.getGiaNhap()), 600, 25);
             lblRow.setFont(monoFont);
             panelChiTiet.add(lblRow);
         }
@@ -365,7 +365,7 @@ public class ImportBookMainContentGUI extends JPanel implements ReloadablePanel{
             }
             int newSoLuong = Integer.parseInt(soLuongText);
             int maSach = Integer.parseInt(tblForForm.getValueAt(selectedRow, 0).toString());
-            int giaSach = sachBUS.getGiaSachByMaSach(maSach); 
+            int giaSach = sachBUS.getById(maSach).getGiaSach(); 
             int thanhTien = newSoLuong * giaSach;
             tableModelForForm.setValueAt(newSoLuong, selectedRow, 2); // Update So Luong column
             tableModelForForm.setValueAt(thanhTien, selectedRow, 3); // Update Thanh Tien column
@@ -439,7 +439,7 @@ public class ImportBookMainContentGUI extends JPanel implements ReloadablePanel{
                     return;
                 }
                 // Cập nhật tồn kho
-                int soLuongHienTai = sachBUS.getSoLuongTonSach(maSach);
+                int soLuongHienTai = sachBUS.getById(maSach).getSoLuongTon();
                 sachBUS.updateSoLuongTonSach(maSach, soLuongHienTai + soLuong);
             }
             JOptionPane.showMessageDialog(this, "Thêm phiếu nhập thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);

@@ -279,7 +279,7 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
         panelChiTiet.add(lblHeader);
 
         for (ChiTietPhieuXuatDTO ct : chiTietPhieuXuatBUS.getAllChiTietPhieuXuatByMaPx(maPX)) {
-            UILabel lblRow = new UILabel(String.format("%-40s %-10s %-15s", sachBUS.getTenSachByMaSach(ct.getMaSach()), ct.getSoLuong(),ct.getGiaBan()), 600, 25);
+            UILabel lblRow = new UILabel(String.format("%-40s %-10s %-15s", sachBUS.getById(ct.getMaSach()).getTenSach(), ct.getSoLuong(),ct.getGiaBan()), 600, 25);
             lblRow.setFont(monoFont);
             panelChiTiet.add(lblRow);
         }
@@ -311,7 +311,7 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
             JOptionPane.showMessageDialog(this, "Số lượng không hợp lệ", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        if (Integer.parseInt(soLuongText) > sachBUS.getSoLuongTonSach(Integer.parseInt(tblForProduct.getValueAt(selectedRow, 0).toString()))){
+        if (Integer.parseInt(soLuongText) > sachBUS.getById(Integer.parseInt(tblForProduct.getValueAt(selectedRow, 0).toString())).getSoLuongTon()){
             JOptionPane.showMessageDialog(this, "Số lượng sách bán ra không đuọc lớn hơn số lượng sách trong kho", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -383,12 +383,12 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
                 int newSoLuong = Integer.parseInt(soLuongText);
                 int maSach = Integer.parseInt(tblForForm.getValueAt(selectedRow, 0).toString());
                 // Kiểm tra xem số lượng mới có vượt quá số lượng tồn kho không
-                if (newSoLuong > sachBUS.getSoLuongTonSach(maSach)){
+                if (newSoLuong > sachBUS.getById(maSach).getSoLuongTon()){
                     JOptionPane.showMessageDialog(dialog, "Số lượng sách bán ra không được lớn hơn số lượng sách trong kho", "Lỗi", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
                 // Lấy giá của cuốn sách cho hàng này            
-                int giaSach = sachBUS.getGiaSachByMaSach(maSach); 
+                int giaSach = sachBUS.getById(maSach).getGiaSach(); 
                 // Tính toán lại tổng cho hàng này
                 int thanhTien = newSoLuong * giaSach;
                 // Cập nhật số lượng và tổng giá trong mô hình bảng
@@ -418,6 +418,8 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
         txtMaPX.setText(phieuXuatBUS.getNextMaPx());
         txtMaPX.setEditable(false);
         tableModelForForm.setRowCount(0);
+        txtSdtKH.setText("");
+        txtTongTien.setText("");
     }
     
     private boolean checkFormInput(){
@@ -460,7 +462,7 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
                     return;
                 }
                     //cap nhat so lai so luong ton
-                int soLuongHienTai = sachBUS.getSoLuongTonSach(maSach); 
+                int soLuongHienTai = sachBUS.getById(maSach).getSoLuongTon(); 
                 int soLuongMoi = soLuongHienTai - soluong;
                 sachBUS.updateSoLuongTonSach(maSach, soLuongMoi);
             }
