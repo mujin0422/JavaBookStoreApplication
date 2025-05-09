@@ -170,7 +170,6 @@ public final class MainLayoutGUI extends JFrame {
     private void switchPanel(JPanel newPanel) {
         pnlContent.removeAll();
         pnlContent.add(newPanel, BorderLayout.CENTER);
-        
         pnlContent.revalidate();
         pnlContent.repaint();
     }
@@ -190,13 +189,13 @@ public final class MainLayoutGUI extends JFrame {
         gbc.gridy = 0;
         gbc.insets = new Insets(10, 10, 10, 10); 
         JLabel lblWelcome = new JLabel();
-        lblWelcome.setFont(new Font("Segoe UI", Font.BOLD, 40));
+        lblWelcome.setFont(new Font("Segoe UI", Font.BOLD, 60));
         lblWelcome.setForeground(UIConstants.BLACK_FONT);
         lblWelcome.setText("Xin chào, " + taiKhoan.getTenDangNhap() + "!");
         panel.add(lblWelcome, gbc);
         gbc.gridy++; 
         JLabel lblMessage = new JLabel();
-        lblMessage.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+        lblMessage.setFont(new Font("Segoe UI", Font.PLAIN, 44));
         lblMessage.setForeground(UIConstants.BLACK_FONT);
         lblMessage.setText("Chúc bạn có một ngày làm việc vui vẻ!");
         panel.add(lblMessage, gbc);

@@ -188,7 +188,7 @@ public class BookMainContentGUI extends JPanel implements ReloadablePanel{
         SachDTO sach = sachBUS.getById(maSach);
         // Lấy thông tin Nhà xuất bản
         NhaXuatBanBUS nhaXuatBanBUS = new NhaXuatBanBUS();
-        String tenNXB = nhaXuatBanBUS.getTenNhaXuatBanById(sach.getMaNXB());
+        String tenNXB = nhaXuatBanBUS.getById(sach.getMaNXB()).getTenNXB();
         // Lấy danh sách tác giả
         TacGiaBUS tacGiaBUS = new TacGiaBUS();
         ArrayList<String> dsTacGia = tacGiaBUS.getTacGiaByMaSach(maSach);

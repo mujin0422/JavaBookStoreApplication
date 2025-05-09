@@ -219,8 +219,6 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
     
     private void applyPermissions(String username, int maCN) {
         btnAdd.setVisible(taiKhoanBUS.hasPermission(username, maCN, "add"));
-//        btnEdit.setVisible(taiKhoanBUS.hasPermission(username, maCN, "edit"));
-//        btnDelete.setVisible(taiKhoanBUS.hasPermission(username, maCN, "delete"));
     }
     
     public void loadTableData(){

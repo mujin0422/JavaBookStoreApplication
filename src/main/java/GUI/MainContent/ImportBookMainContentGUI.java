@@ -35,7 +35,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
-import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -48,8 +47,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class ImportBookMainContentGUI extends JPanel implements ReloadablePanel{
     private UIButton btnAdd ,btnView, btnThemVaoPhieu, btnXoaKhoiPhieu, btnSuaSoLuong, btnAddToPN;
-    private UITextField txtSoLuong, txtMaPN, txtMaNV, txtTongTien, txtSearchSach;
-    private JComboBox<String> cbMaNCC;
+    private UITextField txtSoLuong, txtMaPN, txtMaNV, txtMaNCC, txtTenNCC, txtTongTien, txtSearchSach;
     private UITable tblContent, tblForProduct , tblForForm;
     private JPanel pnlHeader, pnlContent, pnlForm, pnlProduct;
     private DefaultTableModel tableModel, tableModelForProduct, tableModelForForm;
@@ -98,14 +96,14 @@ public class ImportBookMainContentGUI extends JPanel implements ReloadablePanel{
         JPanel pnlFormNorth = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 5));
         pnlFormNorth.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
         pnlFormNorth.setBackground(UIConstants.MAIN_BACKGROUND);
-        pnlFormNorth.setPreferredSize(new Dimension(0, 100));
+        pnlFormNorth.setPreferredSize(new Dimension(0, 130));
 
-        pnlFormNorth.add(new UILabel("Mã phiếu nhập:", 120, 25));
-        txtMaPN = new UITextField(370,25);
+        pnlFormNorth.add(new UILabel("Mã phiếu nhập:", 125, 25));
+        txtMaPN = new UITextField(380,25);
         pnlFormNorth.add(txtMaPN);
         
-        pnlFormNorth.add(new UILabel("Nhân viên :", 120, 25));
-        txtMaNV = new UITextField(370, 25);
+        pnlFormNorth.add(new UILabel("Nhân viên:", 125, 25));
+        txtMaNV = new UITextField(380, 25);
         NhanVienDTO nhanVien = nhanVienBUS.getCurrentStaffByUserName(taiKhoan.getTenDangNhap());
         if (nhanVien != null) {
             txtMaNV.setText(nhanVien.getTenNV()); 
@@ -113,14 +111,14 @@ public class ImportBookMainContentGUI extends JPanel implements ReloadablePanel{
         }
         pnlFormNorth.add(txtMaNV);
         
-        pnlFormNorth.add(new UILabel("Nhà cung cấp :", 120, 25));
-        cbMaNCC = new JComboBox<>();
-        cbMaNCC.setPreferredSize(new Dimension(370, 25));
-        cbMaNCC.setBackground(UIConstants.WHITE_FONT);
-        for(NhaCungCapDTO ncc : nhaCungCapBUS.getAllNhaCungCap()){
-            cbMaNCC.addItem(ncc.getTenNCC());
-        }
-        pnlFormNorth.add(cbMaNCC);
+        pnlFormNorth.add(new UILabel("Mã nhà cung cấp:", 125, 25));
+        txtMaNCC = new UITextField(380, 25);
+        pnlFormNorth.add(txtMaNCC);
+        
+        pnlFormNorth.add(new UILabel("Nhà cung cấp:", 125, 25));
+        txtTenNCC = new UITextField(380, 25);
+        txtTenNCC.setEditable(false);
+        pnlFormNorth.add(txtTenNCC);
             //CENTER
         String[] columnsForm = {"MÃ SÁCH", "TÊN SÁCH", "SỐ LƯỢNG", "THÀNH TIỀN"};
         tableModelForForm = new DefaultTableModel(columnsForm, 0);
@@ -220,8 +218,6 @@ public class ImportBookMainContentGUI extends JPanel implements ReloadablePanel{
     
     private void applyPermissions(String username, int maCN) {
         btnAdd.setVisible(taiKhoanBUS.hasPermission(username, maCN, "add"));
-//        btnEdit.setVisible(taiKhoanBUS.hasPermission(username, maCN, "edit"));
-//        btnDelete.setVisible(taiKhoanBUS.hasPermission(username, maCN, "delete"));
     }
     
     public void loadTableData(){
@@ -398,10 +394,17 @@ public class ImportBookMainContentGUI extends JPanel implements ReloadablePanel{
         txtMaPN.setText(phieuNhapBUS.getNextMaPn());
         txtMaPN.setEditable(false);
         tableModelForForm.setRowCount(0);
+        txtMaNCC.setText("");
+        txtTongTien.setText("");
     }
     
     private boolean checkFormInput(){
         try {
+            String tenNCC = txtTenNCC.getText().trim();
+            if (tenNCC.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Chưa tồn tại nhà cung cấp !", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
             if (tblForForm.getRowCount() == 0) {
                 JOptionPane.showMessageDialog(this, "Chưa có sản phẩm nào trong phiếu nhập!", "Lỗi", JOptionPane.ERROR_MESSAGE);
                 return false;
@@ -418,7 +421,7 @@ public class ImportBookMainContentGUI extends JPanel implements ReloadablePanel{
         try {
             int maPN = Integer.parseInt(txtMaPN.getText().trim());
             int maNV = nhanVienBUS.getMaNvByTenNv(txtMaNV.getText().trim());
-            int maNCC = nhaCungCapBUS.getMaNccByTenNcc(cbMaNCC.getSelectedItem().toString());
+            int maNCC = Integer.parseInt(txtMaNCC.getText().trim());
             int tongTien = Integer.parseInt(txtTongTien.getText().trim());
             Date ngayNhap = getCurrentDate();
             PhieuNhapDTO phieuNhap = new PhieuNhapDTO(maPN, maNV, maNCC, tongTien, ngayNhap);
@@ -449,7 +452,6 @@ public class ImportBookMainContentGUI extends JPanel implements ReloadablePanel{
             JOptionPane.showMessageDialog(this, "Dữ liệu nhập không hợp lệ!", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
         
-        
         Container parent = this.getParent();
         while (parent != null && !(parent instanceof JFrame)) {
             parent = parent.getParent();
@@ -473,8 +475,15 @@ public class ImportBookMainContentGUI extends JPanel implements ReloadablePanel{
             @Override
             public void changedUpdate(DocumentEvent e) { searchBook(); }
         });
+        txtMaNCC.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) { loadTenNhaCungCapFromMaNCC(); }
+            @Override
+            public void removeUpdate(DocumentEvent e) { loadTenNhaCungCapFromMaNCC(); }
+            @Override
+            public void changedUpdate(DocumentEvent e) { loadTenNhaCungCapFromMaNCC(); }
+        });
     }
-    
     private void searchBook() {
         String keyword = txtSearchSach.getText().trim().toLowerCase();
         tableModelForProduct.setRowCount(0); 
@@ -487,5 +496,15 @@ public class ImportBookMainContentGUI extends JPanel implements ReloadablePanel{
                 sach.getSoLuongTon()
             });
         }
+    }
+    private void loadTenNhaCungCapFromMaNCC() {
+        String maNCC = txtMaNCC.getText().trim();
+        if (!maNCC.matches("\\d{1}")) {
+            txtTenNCC.setText("");
+            return;
+        }
+        NhaCungCapDTO nhaCungCap = nhaCungCapBUS.getById(Integer.parseInt(maNCC));
+        if (nhaCungCap != null) 
+            txtTenNCC.setText(nhaCungCap.getTenNCC());
     }
 }

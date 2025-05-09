@@ -49,7 +49,7 @@ public class AddAndEditBookGUI extends JDialog {
             txtTenSach.setText(sach.getTenSach());
             txtGia.setText(String.valueOf(sach.getGiaSach()));
 
-            String tenNXB = nhaXuatBanBus.getTenNhaXuatBanById(sach.getMaNXB());
+            String tenNXB = nhaXuatBanBus.getById(sach.getMaNXB()).getTenNXB();
             if (tenNXB != null) {
                 cbMaNXB.setSelectedItem(tenNXB);
             }

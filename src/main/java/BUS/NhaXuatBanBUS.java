@@ -29,11 +29,6 @@ public class NhaXuatBanBUS {
     public String getNextMaNxb(){
         return nhaXuatBanDAO.getNextMaNxb();
     }
-    
-    public String getTenNhaXuatBanById(int id){
-        return nhaXuatBanDAO.getTenNhaXuatBanById(id);
-    }
-    
     public int getMaNxbByTenNxb(String tenNxb){
         return nhaXuatBanDAO.getMaNxbByTenNxb(tenNxb);
     }

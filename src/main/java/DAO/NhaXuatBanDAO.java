@@ -94,20 +94,6 @@ public class NhaXuatBanDAO {
         return "1";
     }
     
-    public String getTenNhaXuatBanById(int maNXB) {
-        String sql = "SELECT tenNXB FROM nhaxuatban WHERE maNXB = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)){
-            ps.setInt(1, maNXB);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return rs.getString("tenNXB");
-            }
-        } catch (SQLException e) {
-        }
-        return null;
-    }
-    
     public int getMaNxbByTenNxb(String tenNxb){
         String sql = "SELECT maNXB FROM nhaxuatban WHERE tenNXB = ?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -121,18 +107,4 @@ public class NhaXuatBanDAO {
         }
         return 0;
     }
-    
-//    public boolean exists(int maNXB) {
-//        String sql = "SELECT 1 FROM nhaxuatban WHERE maNXB = ? LIMIT 1";
-//        try (Connection conn = DatabaseConnection.getConnection();
-//             PreparedStatement ps = conn.prepareStatement(sql)) {
-//            ps.setInt(1, maNXB);
-//            try (ResultSet rs = ps.executeQuery()) {
-//                return rs.next();
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return false;
-//    }
 }
