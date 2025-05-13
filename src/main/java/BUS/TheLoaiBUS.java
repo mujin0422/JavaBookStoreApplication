@@ -29,18 +29,13 @@ public class TheLoaiBUS {
     public String getNextMaTl(){
         return theLoaiDAO.getNextMaTl();
     }
-    
-    public String getTenTheLoaiById(int maTL){
-        return theLoaiDAO.getTenTheLoaiById(maTL);
-    }
-    
+      
     public ArrayList<String> getTheLoaiByMaSach(int maSach) {
         ArrayList<String> danhSachTenTL = new ArrayList<>();
         TheLoaiDAO theLoaiDAO = new TheLoaiDAO();
-
         ArrayList<Integer> danhSachMaTL = theLoaiDAO.getMaTheLoaiBySach(maSach);
         for (int maTL : danhSachMaTL) {
-            String tenTL = theLoaiDAO.getTenTheLoaiById(maTL);
+            String tenTL = theLoaiDAO.getById(maTL).getTenTL();
             danhSachTenTL.add(tenTL);
         }
         return danhSachTenTL;

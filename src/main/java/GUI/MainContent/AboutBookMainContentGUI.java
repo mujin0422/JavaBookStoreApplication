@@ -120,7 +120,6 @@ public class AboutBookMainContentGUI extends JPanel{
         loadTableDataTheLoai();
     }
     
-    //==================================================================================
     private void applyPermissions(String username, int maCN) {
         addNXB.setVisible(taiKhoanBUS.hasPermission(username, maCN, "add"));
         addTG.setVisible(taiKhoanBUS.hasPermission(username, maCN, "add"));
@@ -133,7 +132,7 @@ public class AboutBookMainContentGUI extends JPanel{
         deleteTL.setVisible(taiKhoanBUS.hasPermission(username, maCN, "delete"));
     }
     
-    
+    //NHA XUAT BAN
     private void loadTableDataNhaXuatBan(){
         tableModelNXB.setRowCount(0);
         for (NhaXuatBanDTO nxb : nxbBus.getAllNhaXuatBan()) {
@@ -175,7 +174,7 @@ public class AboutBookMainContentGUI extends JPanel{
         }
     }
     
-    //==================================================================================
+    //TAC GIA
     private void loadTableDataTacGia() {
         tableModelTG.setRowCount(0);  
         for (TacGiaDTO tg : tgBus.getAllTacGia()) {
@@ -217,7 +216,7 @@ public class AboutBookMainContentGUI extends JPanel{
         }
     }
     
-    //==================================================================================
+    //THE LOAI
     private void loadTableDataTheLoai() {
         tableModelTL.setRowCount(0);
         for (TheLoaiDTO tl : tlBus.getAllTheLoai()) {

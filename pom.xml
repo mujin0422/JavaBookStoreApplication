@@ -22,14 +22,24 @@
             <version>1.4</version>
         </dependency>
         <dependency>
-            <groupId>com.itextpdf</groupId>
-            <artifactId>kernel</artifactId>
-            <version>7.1.16</version>
+            <groupId>org.jfree</groupId>
+            <artifactId>jfreechart</artifactId>
+            <version>1.5.4</version> <!-- Latest stable version as of now -->
+        </dependency>
+        <dependency>
+            <groupId>org.jfree</groupId>
+            <artifactId>jcommon</artifactId>
+            <version>1.0.23</version>
         </dependency>
         <dependency>
             <groupId>com.itextpdf</groupId>
-            <artifactId>layout</artifactId>
-            <version>7.1.16</version>
+            <artifactId>itextpdf</artifactId>
+            <version>5.5.13.3</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.2.3</version> <!-- hoặc bản mới hơn -->
         </dependency>
     </dependencies>
 </project>

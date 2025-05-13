@@ -9,6 +9,7 @@ import Utils.UIConstants;
 import Utils.UILabel;
 import Utils.UITextField;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
@@ -41,7 +42,7 @@ public class AddAndEditStaffGUI extends JDialog{
             txtSDT.setText(nv.getSdt());
             txtMaNV.setEditable(false);
             cbMaVT.setSelectedItem(nv.getMaVT());
-            txtVaiTro.setText(vtBus.getTenVtByMaVt(nv.getMaVT()));
+            txtVaiTro.setText(vtBus.getById(nv.getMaVT()).getTenVT());
         }
         this.setLocationRelativeTo(parent);
         this.setVisible(true);
@@ -76,6 +77,7 @@ public class AddAndEditStaffGUI extends JDialog{
         inputPanel.add(new UILabel("Vai Trò:"));
         JPanel groupVT = new JPanel(new BorderLayout(5,0));
         cbMaVT = new JComboBox();
+        cbMaVT.setBackground(Color.white);
         cbMaVT.setPreferredSize(new Dimension(40,0));
         cbMaVT.removeAllItems(); 
         for (VaiTroDTO vt : vtBus.getAllVaiTro()) {
@@ -86,7 +88,7 @@ public class AddAndEditStaffGUI extends JDialog{
             public void actionPerformed(ActionEvent e) {
                 Integer selectedMaVT = (Integer) cbMaVT.getSelectedItem();
                 if (selectedMaVT != null) {
-                    String tenVT = vtBus.getTenVtByMaVt(selectedMaVT);
+                    String tenVT = vtBus.getById(selectedMaVT).getTenVT();
                     txtVaiTro.setText(tenVT);
                 }
             }

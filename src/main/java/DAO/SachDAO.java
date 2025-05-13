@@ -128,43 +128,58 @@ public class SachDAO {
     public ArrayList<ThongKeSachDTO> getThongKeSach(Date ngayBatDau, Date ngayKetThuc) {
         ArrayList<ThongKeSachDTO> resultList = new ArrayList<>();
         String query = "SELECT s.maSach, s.tenSach, " +
-                        "       COALESCE(nhap.soLuongNhap, 0) AS soLuongNhap, " +
-                        "       COALESCE(xuat.soLuongXuat, 0) AS soLuongXuat " +
-                        "FROM sach s " +
-                        "LEFT JOIN ( " +
-                        "    SELECT ctpn.maSach, SUM(ctpn.soLuong) AS soLuongNhap " +
-                        "    FROM chitietphieunhap ctpn " +
-                        "    JOIN phieunhap pn ON ctpn.maPN = pn.maPN " +
-                        "    WHERE pn.ngayNhap BETWEEN ? AND ? " +
-                        "    GROUP BY ctpn.maSach " +
-                        ") nhap ON s.maSach = nhap.maSach " +
-                        "LEFT JOIN ( " +
-                        "    SELECT ctpx.maSach, SUM(ctpx.soLuong) AS soLuongXuat " +
-                        "    FROM chitietphieuxuat ctpx " +
-                        "    JOIN phieuxuat px ON ctpx.maPX = px.maPX " +
-                        "    WHERE px.ngayXuat BETWEEN ? AND ? " +
-                        "    GROUP BY ctpx.maSach " +
-                        ") xuat ON s.maSach = xuat.maSach " +
-                        "ORDER BY soLuongXuat DESC";
+                       "       COALESCE(nhap.soLuongNhap, 0) AS soLuongNhap, " +
+                       "       COALESCE(xuat.soLuongXuat, 0) AS soLuongXuat, " +
+                       "       (COALESCE(tongNhap.soLuongNhap, 0) - COALESCE(tongXuat.soLuongXuat, 0)) AS soLuongTon " +
+                       "FROM sach s " +
+                       "LEFT JOIN ( " +
+                       "    SELECT ctpn.maSach, SUM(ctpn.soLuong) AS soLuongNhap " +
+                       "    FROM chitietphieunhap ctpn " +
+                       "    JOIN phieunhap pn ON ctpn.maPN = pn.maPN " +
+                       "    WHERE pn.ngayNhap BETWEEN ? AND ? " +
+                       "    GROUP BY ctpn.maSach " +
+                       ") nhap ON s.maSach = nhap.maSach " +
+                       "LEFT JOIN ( " +
+                       "    SELECT ctpx.maSach, SUM(ctpx.soLuong) AS soLuongXuat " +
+                       "    FROM chitietphieuxuat ctpx " +
+                       "    JOIN phieuxuat px ON ctpx.maPX = px.maPX " +
+                       "    WHERE px.ngayXuat BETWEEN ? AND ? " +
+                       "    GROUP BY ctpx.maSach " +
+                       ") xuat ON s.maSach = xuat.maSach " +
+                       "LEFT JOIN ( " +
+                       "    SELECT ctpn.maSach, SUM(ctpn.soLuong) AS soLuongNhap " +
+                       "    FROM chitietphieunhap ctpn " +
+                       "    JOIN phieunhap pn ON ctpn.maPN = pn.maPN " +
+                       "    WHERE pn.ngayNhap <= ? " +
+                       "    GROUP BY ctpn.maSach " +
+                       ") tongNhap ON s.maSach = tongNhap.maSach " +
+                       "LEFT JOIN ( " +
+                       "    SELECT ctpx.maSach, SUM(ctpx.soLuong) AS soLuongXuat " +
+                       "    FROM chitietphieuxuat ctpx " +
+                       "    JOIN phieuxuat px ON ctpx.maPX = px.maPX " +
+                       "    WHERE px.ngayXuat <= ? " +
+                       "    GROUP BY ctpx.maSach " +
+                       ") tongXuat ON s.maSach = tongXuat.maSach " +
+                       "ORDER BY soLuongXuat DESC";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pst = conn.prepareStatement(query)) {
 
-            pst.setDate(1, ngayBatDau);
+            pst.setDate(1, ngayBatDau);   // BETWEEN ? AND ?
             pst.setDate(2, ngayKetThuc);
-            pst.setDate(3, ngayBatDau);
+            pst.setDate(3, ngayBatDau);   // BETWEEN ? AND ?
             pst.setDate(4, ngayKetThuc);
+            pst.setDate(5, ngayKetThuc);  // <= ?
+            pst.setDate(6, ngayKetThuc);  // <= ?
 
             ResultSet rs = pst.executeQuery();
             while (rs.next()) {
-                int soLuongNhap = rs.getInt("soLuongNhap");
-                int soLuongXuat = rs.getInt("soLuongXuat");
                 resultList.add(new ThongKeSachDTO(
                         rs.getInt("maSach"),
                         rs.getString("tenSach"),
-                        soLuongNhap,
-                        soLuongXuat,
-                        soLuongNhap - soLuongXuat
+                        rs.getInt("soLuongNhap"),
+                        rs.getInt("soLuongXuat"),
+                        rs.getInt("soLuongTon")
                 ));
             }
         } catch (SQLException e) {
@@ -172,6 +187,7 @@ public class SachDAO {
         }
         return resultList;
     }
+
 }
 
 

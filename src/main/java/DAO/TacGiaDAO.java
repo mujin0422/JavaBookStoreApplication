@@ -113,20 +113,6 @@ public class TacGiaDAO {
         }
         return danhSachMaTG;
     }
-    
-    public String getTenTacGiaById(int maTG) {
-        String sql = "SELECT tenTG FROM tacgia WHERE maTG = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)){
-            ps.setInt(1, maTG);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return rs.getString("tenTG");
-            }
-        } catch (SQLException e) {
-        }
-        return null;
-    }
 
     public int getMaTgByTenTg(String tenTg){
         String sql = "SELECT maTG FROM tacgia WHERE tenTG = ?";

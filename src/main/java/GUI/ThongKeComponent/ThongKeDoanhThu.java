@@ -17,9 +17,10 @@ import java.util.Date;
 import java.util.Locale;
 import javax.swing.border.EmptyBorder;
 
+
 public class ThongKeDoanhThu extends JPanel {
-    private UITable table;
-    private DefaultTableModel model;
+    private UITable table, summaryTable;
+    private DefaultTableModel model, summaryModel;
     private JDateChooser dateFrom;
     private JDateChooser dateTo;
     private PhieuXuatBUS phieuXuatBUS;
@@ -60,8 +61,21 @@ public class ThongKeDoanhThu extends JPanel {
         table = new UITable(model);
         UIScrollPane scrollPane = new UIScrollPane(table);          
         
+        
+        // =======================================================
+        String[] summaryColumnNames = {"", "", "", ""};
+        summaryModel = new DefaultTableModel(summaryColumnNames, 1);
+        summaryTable = new UITable(summaryModel);
+        summaryTable.setRowSelectionAllowed(false);
+        summaryTable.setColumnSelectionAllowed(false);
+        summaryTable.setCellSelectionEnabled(false);
+        summaryTable.setFont(new Font("Arial", Font.BOLD, 18));
+        summaryTable.setRowHeight(35);
+        summaryTable.setBackground(UIConstants.WHITE_FONT);
+        
         this.add(filterPanel, BorderLayout.NORTH);
         this.add(scrollPane, BorderLayout.CENTER);
+        this.add(summaryTable, BorderLayout.SOUTH);
     }
 
     private void loadDataTheoKhoangThoiGian() {
@@ -69,7 +83,7 @@ public class ThongKeDoanhThu extends JPanel {
 
         Date fromDate = dateFrom.getDate();
         Date toDate = dateTo.getDate();
-
+        
         if (fromDate == null || toDate == null || fromDate.after(toDate)) {
             JOptionPane.showMessageDialog(this, 
                 "Vui lòng chọn khoảng thời gian hợp lệ!", 
@@ -82,6 +96,9 @@ public class ThongKeDoanhThu extends JPanel {
         calendar.setTime(fromDate);
         Calendar endCalendar = Calendar.getInstance();
         endCalendar.setTime(toDate);
+        double tongVon = 0;
+        double tongDoanhThu = 0;
+        double tongLoiNhuan = 0;
 
         // Duyệt qua từng ngày trong khoảng thời gian
         while (!calendar.after(endCalendar)) {
@@ -92,13 +109,21 @@ public class ThongKeDoanhThu extends JPanel {
             double doanhThu = phieuXuatBUS.getTongTienTheoNgay(currentDate);
             double loiNhuan = doanhThu - von;
 
+            tongVon += von;
+            tongDoanhThu += doanhThu;
+            tongLoiNhuan += loiNhuan;
+            
             model.addRow(new Object[]{
                 currentDateStr,
                 String.format("%,.0f VNĐ", von),
                 String.format("%,.0f VNĐ", doanhThu),
                 String.format("%,.0f VNĐ", loiNhuan)
             });
-            calendar.add(Calendar.DATE, 1);
+            calendar.add(Calendar.DATE, 1); 
         }
+        summaryModel.setValueAt("Tổng: ", 0, 0);
+        summaryModel.setValueAt(String.format("%,.0f VNĐ", tongVon), 0, 1);
+        summaryModel.setValueAt(String.format("%,.0f VNĐ", tongDoanhThu), 0, 2);
+        summaryModel.setValueAt(String.format("%,.0f VNĐ", tongLoiNhuan), 0, 3);
     }
 }

@@ -195,8 +195,9 @@ INSERT INTO CHUCNANG (maCN, tenCN) VALUES
 (6, N'Quản Lí Nhà Cung Cấp'),
 (7, N'Quản Lí Nhập Hàng'),
 (8, N'Quản Lí Xuất Hàng'),
-(9, N'Quản Lí Phân Quyền'),
-(10, N'Quản Lí Thống Kê');
+(9, N'Quản Lí Vai Trò'),
+(10, N'Quản Lí Phân Quyền'),
+(11, N'Quản Lí Thống Kê');
 
 
 CREATE TABLE SACH (
@@ -488,7 +489,7 @@ CREATE TABLE CHITIETPHIEUXUAT (
     FOREIGN KEY (maSach) REFERENCES SACH(maSach),
     FOREIGN KEY (maPX) REFERENCES PHIEUXUAT(maPX)
 );
-INSERT INTO CHITIETPHIEUXUAT (maSach, maPX, giaBan, soLuong) VALUES
+INSERT INTO CHITIETPHIEUXUAT (maSach, maPX, soLuong, giaBan) VALUES
 (1, 3, 1, 120000),
 (1, 5, 2, 240000),
 (1, 10, 2, 240000),
@@ -645,24 +646,14 @@ INSERT INTO CHITIETCHUCNANG(maCN, maQuyen, maHD) VALUES
 (6, 1, 'edit'),
 (6, 1, 'view'),
 (7, 1, 'add'),
-(7, 1, 'delete'),
-(7, 1, 'edit'),
 (7, 1, 'view'),
 (7, 2, 'add'),
-(7, 2, 'delete'),
-(7, 2, 'edit'),
 (7, 2, 'view'),
 (8, 1, 'add'),
-(8, 1, 'delete'),
-(8, 1, 'edit'),
 (8, 1, 'view'),
 (8, 2, 'add'),
-(8, 2, 'delete'),
-(8, 2, 'edit'),
 (8, 2, 'view'),
 (8, 3, 'add'),
-(8, 3, 'delete'),
-(8, 3, 'edit'),
 (8, 3, 'view'),
 (9, 1, 'add'),
 (9, 1, 'delete'),
@@ -671,7 +662,8 @@ INSERT INTO CHITIETCHUCNANG(maCN, maQuyen, maHD) VALUES
 (10, 1, 'add'),
 (10, 1, 'delete'),
 (10, 1, 'edit'),
-(10, 1, 'view');
+(10, 1, 'view'),
+(11, 1, 'view');
 
 
 

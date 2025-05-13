@@ -10,7 +10,6 @@ public class SachBUS {
     public SachBUS() {
         sachDAO = new SachDAO();
     }
-
     public ArrayList<SachDTO> getAllSach() {
         return sachDAO.getAll();
     }

@@ -72,27 +72,6 @@ public class TaiKhoanDAO {
         }
         return dsTaiKhoan;
     }
-
-    public TaiKhoanDTO getById(int id) {
-        String sql = "SELECT * FROM taikhoan WHERE maNV=?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, id);
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return new TaiKhoanDTO(
-                        rs.getString("tenDangNhap"),
-                        rs.getString("matKhau"),
-                        rs.getInt("maNV"),
-                        rs.getInt("maQuyen")
-                    );
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
     
     public TaiKhoanDTO getByUsername(String username) {
         String sql = "SELECT * FROM taikhoan WHERE tenDangNhap=? AND trangThaiXoa=0";
@@ -181,7 +160,6 @@ public class TaiKhoanDAO {
                 AND tk.tenDangNhap = ?
             LIMIT 1
         """;
-
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, maCN);

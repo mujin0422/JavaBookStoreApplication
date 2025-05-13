@@ -16,20 +16,20 @@ public class VaiTroBUS {
     public VaiTroDTO getById(int id) {
         return vaiTroDAO.getById(id);
     }
-    public int addVaiTro(VaiTroDTO obj) {
-        return vaiTroDAO.add(obj);
+    public boolean addVaiTro(VaiTroDTO obj) {
+        return vaiTroDAO.add(obj) > 0;
     }
-    public int updateVaiTro(VaiTroDTO obj) {
-        return vaiTroDAO.update(obj);
+    public boolean updateVaiTro(VaiTroDTO obj) {
+        return vaiTroDAO.update(obj) > 0;
     }
-    public int deleteVaiTro(int maVT) {
-        return vaiTroDAO.delete(maVT);
+    public boolean deleteVaiTro(int maVT) {
+        return vaiTroDAO.delete(maVT) > 0 ;
     }
     public String getNextMaVt() {
         return vaiTroDAO.getNextMaVt();
     }
     
-    public String getTenVtByMaVt(int maVt) {
-        return vaiTroDAO.getTenVtByMaVt(maVt);
+    public int getSoLuongNhanVienHasVaiTro(int maVT) {
+        return vaiTroDAO.getSoLuongNhanVienHasVaiTro(maVT);
     }
 }

@@ -109,7 +109,7 @@ public class StaffMainContentGUI extends JPanel{
                 nhanvien.getTenNV(),
                 nhanvien.getEmail(),
                 nhanvien.getSdt(),    
-                vaiTroBUS.getTenVtByMaVt(nhanvien.getMaVT())
+                vaiTroBUS.getById(nhanvien.getMaVT()).getTenVT()
             });
         }
     }

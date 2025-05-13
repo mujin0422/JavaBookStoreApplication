@@ -101,21 +101,7 @@ public class TheLoaiDAO {
         }
         return danhSachMaTL;
     }
-    public String getTenTheLoaiById(int maTL) {
-        String sql = "SELECT tenTL FROM theloai WHERE maTL = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)){
-            ps.setInt(1, maTL);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return rs.getString("tenTL");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-    
+
     public int getMaTlByTenTl(String tenTl){
         String sql = "SELECT maTL FROM theloai WHERE tenTL = ?";
         try (Connection conn = DatabaseConnection.getConnection();

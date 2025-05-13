@@ -11,8 +11,8 @@ public class ChiTietPhieuXuatDTO {
     public ChiTietPhieuXuatDTO(int maPX, int maSach, int soLuong, int giaBan) {
         this.maPX = maPX;
         this.maSach = maSach;
-        this.giaBan = giaBan;
         this.soLuong = soLuong;
+        this.giaBan = giaBan;
     }
 
     public int getMaPX() {

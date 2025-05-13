@@ -30,14 +30,6 @@ public class NhaCungCapBUS{
         return nhaCungCapDAO.getNextMaNcc();
     }
     
-    public int getMaNccByTenNcc(String tenNcc){
-        return nhaCungCapDAO.getMaNccByTenNCC(tenNcc);
-    }
-    
-    public String getTenNccByMaNcc(int maNcc){
-        return nhaCungCapDAO.getTenNccByMaNCC(maNcc);
-    }
-    
     public ArrayList<NhaCungCapDTO> searchNhaCungCap(String keyword) {
         if (keyword == null || keyword.trim().isEmpty()) {
             return nhaCungCapDAO.getAll();

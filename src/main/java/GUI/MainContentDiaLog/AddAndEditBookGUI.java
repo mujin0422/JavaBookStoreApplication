@@ -21,6 +21,7 @@ import Utils.UITextField;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Insets;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -62,7 +63,7 @@ public class AddAndEditBookGUI extends JDialog {
             NhomTheLoaiBUS nhomTheLoaiBUS = new NhomTheLoaiBUS();
             ArrayList<Integer> dsTheLoai = nhomTheLoaiBUS.getMaTheLoaiByMaSach(sach.getMaSach());
             for (Integer maTL : dsTheLoai) {
-                String tenTL = theLoaiBus.getTenTheLoaiById(maTL);
+                String tenTL = theLoaiBus.getById(maTL).getTenTL();
                 if (tenTL != null) {
                     areaTheLoai.append(tenTL + "\n");
                 }
@@ -71,7 +72,7 @@ public class AddAndEditBookGUI extends JDialog {
             NhomTacGiaBUS nhomTacGiaBUS = new NhomTacGiaBUS();
             ArrayList<Integer> dsTacGia = nhomTacGiaBUS.getMaTacGiaByMaSach(sach.getMaSach());
             for (Integer maTG : dsTacGia) {
-                String tenTG = tacGiaBus.getTenTacGiaById(maTG);
+                String tenTG = tacGiaBus.getById(maTG).getTenTG();
                 if (tenTG != null) {
                     areaTacGia.append(tenTG + "\n");
                 }
@@ -124,12 +125,14 @@ public class AddAndEditBookGUI extends JDialog {
         
         inputPanelLeft.add(new UILabel("Các tác giả: ",120 ,30));
         areaTacGia = new JTextArea();
+        areaTacGia.setMargin(new Insets(2, 5, 2, 5));
         areaTacGia.setPreferredSize(new Dimension (380, 60));
         UIScrollPane scrollTG = new UIScrollPane(areaTacGia);
         inputPanelLeft.add(scrollTG);
       
         inputPanelLeft.add(new UILabel("Các thể loại:",120 ,30));
         areaTheLoai = new JTextArea();
+        areaTheLoai.setMargin(new Insets(2, 5, 2, 5));
         areaTheLoai.setPreferredSize(new Dimension (380, 60));
         UIScrollPane scrollTL = new UIScrollPane(areaTheLoai);
         inputPanelLeft.add(scrollTL);

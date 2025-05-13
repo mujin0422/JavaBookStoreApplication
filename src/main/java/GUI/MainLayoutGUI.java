@@ -5,22 +5,23 @@ import DTO.TaiKhoanDTO;
 import GUI.MainContent.*;
 import Utils.UIButton;
 import Utils.UIConstants;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Image;
+import java.awt.Insets;
 import java.util.ArrayList;
-import javax.swing.*;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 public final class MainLayoutGUI extends JFrame {
-    private StatisticsMainContentGUI statisticsPanel;
-    private BookMainContentGUI bookPanel;
-    private CustomerMainContentGUI customerPanel;
-    private StaffMainContentGUI staffPanel;
-    private AboutBookMainContentGUI aboutBookPanel;
-    private SupplierMainContentGUI supplierPanel;
-    private DecentralizationMainContentGUI decentralizationPanel;
-    private ImportBookMainContentGUI importBookPanel; 
-    private ExportBookMainContentGUI exportBookPanel;
-    private AccountMainContentGUI accountPanel;
-    
     private ArrayList<UIButton> buttons; 
     private TaiKhoanDTO taiKhoan;
     private TaiKhoanBUS taiKhoanBus;
@@ -36,6 +37,7 @@ public final class MainLayoutGUI extends JFrame {
         {"NHÀ CUNG CẤP", "/Icon/NhaCungCap_icon.png"},
         {"NHẬP HÀNG", "/Icon/NhapHang_icon.png"},
         {"XUẤT HÀNG", "/Icon/XuatHang_icon.png"},
+        {"VAI TRÒ", "/Icon/VaiTro_icon.png"},
         {"PHÂN QUYỀN", "/Icon/PhanQuyen_icon.png"},
         {"THỐNG KÊ", "/Icon/ThongKe_icon.png"},
     };
@@ -105,35 +107,25 @@ public final class MainLayoutGUI extends JFrame {
         buttons = new ArrayList<>(); 
         pnlContent = new JPanel(new BorderLayout()); 
         pnlContent.setBackground(UIConstants.SUB_BACKGROUND);
-        
-        statisticsPanel = new StatisticsMainContentGUI();
-        bookPanel = new BookMainContentGUI(taiKhoan);
-        customerPanel = new CustomerMainContentGUI(taiKhoan);
-        staffPanel = new StaffMainContentGUI(taiKhoan);
-        aboutBookPanel = new AboutBookMainContentGUI(taiKhoan);
-        supplierPanel = new SupplierMainContentGUI(taiKhoan);
-        decentralizationPanel = new DecentralizationMainContentGUI(taiKhoan);
-        importBookPanel = new ImportBookMainContentGUI(taiKhoan);
-        exportBookPanel = new ExportBookMainContentGUI(taiKhoan);
-        accountPanel = new AccountMainContentGUI(taiKhoan);
-        
-        for (int i = 1; i <= 10; i++) {
+     
+        for (int i = 1; i <= 11; i++) {
             String label = buttonInfo[i - 1][0];
             String iconPath = buttonInfo[i - 1][1];
             UIButton button = new UIButton("menuButton", label, 180, 40, iconPath);
             buttons.add(button);
             JPanel targetPanel;
             switch (i) {
-                case 1 -> targetPanel = bookPanel;             
-                case 2 -> targetPanel = aboutBookPanel;          
-                case 3 -> targetPanel = customerPanel;           
-                case 4 -> targetPanel = staffPanel;              
-                case 5 -> targetPanel = accountPanel;            
-                case 6 -> targetPanel = supplierPanel;           
-                case 7 -> targetPanel = importBookPanel;         
-                case 8 -> targetPanel = exportBookPanel;        
-                case 9 -> targetPanel = decentralizationPanel;  
-                case 10 -> targetPanel = statisticsPanel;       
+                case 1 -> targetPanel = new BookMainContentGUI(taiKhoan);            
+                case 2 -> targetPanel = new AboutBookMainContentGUI(taiKhoan);        
+                case 3 -> targetPanel = new CustomerMainContentGUI(taiKhoan);       
+                case 4 -> targetPanel = new StaffMainContentGUI(taiKhoan);             
+                case 5 -> targetPanel = new AccountMainContentGUI(taiKhoan);            
+                case 6 -> targetPanel = new SupplierMainContentGUI(taiKhoan);          
+                case 7 -> targetPanel = new ImportBookMainContentGUI(taiKhoan);         
+                case 8 -> targetPanel = new ExportBookMainContentGUI(taiKhoan);      
+                case 9 -> targetPanel = new RoleMainContentGUI(taiKhoan); 
+                case 10 -> targetPanel = new DecentralizationMainContentGUI(taiKhoan); 
+                case 11 -> targetPanel = new StatisticsMainContentGUI();      
                 default -> targetPanel = WelcomePanel();
             }
             button.addActionListener(e -> {
@@ -199,7 +191,6 @@ public final class MainLayoutGUI extends JFrame {
         lblMessage.setForeground(UIConstants.BLACK_FONT);
         lblMessage.setText("Chúc bạn có một ngày làm việc vui vẻ!");
         panel.add(lblMessage, gbc);
-
         return panel;
     }
 }

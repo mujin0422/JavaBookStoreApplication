@@ -10,7 +10,6 @@ public class TacGiaBUS {
     public TacGiaBUS() {
         tacGiaDAO = new TacGiaDAO();
     }
-
     public ArrayList<TacGiaDTO> getAllTacGia() {
         return tacGiaDAO.getAll();
     }
@@ -36,7 +35,7 @@ public class TacGiaBUS {
 
         ArrayList<Integer> danhSachMaTG = tacGiaDAO.getMaTacGiaBySach(maSach);
         for (int maTG : danhSachMaTG) {
-            String tenTG = tacGiaDAO.getTenTacGiaById(maTG);
+            String tenTG = tacGiaDAO.getById(maTG).getTenTG();
             danhSachTenTG.add(tenTG);
         }
         return danhSachTenTG;
@@ -44,9 +43,5 @@ public class TacGiaBUS {
     
     public int getMaTgByTenTg(String tenTg){
         return tacGiaDAO.getMaTgByTenTg(tenTg);
-    }
-    
-    public String getTenTacGiaById(int maTG){
-        return tacGiaDAO.getTenTacGiaById(maTG);
     }
 }

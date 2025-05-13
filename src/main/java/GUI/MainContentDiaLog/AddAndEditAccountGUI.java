@@ -38,11 +38,11 @@ public class AddAndEditAccountGUI extends JDialog{
             txtTenDangNhap.setText(tk.getTenDangNhap());
             txtMatKhau.setText(tk.getMatKhau());
             
-            String tenNv = nvBus.getTenNvByMaNv(tk.getMaNV());
+            String tenNv = nvBus.getById(tk.getMaNV()).getTenNV();
             if (tenNv != null) {
                 cbMaNV.setSelectedItem(tenNv);
             }
-            String tenQuyen = quyenBus.getTenQuyenByMaQuyen(tk.getMaQuyen());
+            String tenQuyen = quyenBus.getById(tk.getMaQuyen()).getTenQuyen();
             if (tenQuyen != null) {
                 cbMaQuyen.setSelectedItem(tenQuyen);
             }

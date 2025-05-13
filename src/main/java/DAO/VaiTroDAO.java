@@ -99,19 +99,21 @@ public class VaiTroDAO {
         return "1";
     }
     
-    public String getTenVtByMaVt(int maVt) {
-        String sql = "SELECT tenVT FROM vaitro WHERE maVT=?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, maVt); 
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getString("tenVT"); 
-                }
+    public int getSoLuongNhanVienHasVaiTro(int maVT) {
+        int count = 0;
+        String sql = "SELECT COUNT(*) AS soLuongNhanVien "
+                   + "FROM nhanvien "
+                   + "WHERE maVT = ? AND trangThaiXoa = 0";
+        try (Connection con = DatabaseConnection.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, maVT);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt("soLuongNhanVien");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null; 
+        return count;
     }
 }

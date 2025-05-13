@@ -3,10 +3,7 @@ package BUS;
 import DTO.NhomTheLoaiDTO;
 import DAO.NhomTheLoaiDAO;
 import java.util.ArrayList;
-/**
- *
- * @author Thanh tam
- */
+
 public class NhomTheLoaiBUS {
     private final NhomTheLoaiDAO nhomTheLoaiDAO;
 

@@ -111,7 +111,7 @@ public class BookMainContentGUI extends JPanel implements ReloadablePanel{
             tableModel.addRow(new Object[]{
                 sach.getMaSach(),
                 sach.getTenSach(),
-                sach.getGiaSach(),
+                sach.getGiaSach() + " đ",
                 nhaXuatBanBUS.getById(sachBUS.getById(sach.getMaSach()).getMaNXB()).getTenNXB(),
                 sach.getSoLuongTon()
             });

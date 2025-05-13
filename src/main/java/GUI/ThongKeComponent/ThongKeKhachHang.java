@@ -17,8 +17,8 @@ import java.util.Locale;
 
 
 public class ThongKeKhachHang extends JPanel {
-    private UITable dataTable;
-    private DefaultTableModel tableModel;
+    private UITable dataTable, summaryTable;
+    private DefaultTableModel tableModel, summaryModel;
     private JPanel topPanel, contentPanel;
     private JDateChooser dateFromPicker, dateToPicker;
     private UIButton btnThongKeTheoNgaySubmit;
@@ -74,7 +74,7 @@ public class ThongKeKhachHang extends JPanel {
                 Object[] data = {
                     thongKe.getMaKH(),
                     thongKe.getTenKH(),
-                    thongKe.getSoLanMua(),
+                    thongKe.getSoLanMua() + " lần",
                     String.format("%,.0f VND", thongKe.getTongTienDaMua()) 
                 };
                 tableModel.addRow(data);

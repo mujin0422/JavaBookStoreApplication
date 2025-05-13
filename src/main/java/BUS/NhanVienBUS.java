@@ -10,7 +10,6 @@ public class NhanVienBUS {
     public NhanVienBUS() {
         NhanVienDAO = new NhanVienDAO();
     }
-
     public ArrayList<NhanVienDTO> getAllNhanVien() {
         return NhanVienDAO.getAll();
     }
@@ -35,9 +34,6 @@ public class NhanVienBUS {
     }
     public int getMaNvByTenNv(String tenNv){
         return NhanVienDAO.getMaNvByTenNv(tenNv);
-    }
-    public String getTenNvByMaNv(int maNv){
-        return NhanVienDAO.getTenNvByMaNv(maNv);
     }
     public ArrayList<NhanVienDTO> searchNhanVien(String keyword) {
         if (keyword == null || keyword.trim().isEmpty()) {

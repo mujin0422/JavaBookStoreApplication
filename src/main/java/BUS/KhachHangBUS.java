@@ -36,10 +36,6 @@ public class KhachHangBUS {
     public KhachHangDTO getKhBySDT(String sdt) {
         return khachHangDAO.getKhBySDT(sdt);
     }
-    public String getTenKhByMaKh(int maKh) {
-        return khachHangDAO.getTenKhByMaKh(maKh);
-    }
-
     public ArrayList<KhachHangDTO> searchKhachHang(String keyword) {
         if (keyword == null || keyword.trim().isEmpty()) {
             return khachHangDAO.getAll();

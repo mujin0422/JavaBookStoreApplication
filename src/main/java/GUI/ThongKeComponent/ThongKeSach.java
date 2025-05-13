@@ -81,9 +81,9 @@ public class ThongKeSach extends JPanel {
                 tableModel.addRow(new Object[]{
                     sach.getMaSach(), 
                     sach.getTenSach(),
-                    sach.getSoLuongNhap(), 
-                    sach.getSoLuongXuat(),
-                    sach.getSoLuongTon()
+                    sach.getSoLuongNhap() + " quyển", 
+                    sach.getSoLuongXuat() + " quyển",
+                    sach.getSoLuongTon() + " quyển"
                 });
             }
         } catch (Exception ex) {

@@ -2,6 +2,7 @@ package Utils;
 
 import javax.swing.JLabel;
 import java.awt.Dimension;
+import java.awt.Font;
 
 public class UILabel extends JLabel {
     
@@ -10,6 +11,10 @@ public class UILabel extends JLabel {
     }
     public UILabel(String text) {
         initComponent(text, 100, 35);
+    }
+    public UILabel(String text, int width, int height, Font font) {
+        initComponent(text, width, height);
+        this.setFont(font);
     }
     
     private void initComponent(String text, int width, int height) {

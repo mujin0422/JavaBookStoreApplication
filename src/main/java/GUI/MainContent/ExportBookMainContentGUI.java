@@ -18,25 +18,31 @@ import Utils.UILabel;
 import Utils.UIScrollPane;
 import Utils.UITable;
 import Utils.UITextField;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.PdfPTable;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -47,7 +53,7 @@ import javax.swing.table.DefaultTableModel;
 
 
 public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
-    private UIButton btnAdd, btnView, btnThemVaoPhieu, btnXoaKhoiPhieu, btnSuaSoLuong, btnAddToPX;
+    private UIButton btnAdd, btnView, btnPdf, btnThemVaoPhieu, btnXoaKhoiPhieu, btnSuaSoLuong, btnAddToPX;
     private UITextField txtSoLuong, txtMaPX, txtTenNV, txtSdtKH ,txtTenKH, txtTongTien ,txtSearchSach;
     private UITable tblContent, tblForProduct , tblForForm;
     private JPanel pnlHeader, pnlContent, pnlForm, pnlProduct;
@@ -82,9 +88,11 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
         btnAdd.addActionListener(e -> resetFormInput());
         btnView = new UIButton("menuButton", "XEM", 90, 40, "/Icon/chitiet_icon.png");
         btnView.addActionListener(e -> viewChiTietPhieuXuat());
+        btnPdf = new UIButton("menuButton", "PDF", 90, 40, "/Icon/pdf_icon.png");
+        btnPdf.addActionListener(e -> exportPdf());
         pnlButton.add(btnAdd);
         pnlButton.add(btnView);
-        applyPermissions(taiKhoan.getTenDangNhap(), 8);
+        pnlButton.add(btnPdf);
         
         pnlHeader.add(pnlButton, BorderLayout.CENTER);
         //==============================( End Panel Header )============================//
@@ -207,6 +215,7 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
         pnlContent.add(scrollPane, BorderLayout.CENTER);
         //===============================( End Panel Content )===========================//
         
+        applyPermissions(taiKhoan.getTenDangNhap(), 8);
         
         this.add(pnlHeader, BorderLayout.NORTH);
         this.add(pnlForm, BorderLayout.CENTER);
@@ -219,6 +228,8 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
     
     private void applyPermissions(String username, int maCN) {
         btnAdd.setVisible(taiKhoanBUS.hasPermission(username, maCN, "add"));
+        btnAddToPX.setVisible(taiKhoanBUS.hasPermission(username, maCN, "add"));
+        txtSdtKH.setEditable(taiKhoanBUS.hasPermission(username, maCN, "add"));
     }
     
     public void loadTableData(){
@@ -226,8 +237,8 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
         for(PhieuXuatDTO px : phieuXuatBUS.getAllPhieuXuat()){
             tableModel.addRow(new Object[]{
                 px.getMaPX(),
-                nhanVienBUS.getTenNvByMaNv(px.getMaNV()),
-                khachHangBUS.getTenKhByMaKh(px.getMaKH()),
+                nhanVienBUS.getById(px.getMaNV()).getTenNV(),
+                khachHangBUS.getById(px.getMaKH()).getTenKH(),
                 px.getTongTien(),
                 px.getNgayXuat()
             });
@@ -257,40 +268,26 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
         dialog.setLayout(new BorderLayout());
 
         JPanel panelThongTin = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
-        panelThongTin.setPreferredSize(new Dimension(600, 125));
-        panelThongTin.add(new UILabel("PHIẾU XUẤT " + px.getMaPX(), 550, 25));
-        panelThongTin.add(new UILabel("NHÂN VIÊN XUẤT HÀNG: " + nhanVienBUS.getTenNvByMaNv(px.getMaNV()), 550, 25));
-        panelThongTin.add(new UILabel("KHÁCH HÀNG: " + khachHangBUS.getTenKhByMaKh(px.getMaKH()), 550, 25));
-        panelThongTin.add(new UILabel("NGÀY GHI PHIẾU: " + px.getNgayXuat().toString(), 550, 25));
-        panelThongTin.add(new UILabel("TỔNG TIỀN: " + px.getTongTien(), 550, 25));
+        panelThongTin.setPreferredSize(new Dimension(600, 105));
+        panelThongTin.add(new UILabel("Phiếu xuất: " + px.getMaPX(), 550, 25, UIConstants.monoFont));
+        panelThongTin.add(new UILabel("Nhân viên xuất hàng: " + nhanVienBUS.getById(px.getMaNV()).getTenNV(), 550, 25, UIConstants.monoFont));
+        panelThongTin.add(new UILabel("Khách hàng: " + khachHangBUS.getById(px.getMaKH()).getTenKH(), 550, 25, UIConstants.monoFont));
+        panelThongTin.add(new UILabel("Ngày: " + px.getNgayXuat().toString(), 550, 25, UIConstants.monoFont));
 
         JPanel panelChiTiet = new JPanel();
         panelChiTiet.setLayout(new BoxLayout(panelChiTiet, BoxLayout.Y_AXIS));
         panelChiTiet.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
 
-        Font monoFont = new Font("Monospaced", Font.PLAIN, 14);
-        UILabel lblTitle = new UILabel("CHI TIẾT PHIẾU XUẤT:", 550, 25);
-        panelChiTiet.add(lblTitle);
-
-        UILabel lblHeader = new UILabel(String.format("%-40s %-10s %-15s", "SÁCH", "SỐ LƯỢNG", "THÀNH TIỀN"), 600, 25);
-        lblHeader.setFont(monoFont);
+        UILabel lblHeader = new UILabel(String.format("%-40s %-10s %-15s", "SÁCH", "SỐ LƯỢNG", "THÀNH TIỀN"), 600, 25, UIConstants.monoFont);
         panelChiTiet.add(lblHeader);
-
         for (ChiTietPhieuXuatDTO ct : chiTietPhieuXuatBUS.getAllChiTietPhieuXuatByMaPx(maPX)) {
-            UILabel lblRow = new UILabel(String.format("%-40s %-10s %-15s", sachBUS.getById(ct.getMaSach()).getTenSach(), ct.getSoLuong(),ct.getGiaBan()), 600, 25);
-            lblRow.setFont(monoFont);
+            UILabel lblRow = new UILabel(String.format("%-40s %-10s %-15s", sachBUS.getById(ct.getMaSach()).getTenSach(), ct.getSoLuong(),ct.getGiaBan()), 600, 25, UIConstants.monoFont);
             panelChiTiet.add(lblRow);
         }
-
-        JPanel panelButton = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
-        UIButton btnClose = new UIButton("add", "Đóng", 100, 30);
-        btnClose.addActionListener(e -> dialog.dispose());
-        panelButton.add(btnClose);
+        panelChiTiet.add(new UILabel(String.format("%-40s %-10s %-15s", "", "Tổng tiền:", px.getTongTien()), 550, 25, UIConstants.monoFont));
 
         dialog.add(panelThongTin, BorderLayout.NORTH);
         dialog.add(panelChiTiet, BorderLayout.CENTER);
-        dialog.add(panelButton, BorderLayout.SOUTH);
-
         dialog.pack();
         int preferredHeight = dialog.getHeight(); 
         dialog.setSize(650, preferredHeight);   
@@ -377,22 +374,16 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
                     JOptionPane.showMessageDialog(dialog, "Số lượng không hợp lệ", "Lỗi", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
-
                 int newSoLuong = Integer.parseInt(soLuongText);
                 int maSach = Integer.parseInt(tblForForm.getValueAt(selectedRow, 0).toString());
-                // Kiểm tra xem số lượng mới có vượt quá số lượng tồn kho không
                 if (newSoLuong > sachBUS.getById(maSach).getSoLuongTon()){
                     JOptionPane.showMessageDialog(dialog, "Số lượng sách bán ra không được lớn hơn số lượng sách trong kho", "Lỗi", JOptionPane.ERROR_MESSAGE);
                     return;
-                }
-                // Lấy giá của cuốn sách cho hàng này            
+                }       
                 int giaSach = sachBUS.getById(maSach).getGiaSach(); 
-                // Tính toán lại tổng cho hàng này
                 int thanhTien = newSoLuong * giaSach;
-                // Cập nhật số lượng và tổng giá trong mô hình bảng
                 tableModelForForm.setValueAt(newSoLuong, selectedRow, 2); // Update So Luong column
                 tableModelForForm.setValueAt(thanhTien, selectedRow, 3); // Update Thanh Tien column
-                // Tính lại tổng số tiền cho toàn bộ phiếu xuất
                 calcTongTien();
                 dialog.dispose();
             }
@@ -411,7 +402,6 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
             return null;  
         }
     }
-    
     private void resetFormInput(){
         txtMaPX.setText(phieuXuatBUS.getNextMaPx());
         txtMaPX.setEditable(false);
@@ -454,8 +444,7 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
                 int soluong = Integer.parseInt(tableModelForForm.getValueAt(i, 2).toString());
                 int giaBan = Integer.parseInt(tableModelForForm.getValueAt(i, 3).toString());
                 ChiTietPhieuXuatDTO chiTietPhieuXuat = new ChiTietPhieuXuatDTO(maPX, maSach, soluong, giaBan);
-                boolean isChiTietAdded = chiTietPhieuXuatBUS.addChiTietPhieuXuat(chiTietPhieuXuat);
-                if (!isChiTietAdded) {
+                if (!chiTietPhieuXuatBUS.addChiTietPhieuXuat(chiTietPhieuXuat)) {
                     JOptionPane.showMessageDialog(this, "Thêm chi tiết phiếu xuất thất bại", "Lỗi", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
@@ -468,19 +457,7 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
         JOptionPane.showMessageDialog(this, "Thêm phiếu xuất thành công", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
         loadTableData();
         resetFormInput();
-        
-        Container parent = this.getParent();
-        while (parent != null && !(parent instanceof JFrame)) {
-            parent = parent.getParent();
-        }
-        if (parent != null) {
-            for (Component comp : ((JFrame) parent).getContentPane().getComponents()) {
-                if (comp instanceof BookMainContentGUI bookMainContentGUI) {
-                    bookMainContentGUI.loadTableData();
-                    break;
-                }
-            }
-        }
+        exportToPDF(maPX);
     }
     
     private void addDocumentListener() {
@@ -523,5 +500,59 @@ public class ExportBookMainContentGUI extends JPanel implements ReloadablePanel{
         KhachHangDTO khachHang = khachHangBUS.getKhBySDT(sdt);
         if (khachHang != null) 
             txtTenKH.setText(khachHang.getTenKH());
+    }
+    
+    private void exportToPDF(int maPX) {
+        try {
+            PhieuXuatDTO px = phieuXuatBUS.getById(maPX);
+            File dir = new File("./danhSachPhieu/phieuXuat");
+            if (!dir.exists()) {
+                dir.mkdirs();
+            }
+            String filePath = "./danhSachPhieu/phieuXuat/phieuXuat" + maPX + ".pdf";
+            Document document = new Document();
+            PdfWriter.getInstance(document, new FileOutputStream(filePath));
+            document.open();
+            BaseFont baseFont = BaseFont.createFont("C:/Windows/Fonts/times.ttf", BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+            Font titleFont = new Font(baseFont, 16);
+            Paragraph title = new Paragraph("PHIẾU XUẤT", titleFont);
+            title.setAlignment(Element.ALIGN_CENTER);
+            document.add(title);
+            Font infoFont = new Font(baseFont, 12);
+            document.add(new Paragraph("\n"));
+            document.add(new Paragraph("Mã phiếu xuất: " + px.getMaPX(), infoFont));
+            document.add(new Paragraph("Nhân viên xuất hàng: " + nhanVienBUS.getById(px.getMaNV()).getTenNV(), infoFont));
+            document.add(new Paragraph("Khách hàng: " + khachHangBUS.getById(px.getMaKH()).getTenKH(), infoFont));
+            document.add(new Paragraph("Ngày: " + px.getNgayXuat().toString(), infoFont));
+            document.add(new Paragraph("Tổng tiền: " + px.getTongTien(), infoFont));
+            document.add(new Paragraph("\n"));
+            Font tableHeaderFont = new Font(baseFont, 12);
+            Font tableDataFont = new Font(baseFont, 12);
+            PdfPTable table = new PdfPTable(3);
+            table.setWidthPercentage(100);
+            table.addCell(new Phrase("SẢN PHẨM", tableHeaderFont));
+            table.addCell(new Phrase("SỐ LƯỢNG", tableHeaderFont));
+            table.addCell(new Phrase("THÀNH TIỀN", tableHeaderFont));
+            for (ChiTietPhieuXuatDTO ct : chiTietPhieuXuatBUS.getAllChiTietPhieuXuatByMaPx(maPX)) {
+                table.addCell(new Phrase(sachBUS.getById(ct.getMaSach()).getTenSach(), tableDataFont));
+                table.addCell(new Phrase(String.valueOf(ct.getSoLuong()), tableDataFont));
+                table.addCell(new Phrase(String.valueOf(ct.getGiaBan()), tableDataFont));
+            }
+            document.add(table);
+            document.close();
+            JOptionPane.showMessageDialog(this, "Xuất PDF thành công!", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi xuất PDF: " + e.getMessage(), "Thông báo", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    private void exportPdf(){
+        int selectedRow = tblContent.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn một phiếu xuất!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        int maPX = Integer.parseInt(tableModel.getValueAt(selectedRow, 0).toString());
+        exportToPDF(maPX);
     }
 }

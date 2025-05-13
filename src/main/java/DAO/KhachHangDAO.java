@@ -137,22 +137,6 @@ public class KhachHangDAO {
         }
         return null;
     }
-
-    public String getTenKhByMaKh(int maKh) {
-        String sql = "SELECT tenKH FROM khachhang WHERE maKH=?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, maKh); 
-            try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getString("tenKH"); 
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null; 
-    }
     
     public ArrayList<ThongKeKhachHangDTO> thongKeKhachHangTheoNgay(Date fromDate, Date toDate) {
         ArrayList<ThongKeKhachHangDTO> list = new ArrayList<>();
