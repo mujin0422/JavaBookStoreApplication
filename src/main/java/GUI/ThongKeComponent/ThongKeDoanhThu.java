@@ -69,7 +69,7 @@ public class ThongKeDoanhThu extends JPanel {
         summaryTable.setRowSelectionAllowed(false);
         summaryTable.setColumnSelectionAllowed(false);
         summaryTable.setCellSelectionEnabled(false);
-        summaryTable.setFont(new Font("Arial", Font.BOLD, 18));
+        summaryTable.setFont(new Font("Roboto", Font.BOLD, 17));
         summaryTable.setRowHeight(35);
         summaryTable.setBackground(UIConstants.WHITE_FONT);
         

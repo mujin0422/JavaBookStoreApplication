@@ -111,7 +111,7 @@ public class BookMainContentGUI extends JPanel implements ReloadablePanel{
             tableModel.addRow(new Object[]{
                 sach.getMaSach(),
                 sach.getTenSach(),
-                sach.getGiaSach() + " đ",
+                String.format("%,.0f VNĐ", (double)sach.getGiaSach()),
                 nhaXuatBanBUS.getById(sachBUS.getById(sach.getMaSach()).getMaNXB()).getTenNXB(),
                 sach.getSoLuongTon()
             });
@@ -186,13 +186,10 @@ public class BookMainContentGUI extends JPanel implements ReloadablePanel{
         }
         int maSach = Integer.parseInt(tableModel.getValueAt(selectedRow, 0).toString());
         SachDTO sach = sachBUS.getById(maSach);
-        // Lấy thông tin Nhà xuất bản
         NhaXuatBanBUS nhaXuatBanBUS = new NhaXuatBanBUS();
         String tenNXB = nhaXuatBanBUS.getById(sach.getMaNXB()).getTenNXB();
-        // Lấy danh sách tác giả
         TacGiaBUS tacGiaBUS = new TacGiaBUS();
         ArrayList<String> dsTacGia = tacGiaBUS.getTacGiaByMaSach(maSach);
-        // Lấy danh sách thể loại
         TheLoaiBUS theLoaiBUS = new TheLoaiBUS();
         ArrayList<String> dsTheLoai = theLoaiBUS.getTheLoaiByMaSach(maSach);
         // Hiển thị hộp thoại thông tin sách

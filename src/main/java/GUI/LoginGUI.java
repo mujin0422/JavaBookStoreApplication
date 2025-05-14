@@ -37,7 +37,7 @@ public final class LoginGUI extends JFrame {
         pnlTitle.setBackground(UIConstants.MAIN_BUTTON);
         pnlTitle.setPreferredSize(new Dimension(800, 50));
 
-        JLabel lblTitle = new JLabel("QUẢN LÝ CỬA HÀNG BÁN LAPTOP");
+        JLabel lblTitle = new JLabel("QUẢN LÝ CỬA HÀNG BÁN SÁCH");
         lblTitle.setFont(UIConstants.TITLE_FONT);
         lblTitle.setForeground(UIConstants.WHITE_FONT);
         lblTitle.setBounds(10, 5, 450, 40);
