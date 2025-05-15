@@ -7,7 +7,6 @@ import Utils.UIButton;
 import Utils.UIConstants;
 import Utils.UIScrollPane;
 import Utils.UITable;
-import Utils.UITextField;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -21,7 +20,6 @@ import javax.swing.table.DefaultTableModel;
 
 public class AccountMainContentGUI extends JPanel{
     private UIButton btnAdd, btnDelete, btnEdit;
-    private UITextField txtSearch;
     private UITable tblContent;
     private JPanel pnlHeader, pnlContent;
     private DefaultTableModel tableModel;
@@ -51,13 +49,7 @@ public class AccountMainContentGUI extends JPanel{
         pnlButton.add(btnEdit);
         applyPermissions(taiKhoan.getTenDangNhap(), 5);
 
-        JPanel pnlSearchFilter = new JPanel(new FlowLayout(FlowLayout.RIGHT,10,10));
-        pnlSearchFilter.setBackground(UIConstants.MAIN_BACKGROUND);
-        txtSearch = new UITextField(190, 30);
-        pnlSearchFilter.add(txtSearch);
-
         pnlHeader.add(pnlButton, BorderLayout.WEST);
-        pnlHeader.add(pnlSearchFilter, BorderLayout.CENTER);
         //==============================( End Panel Header )============================//
 
         

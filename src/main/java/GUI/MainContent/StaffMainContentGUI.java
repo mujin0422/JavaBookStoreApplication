@@ -168,7 +168,8 @@ public class StaffMainContentGUI extends JPanel{
                 obj.getMaNV(),
                 obj.getTenNV(),
                 obj.getEmail(),
-                obj.getSdt()
+                obj.getSdt(),
+                vaiTroBUS.getById(obj.getMaVT()).getTenVT()
             });
         }
     }
